@@ -21,4 +21,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Lifestyles.Domain\Lifestyles.Domain.csproj" />
+    <ProjectReference Include="..\Lifestyles.Service\Lifestyles.Service.csproj" />
+    <ProjectReference Include="..\Lifestyles.Infrastructure.Database\Lifestyles.Infrastructure.Database.csproj" />
+  </ItemGroup>
+
 </Project>

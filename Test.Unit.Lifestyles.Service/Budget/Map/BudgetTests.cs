@@ -7,17 +7,21 @@ namespace Test.Unit.Lifestyles.Service.Budget.Map
     public class BudgetTests
     {
         [Theory]
-        [InlineData(Direction.In, Recurrence.Never)]
-        [InlineData(Direction.In, Recurrence.Daily)]
-        [InlineData(Direction.Out, Recurrence.Never)]
-        [InlineData(Direction.Out, Recurrence.Weekly)]
-        public void Budget_ShouldConstruct(Direction direction, Recurrence recurrence)
+        [InlineData(10, null, null, Recurrence.Never)]
+        [InlineData(10, null, "", Recurrence.Daily)]
+        [InlineData(-10, null, null, Recurrence.Never)]
+        [InlineData(-10, null, "", Recurrence.Weekly)]
+        public void Budget_ShouldConstruct(
+            decimal amount,
+            Guid id,
+            string label,
+            Recurrence recurrence)
         {
-            var budget = new BudgetEntity(direction, recurrence);
+            var budget = new BudgetEntity(amount, id, label, recurrence);
 
             Assert.NotNull(budget.Categories);
             Assert.True(budget.Amount > 0);
-            Assert.True(budget.Direction.Equals(direction));
+            Assert.True(budget.Direction.Equals(amount > 0 ? Direction.In : Direction.Out));
             Assert.True(budget.Existence.Equals(Existence.Excluded));
             Assert.False(string.IsNullOrWhiteSpace(budget.Id.ToString()));
             Assert.True(string.IsNullOrWhiteSpace(budget.Label));
