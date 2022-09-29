@@ -25,12 +25,6 @@ namespace Lifestyles.Domain.Budget.Entities
         void Suggest();
     }
 
-    public partial interface IBudget 
-    {
-        string Label { get; }
-        void Relabel(string label = "");
-    }
-
     public partial interface IBudget
     {
         decimal? Lifetime { get; }
