@@ -1,8 +1,8 @@
 using Xunit;
 using Lifestyles.Domain.Measure.Constants;
-using Lifestyles.Service.Budget.Map;
+using BudgetEntity = Lifestyles.Service.Budget.Map.Budget;
 
-namespace Test.Unit.Lifestyles.Service.Map
+namespace Test.Unit.Lifestyles.Service.Budget.Map
 {
     public class BudgetTests
     {
@@ -13,8 +13,9 @@ namespace Test.Unit.Lifestyles.Service.Map
         [InlineData(Direction.Out, Recurrence.Weekly)]
         public void Budget_ShouldConstruct(Direction direction, Recurrence recurrence)
         {
-            var budget = new Budget(direction, recurrence);
+            var budget = new BudgetEntity(direction, recurrence);
 
+            Assert.NotNull(budget.Categories);
             Assert.True(budget.Amount > 0);
             Assert.True(budget.Direction.Equals(direction));
             Assert.True(budget.Existence.Equals(Existence.Excluded));

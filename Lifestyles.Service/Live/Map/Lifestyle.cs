@@ -1,12 +1,14 @@
 using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Categorize.Entities;
+using Lifestyles.Domain.Live.Entities;
 using Lifestyles.Domain.Measure.Constants;
 
-namespace Lifestyles.Service.Budget.Map
+namespace Lifestyles.Service.Live.Map
 {
-    public class Budget : IBudget
+    public class Lifestyle : ILifestyle
     {
         public decimal Amount { get; set; } = 10;
+        public IEnumerable<IBudget> Budgets { get; set; }
         public IEnumerable<ICategory> Categories { get; set; }
         public Direction Direction { get; set; }
         public Existence Existence { get; set; } = Lifestyles.Domain.Measure.Constants.Existence.Excluded;
@@ -15,8 +17,9 @@ namespace Lifestyles.Service.Budget.Map
         public decimal? Lifetime { get; set; }
         public Recurrence Recurrence { get; set; }
 
-        public Budget(Direction direction, Recurrence recurrence)
+        public Lifestyle(Direction direction, Recurrence recurrence)
         {
+            Budgets = new List<IBudget>();
             Categories = new List<ICategory>();
             Direction = direction;
             Id = Guid.NewGuid();
