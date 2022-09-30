@@ -20,9 +20,7 @@ namespace Lifestyles.Domain.Budget.Entities
     public partial interface IBudget
     {
         Existence Existence { get; }
-        void Exclude();
-        void Expect();
-        void Suggest();
+        void Exist(Existence existence);
     }
 
     public partial interface IBudget

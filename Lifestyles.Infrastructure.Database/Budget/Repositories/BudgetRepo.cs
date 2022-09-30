@@ -1,6 +1,5 @@
 using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Live.Repositories;
-using Lifestyles.Domain.Measure.Constants;
 using BudgetMap = Lifestyles.Infrastructure.Database.Budget.Map.Budget;
 using System.Data;
 
@@ -8,33 +7,45 @@ namespace Lifestyles.Infrastructure.Database.Budget.Repositories
 {
     public class BudgetRepo : IRepository<IBudget>
     {
-        private static DataTable GetTestDataTable()
+        private readonly IKeyValueStorage _context;
+
+        public BudgetRepo(IKeyValueStorage context)
         {
-            DataTable table = new DataTable();
-            table.Columns.Add("Id", typeof(Guid));
-            table.Columns.Add("Amount", typeof(decimal));
-            table.Columns.Add("Label", typeof(string));
-            table.Columns.Add("RecurrenceAlias", typeof(string));
+            _context = context;
+        }
 
-            for (var i = 0; i < 4; i++)
+        public static IEnumerable<DataRow> GetRows(DataTable table)
+        {
+            foreach (DataRow row in table.Rows)
             {
-                DataRow row = table.NewRow();
-                row["Id"] = Guid.NewGuid();
-                row["Amount"] = (10 + i) * Math.Pow(-1, i);
-                row["Label"] = $"Budget {i}";
-                row["RecurrenceAlias"] = new string[] { "never", "daily", "never", "weekly" }[i];
-                table.Rows.Add(row);
+                yield return row;
             }
-
-            return table;
         }
 
         public IEnumerable<IBudget> Find(Func<IBudget, bool>? predicate = null)
         {
-            var table = GetTestDataTable();
-
             var budgetsDb = new List<IBudget>();
-            foreach (DataRow row in table.Rows)
+            var tableBudget = _context.GetItem<DataTable>("tbl_Budget");
+            var recurrenceRows = GetRows(_context.GetItem<DataTable>("tbl_Recurrence"));
+            var existenceRows = GetRows(_context.GetItem<DataTable>("tbl_Existence"));
+            foreach (DataRow row in GetRows(tableBudget).Select(br =>
+            {
+                DataTable table = new DataTable();
+                table.Columns.Add("Id", typeof(Guid));
+                table.Columns.Add("Amount", typeof(decimal));
+                table.Columns.Add("Label", typeof(string));
+                table.Columns.Add("RecurrenceAlias", typeof(string));
+                table.Columns.Add("ExistenceAlias", typeof(string));
+
+                DataRow row = table.NewRow();
+                row["Id"] = br["Id"];
+                row["Amount"] = br["Amount"];
+                row["Label"] = br["Label"];
+                row["RecurrenceAlias"] = recurrenceRows.FirstOrDefault(r => r["Id"].Equals(br["RecurrenceId"]))?["Alias"];
+                row["ExistenceAlias"] = existenceRows.FirstOrDefault(r => r["Id"].Equals(br["ExistenceId"]))?["Alias"];
+
+                return row;
+            }))
             {
                 budgetsDb.Add(new BudgetMap(row));
             }
@@ -49,10 +60,27 @@ namespace Lifestyles.Infrastructure.Database.Budget.Repositories
 
         public IEnumerable<IBudget> Remove(IEnumerable<IBudget> budgets)
         {
-            var table = GetTestDataTable();
-
             var budgetsDb = new List<IBudget>();
-            foreach (DataRow row in table.Rows)
+            var tableBudget = _context.GetItem<DataTable>("tbl_Budget");
+            var recurrenceRows = GetRows(_context.GetItem<DataTable>("tbl_Recurrence"));
+            foreach (DataRow row in GetRows(tableBudget).Select(br =>
+            {
+                DataTable table = new DataTable();
+                table.Columns.Add("Id", typeof(Guid));
+                table.Columns.Add("Amount", typeof(decimal));
+                table.Columns.Add("Label", typeof(string));
+                table.Columns.Add("RecurrenceAlias", typeof(string));
+                table.Columns.Add("ExistenceAlias", typeof(string));
+
+                DataRow row = table.NewRow();
+                row["Id"] = br["Id"];
+                row["Amount"] = br["Amount"];
+                row["Label"] = br["Label"];
+                row["RecurrenceAlias"] = recurrenceRows.FirstOrDefault(r => r["Id"].Equals(br["Id"]))?["Alias"];
+                row["ExistenceAlias"] = recurrenceRows.FirstOrDefault(r => r["Id"].Equals(br["ExistenceId"]))?["Alias"];
+
+                return row;
+            }))
             {
                 budgetsDb.Add(new BudgetMap(row));
             }

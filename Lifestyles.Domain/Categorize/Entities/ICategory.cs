@@ -1,15 +1,9 @@
 using Lifestyles.Domain.Budget.Entities;
+using Lifestyles.Domain.Live.Entities;
 
 namespace Lifestyles.Domain.Categorize.Entities
 {
-    public partial interface ICategory
-    {
-        Guid Id { get; }
-
-        void Identify(Guid? id);
-    }
-
-    public partial interface ICategory
+    public partial interface ICategory : IIdentified
     {
         IEnumerable<IBudget> Budgets { get; }
 

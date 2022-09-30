@@ -1,24 +1,17 @@
-using Lifestyles.Domain.Budget.Entities;
-using Lifestyles.Domain.Categorize.Entities;
 using Lifestyles.Domain.Measure.Constants;
-using BudgetEntity = Lifestyles.Service.Budget.Map.Budget;
+using BudgetMap = Lifestyles.Service.Budget.Map.Budget;
 using System.Data;
 
 namespace Lifestyles.Infrastructure.Database.Budget.Map
 {
-    public class Budget : BudgetEntity
+    public class Budget : BudgetMap
     {
-        private const string RecurrenceNever = "never";
-        private const string RecurrenceDaily = "daily";
-        private const string RecurrenceWeekly = "weekly";
-        private const string RecurrenceMonthly = "monthly";
-        private const string RecurrenceAnnually = "annually";
-
         public Budget(DataRow row) : base(
             GetAmount(row["Amount"]),
             GetId(row["Id"]),
             GetLabel(row["Label"]),
-            GetRecurrence(row["RecurrenceAlias"]))
+            GetRecurrence(row["RecurrenceAlias"]),
+            GetExistence(row["ExistenceAlias"]))
         { }
 
         private static Guid GetId(object id)
@@ -44,6 +37,12 @@ namespace Lifestyles.Infrastructure.Database.Budget.Map
 
         public static Recurrence GetRecurrence(object alias)
         {
+            const string RecurrenceNever = "never";
+            const string RecurrenceDaily = "daily";
+            const string RecurrenceWeekly = "weekly";
+            const string RecurrenceMonthly = "monthly";
+            const string RecurrenceAnnually = "annually";
+
             switch (alias.ToString() ?? "")
             {
                 case RecurrenceDaily: return Recurrence.Daily;
@@ -51,6 +50,20 @@ namespace Lifestyles.Infrastructure.Database.Budget.Map
                 case RecurrenceMonthly: return Recurrence.Monthly;
                 case RecurrenceAnnually: return Recurrence.Annually;
                 default: return Recurrence.Never;
+            }
+        }
+
+        public static Existence GetExistence(object alias)
+        {
+            const string ExistenceExcluded = "excluded";
+            const string ExistenceExpected = "expected";
+            const string ExistenceSuggested = "suggested";
+
+            switch (alias.ToString() ?? "")
+            {
+                case ExistenceExpected: return Existence.Expected;
+                case ExistenceSuggested: return Existence.Suggested;
+                default: return Existence.Excluded;
             }
         }
     }

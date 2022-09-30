@@ -19,7 +19,8 @@ public class BudgetController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet(Name = "budget/findall")]
+    [HttpGet]
+    [Route("findall")]
     public IEnumerable<IBudget> Get()
     {
         return _budgetRepo.Find();

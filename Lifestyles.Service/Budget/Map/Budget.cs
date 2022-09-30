@@ -11,13 +11,13 @@ namespace Lifestyles.Service.Budget.Map
             decimal amount,
             Guid? id = null,
             string label = "",
-            Recurrence recurrence = Recurrence.Never
-        ) : base()
+            Recurrence recurrence = Recurrence.Never,
+            Existence existence = Existence.Excluded
+        ) : base(id, label)
         {
-            Identify(id);
             Value(amount);
-            Relabel(label);
             Recur(recurrence);
+            Exist(existence);
         }
     }
 
@@ -56,19 +56,9 @@ namespace Lifestyles.Service.Budget.Map
     {
         public Existence Existence { get; private set; }
 
-        public void Exclude()
+        public void Exist(Existence existence)
         {
-            Existence = Existence.Excluded;
-        }
-
-        public void Expect()
-        {
-            Existence = Existence.Expected;
-        }
-
-        public void Suggest()
-        {
-            Existence = Existence.Suggested;
+            Existence = existence;
         }
     }
 
