@@ -1,5 +1,8 @@
 using Newtonsoft.Json;
+using Lifestyles.Infrastructure.Database.Budget.Models;
+using Lifestyles.Infrastructure.Database.Categorize.Models;
 using Lifestyles.Infrastructure.Database.Live.Models;
+using Lifestyles.Infrastructure.Database.Measure.Models;
 
 namespace Lifestyles.Api.Live.Repositories
 {
@@ -11,7 +14,12 @@ namespace Lifestyles.Api.Live.Repositories
         {
             _httpContextAcc = httpContextAcc;
 
-            AppalachianTrail.Create(this);
+            var recurrenceIds = DbRecurrence.Default(this);
+            var existenceIds = DbExistence.Default(this);
+            var budgetTypeIds = DbBudgetType.Default(this);
+            var lifestyleIds = DbLifestyle.Default(this, budgetTypeIds);
+            var categoryIds = DbCategory.Default(this, budgetTypeIds, lifestyleIds);
+            DbBudget.Default(this, budgetTypeIds, lifestyleIds, categoryIds, recurrenceIds, existenceIds);
         }
 
         public T GetItem<T>(string key)

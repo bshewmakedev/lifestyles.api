@@ -1,28 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using Lifestyles.Domain.Budget.Entities;
-using Lifestyles.Domain.Budget.Repositories;
+using Lifestyles.Domain.Live.Repositories;
 
 namespace Lifestyles.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class BudgetController : ControllerBase
+public class LiveController : ControllerBase
 {
     private readonly ILogger<BudgetController> _logger;
-    private readonly IBudgetRepo _budgetRepo;
+    private readonly ILifestyleRepo _lifestyleRepo;
 
-    public BudgetController(
+    public LiveController(
         ILogger<BudgetController> logger,
-        IBudgetRepo budgetRepo)
+        ILifestyleRepo lifestyleRepo)
     {
-        _budgetRepo = budgetRepo;
+        _lifestyleRepo = lifestyleRepo;
         _logger = logger;
     }
 
     [HttpGet]
-    [Route("budgets/find")]
+    [Route("lifestyles/find")]
     public IEnumerable<IBudget> Get()
     {
-        return _budgetRepo.Find();
+        return _lifestyleRepo.Find();
     }
 }

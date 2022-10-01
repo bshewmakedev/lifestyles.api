@@ -1,15 +1,15 @@
 using Lifestyles.Domain.Budget.Entities;
-using Lifestyles.Domain.Budget.Repositories;
+using Lifestyles.Domain.Live.Repositories;
 using BudgetMap = Lifestyles.Infrastructure.Database.Budget.Map.Budget;
 using System.Data;
 
-namespace Lifestyles.Infrastructure.Database.Budget.Repositories
+namespace Lifestyles.Infrastructure.Database.Live.Repositories
 {
-    public class BudgetRepo : IBudgetRepo
+    public class LifestyleRepo : ILifestyleRepo
     {
         private readonly IKeyValueStorage _context;
 
-        public BudgetRepo(IKeyValueStorage context)
+        public LifestyleRepo(IKeyValueStorage context)
         {
             _context = context;
         }
@@ -36,7 +36,7 @@ namespace Lifestyles.Infrastructure.Database.Budget.Repositories
                 .Where(br =>
                 {
                     return br["BudgetTypeId"].ToString()
-                        .Equals(budgetTypeRows.FirstOrDefault(btr => btr["Alias"].Equals("budget"))?["Id"]);
+                        .Equals(budgetTypeRows.FirstOrDefault(btr => btr["Alias"].Equals("lifestyle"))?["Id"]);
                 })
                 .Select(br =>
                 {
@@ -71,7 +71,7 @@ namespace Lifestyles.Infrastructure.Database.Budget.Repositories
                 .Where(br =>
                 {
                     return br["BudgetTypeId"].ToString()
-                        .Equals(budgetTypeRows.FirstOrDefault(btr => btr["Alias"].Equals("budget"))?["Id"]);
+                        .Equals(budgetTypeRows.FirstOrDefault(btr => btr["Alias"].Equals("lifestyle"))?["Id"]);
                 })
                 .Select(br =>
                 {

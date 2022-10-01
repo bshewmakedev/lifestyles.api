@@ -1,15 +1,15 @@
-using Lifestyles.Domain.Budget.Entities;
-using Lifestyles.Domain.Budget.Repositories;
+using Lifestyles.Domain.Categorize.Entities;
+using Lifestyles.Domain.Categorize.Repositories;
 using BudgetMap = Lifestyles.Infrastructure.Database.Budget.Map.Budget;
 using System.Data;
 
-namespace Lifestyles.Infrastructure.Database.Budget.Repositories
+namespace Lifestyles.Infrastructure.Database.Categorize.Repositories
 {
-    public class BudgetRepo : IBudgetRepo
+    public class CategoryRepo : ICategoryRepo
     {
         private readonly IKeyValueStorage _context;
 
-        public BudgetRepo(IKeyValueStorage context)
+        public CategoryRepo(IKeyValueStorage context)
         {
             _context = context;
         }
@@ -22,9 +22,9 @@ namespace Lifestyles.Infrastructure.Database.Budget.Repositories
             }
         }
 
-        public IEnumerable<IBudget> Find(Func<IBudget, bool>? predicate = null)
+        public IEnumerable<ICategory> Find(Func<ICategory, bool>? predicate = null)
         {
-            var budgetsDb = new List<IBudget>();
+            var budgetsDb = new List<ICategory>();
             var budgetTable = _context.GetItem<DataTable>("tbl_Budget");
             budgetTable.Columns.Add("RecurrenceAlias", typeof(string));
             budgetTable.Columns.Add("ExistenceAlias", typeof(string));
@@ -36,7 +36,7 @@ namespace Lifestyles.Infrastructure.Database.Budget.Repositories
                 .Where(br =>
                 {
                     return br["BudgetTypeId"].ToString()
-                        .Equals(budgetTypeRows.FirstOrDefault(btr => btr["Alias"].Equals("budget"))?["Id"]);
+                        .Equals(budgetTypeRows.FirstOrDefault(btr => btr["Alias"].Equals("category"))?["Id"]);
                 })
                 .Select(br =>
                 {
@@ -52,14 +52,14 @@ namespace Lifestyles.Infrastructure.Database.Budget.Repositories
             return budgetsDb.Where(predicate ?? ((b) => true));
         }
 
-        public IEnumerable<IBudget> Upsert(IEnumerable<IBudget> budgets)
+        public IEnumerable<ICategory> Upsert(IEnumerable<ICategory> budgets)
         {
             return budgets;
         }
 
-        public IEnumerable<IBudget> Remove(IEnumerable<IBudget> budgets)
+        public IEnumerable<ICategory> Remove(IEnumerable<ICategory> budgets)
         {
-            var budgetsDb = new List<IBudget>();
+            var budgetsDb = new List<ICategory>();
             var budgetTable = _context.GetItem<DataTable>("tbl_Budget");
             budgetTable.Columns.Add("RecurrenceAlias", typeof(string));
             budgetTable.Columns.Add("ExistenceAlias", typeof(string));
@@ -71,7 +71,7 @@ namespace Lifestyles.Infrastructure.Database.Budget.Repositories
                 .Where(br =>
                 {
                     return br["BudgetTypeId"].ToString()
-                        .Equals(budgetTypeRows.FirstOrDefault(btr => btr["Alias"].Equals("budget"))?["Id"]);
+                        .Equals(budgetTypeRows.FirstOrDefault(btr => btr["Alias"].Equals("category"))?["Id"]);
                 })
                 .Select(br =>
                 {
