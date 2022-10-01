@@ -1,6 +1,9 @@
-using Lifestyles.Domain.Budget.Entities;
+using Lifestyles.Domain.Live.Entities;
 using Lifestyles.Domain.Live.Repositories;
-using BudgetMap = Lifestyles.Infrastructure.Database.Budget.Map.Budget;
+using LifestyleMap = Lifestyles.Infrastructure.Database.Live.Map.Lifestyle;
+using Lifestyles.Infrastructure.Database.Live.Models;
+using Lifestyles.Infrastructure.Database.Budget.Models;
+using Lifestyles.Infrastructure.Database.Live.Extensions;
 using System.Data;
 
 namespace Lifestyles.Infrastructure.Database.Live.Repositories
@@ -14,77 +17,32 @@ namespace Lifestyles.Infrastructure.Database.Live.Repositories
             _context = context;
         }
 
-        public static IEnumerable<DataRow> GetRows(DataTable table)
+        public IEnumerable<ILifestyle> Find(Func<ILifestyle, bool>? predicate = null)
         {
-            foreach (DataRow row in table.Rows)
-            {
-                yield return row;
-            }
+            var dbBudgetTypes = _context.GetItem<DataTable>("tbl_BudgetType")
+                .GetRows()
+                .Select(r => new DbBudgetType(r));
+            var lifestyles = _context.GetItem<DataTable>("tbl_Budget")
+                .GetRows()
+                .Select(r => new DbLifestyle(r))
+                .Where(l => l.BudgetTypeId.Equals(
+                    dbBudgetTypes.FirstOrDefault(bt => bt.Alias.Equals("lifestyle"))?.Id))
+                .Select(l => new LifestyleMap(_context, l))
+                .Where(predicate ?? ((b) => true));
+
+                return lifestyles;
         }
 
-        public IEnumerable<IBudget> Find(Func<IBudget, bool>? predicate = null)
+        public IEnumerable<ILifestyle> Upsert(IEnumerable<ILifestyle> lifestyles)
         {
-            var budgetsDb = new List<IBudget>();
-            var budgetTable = _context.GetItem<DataTable>("tbl_Budget");
-            budgetTable.Columns.Add("RecurrenceAlias", typeof(string));
-            budgetTable.Columns.Add("ExistenceAlias", typeof(string));
-            var budgetRows = GetRows(budgetTable);
-            var budgetTypeRows = GetRows(_context.GetItem<DataTable>("tbl_BudgetType"));
-            var recurrenceRows = GetRows(_context.GetItem<DataTable>("tbl_Recurrence"));
-            var existenceRows = GetRows(_context.GetItem<DataTable>("tbl_Existence"));
-            foreach (DataRow row in budgetRows
-                .Where(br =>
-                {
-                    return br["BudgetTypeId"].ToString()
-                        .Equals(budgetTypeRows.FirstOrDefault(btr => btr["Alias"].Equals("lifestyle"))?["Id"]);
-                })
-                .Select(br =>
-                {
-                    br["RecurrenceAlias"] = recurrenceRows.FirstOrDefault(r => r["Id"].Equals(br["RecurrenceId"]))?["Alias"];
-                    br["ExistenceAlias"] = existenceRows.FirstOrDefault(r => r["Id"].Equals(br["ExistenceId"]))?["Alias"];
-
-                    return br;
-                }))
-            {
-                budgetsDb.Add(new BudgetMap(row));
-            }
-
-            return budgetsDb.Where(predicate ?? ((b) => true));
+            return lifestyles;
         }
 
-        public IEnumerable<IBudget> Upsert(IEnumerable<IBudget> budgets)
+        public IEnumerable<ILifestyle> Remove(IEnumerable<ILifestyle> lifestyles)
         {
-            return budgets;
-        }
+            var lifestylesDb = Find();
 
-        public IEnumerable<IBudget> Remove(IEnumerable<IBudget> budgets)
-        {
-            var budgetsDb = new List<IBudget>();
-            var budgetTable = _context.GetItem<DataTable>("tbl_Budget");
-            budgetTable.Columns.Add("RecurrenceAlias", typeof(string));
-            budgetTable.Columns.Add("ExistenceAlias", typeof(string));
-            var budgetRows = GetRows(budgetTable);
-            var budgetTypeRows = GetRows(_context.GetItem<DataTable>("tbl_BudgetType"));
-            var recurrenceRows = GetRows(_context.GetItem<DataTable>("tbl_Recurrence"));
-            var existenceRows = GetRows(_context.GetItem<DataTable>("tbl_Existence"));
-            foreach (DataRow row in budgetRows
-                .Where(br =>
-                {
-                    return br["BudgetTypeId"].ToString()
-                        .Equals(budgetTypeRows.FirstOrDefault(btr => btr["Alias"].Equals("lifestyle"))?["Id"]);
-                })
-                .Select(br =>
-                {
-                    br["RecurrenceAlias"] = recurrenceRows.FirstOrDefault(r => r["Id"].Equals(br["RecurrenceId"]))?["Alias"];
-                    br["ExistenceAlias"] = existenceRows.FirstOrDefault(r => r["Id"].Equals(br["ExistenceId"]))?["Alias"];
-
-                    return br;
-                }))
-            {
-                budgetsDb.Add(new BudgetMap(row));
-            }
-
-            return budgetsDb.Where(b => budgets.All(b2 => !b.Id.Equals(b2.Id)));
+            return lifestylesDb.Where(b => lifestyles.All(b2 => !b.Id.Equals(b2.Id)));
         }
     }
 }

@@ -1,6 +1,6 @@
-using Lifestyles.Domain.Budget.Entities;
+using Lifestyles.Domain.Live.Entities;
 
 namespace Lifestyles.Domain.Live.Repositories
 {
-    public interface ILifestyleRepo : IRepository<IBudget> { }
+    public interface ILifestyleRepo : IRepository<ILifestyle> { }
 }

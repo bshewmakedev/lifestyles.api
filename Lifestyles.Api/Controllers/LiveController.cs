@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Lifestyles.Domain.Budget.Entities;
+using Lifestyles.Domain.Live.Entities;
 using Lifestyles.Domain.Live.Repositories;
 
 namespace Lifestyles.Api.Controllers;
@@ -21,7 +21,7 @@ public class LiveController : ControllerBase
 
     [HttpGet]
     [Route("lifestyles/find")]
-    public IEnumerable<IBudget> Get()
+    public IEnumerable<ILifestyle> Find()
     {
         return _lifestyleRepo.Find();
     }

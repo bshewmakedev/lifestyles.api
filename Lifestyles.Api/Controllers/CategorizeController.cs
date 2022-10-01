@@ -21,8 +21,15 @@ public class CategorizeController : ControllerBase
 
     [HttpGet]
     [Route("categories/find")]
-    public IEnumerable<ICategory> Get()
+    public IEnumerable<ICategory> Find()
     {
         return _categoryRepo.Find();
+    }
+
+    [HttpGet]
+    [Route("categories/find/{categoryId}")]
+    public IEnumerable<ICategory> FindByCategoryId(Guid categoryId)
+    {
+        return _categoryRepo.FindCategorizedAs(categoryId);
     }
 }

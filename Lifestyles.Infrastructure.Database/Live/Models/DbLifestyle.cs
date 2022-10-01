@@ -1,45 +1,62 @@
-using Lifestyles.Infrastructure.Database.Budget.Models;
+using Lifestyles.Infrastructure.Database.Categorize.Models;
 using System.Data;
 
 namespace Lifestyles.Infrastructure.Database.Live.Models
 {
-    public class DbLifestyle : DbBudget
+    public class DbLifestyle : DbCategory
     {
+        public decimal? Lifetime { get; set; }
+        public Guid? RecurrenceId { get; set; }
+        public Guid? ExistenceId { get; set; }
+
+        public DbLifestyle() : base() { }
+
+        public DbLifestyle(DataRow row) : base(row)
+        {
+            Lifetime = decimal.TryParse(row["Lifetime"].ToString() ?? "", out var lifetimeParsed)
+                ? lifetimeParsed
+                : null;
+            RecurrenceId = Guid.TryParse(row["RecurrenceId"].ToString() ?? "", out var recurrenceIdParsed)
+                ? recurrenceIdParsed
+                : null;
+            ExistenceId = Guid.TryParse(row["ExistenceId"].ToString() ?? "", out var existenceIdParsed)
+                ? existenceIdParsed
+                : null;
+        }
+
+        public static new DataRow AddDataRow(
+            DataTable tableBudget,
+            Dictionary<string, Guid> budgetTypeIds,
+            DbLifestyle dbLifestyle)
+        {
+            DataRow lifestyleRow = tableBudget.NewRow();
+            lifestyleRow["Id"] = dbLifestyle.Id;
+            lifestyleRow["BudgetTypeId"] = budgetTypeIds["lifestyle"];
+            lifestyleRow["Amount"] = DBNull.Value;
+            lifestyleRow["Label"] = dbLifestyle.Label;
+            lifestyleRow["Lifetime"] = dbLifestyle.Lifetime.HasValue ? dbLifestyle.Lifetime : DBNull.Value;
+            lifestyleRow["RecurrenceId"] = dbLifestyle.RecurrenceId;
+            lifestyleRow["ExistenceId"] = dbLifestyle.ExistenceId;
+            tableBudget.Rows.Add(lifestyleRow);
+
+            return lifestyleRow;
+        }
+
         public static Dictionary<string, Guid> Default(
             IKeyValueStorage keyValueStorage,
-            Dictionary<string, Guid> budgetTypeIds)
+            Dictionary<string, Guid> budgetTypeIds,
+            Dictionary<string, Guid> recurrenceIds,
+            Dictionary<string, Guid> existenceIds)
         {
-            var tableBudget = keyValueStorage.GetItem<DataTable>("tbl_Budget");
-            if (tableBudget == null)
-            {
-                tableBudget = new DataTable();
-                tableBudget.Columns.Add("Id", typeof(Guid));
-                tableBudget.Columns.Add("BudgetTypeId", typeof(Guid));
-                tableBudget.Columns.Add(new DataColumn { ColumnName = "Amount", DataType = typeof(decimal), AllowDBNull = true });
-                tableBudget.Columns.Add("Label", typeof(string));
-                tableBudget.Columns.Add(new DataColumn { ColumnName = "Lifetime", DataType = typeof(decimal), AllowDBNull = true });
-                tableBudget.Columns.Add(new DataColumn { ColumnName = "RecurrenceId", DataType = typeof(Guid), AllowDBNull = true });
-                tableBudget.Columns.Add(new DataColumn { ColumnName = "ExistenceId", DataType = typeof(Guid), AllowDBNull = true });
-            }
-           
-            var AddLifestyle = (DbLifestyle lifestyle) =>
-            {
-                DataRow budgetRow = tableBudget.NewRow();
-                budgetRow["Id"] = lifestyle.Id;
-                budgetRow["BudgetTypeId"] = budgetTypeIds["lifestyle"];
-                budgetRow["Amount"] = DBNull.Value;
-                budgetRow["Label"] = lifestyle.Label;
-                budgetRow["Lifetime"] = DBNull.Value;
-                budgetRow["RecurrenceId"] = DBNull.Value;
-                budgetRow["ExistenceId"] = DBNull.Value;
-                tableBudget.Rows.Add(budgetRow);
-            };
+            var tableBudget = CreateDataTable(keyValueStorage);
             var lifestyleIds = new Dictionary<string, Guid>();
-            foreach (var lifestyle in new DbLifestyle[] { 
-                new DbLifestyle { Id = Guid.NewGuid(), Label = "Appalachian Trail" } 
+            foreach (var lifestyle in new DbLifestyle[] {
+                new DbLifestyle { Id = Guid.NewGuid(), Label = "Appalachian Trail",        Lifetime = 6, RecurrenceId = recurrenceIds["monthly"], ExistenceId = existenceIds["expected"] },
+                new DbLifestyle { Id = Guid.NewGuid(), Label = "Pacific Crest Trail",      Lifetime = 5, RecurrenceId = recurrenceIds["monthly"], ExistenceId = existenceIds["expected"] },
+                new DbLifestyle { Id = Guid.NewGuid(), Label = "Continental Divide Trail", Lifetime = 6, RecurrenceId = recurrenceIds["monthly"], ExistenceId = existenceIds["expected"] },
             })
             {
-                AddLifestyle(lifestyle);
+                AddDataRow(tableBudget, budgetTypeIds, lifestyle);
                 lifestyleIds.Add(lifestyle.Label, lifestyle.Id);
             }
             keyValueStorage.SetItem("tbl_Budget", tableBudget);

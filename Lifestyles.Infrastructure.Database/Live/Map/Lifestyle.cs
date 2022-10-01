@@ -1,22 +1,20 @@
 using Lifestyles.Domain.Live.Constants;
-using BudgetMap = Lifestyles.Service.Budget.Map.Budget;
-using Lifestyles.Infrastructure.Database.Budget.Models;
+using LifestyleMap = Lifestyles.Service.Live.Map.Lifestyle;
 using Lifestyles.Infrastructure.Database.Live.Models;
 using Lifestyles.Infrastructure.Database.Live.Extensions;
 using System.Data;
 
-namespace Lifestyles.Infrastructure.Database.Budget.Map
+namespace Lifestyles.Infrastructure.Database.Live.Map
 {
-    public class Budget : BudgetMap
+    public class Lifestyle : LifestyleMap
     {
-        public Budget(
+        public Lifestyle(
             IKeyValueStorage context,
-            DbBudget dbBudget) : base(
-            dbBudget.Amount.HasValue ? dbBudget.Amount.Value : default(decimal),
-            dbBudget.Id,
-            dbBudget.Label,
-            GetRecurrence(context, dbBudget.RecurrenceId),
-            GetExistence(context, dbBudget.ExistenceId))
+            DbLifestyle dbLifestyle) : base(
+            dbLifestyle.Id,
+            dbLifestyle.Label,
+            GetRecurrence(context, dbLifestyle.RecurrenceId),
+            GetExistence(context, dbLifestyle.ExistenceId))
         { }
 
         private static Guid GetId(object id)
@@ -26,13 +24,6 @@ namespace Lifestyles.Infrastructure.Database.Budget.Map
             return string.IsNullOrWhiteSpace(idStr)
                 ? Guid.NewGuid()
                 : Guid.Parse(idStr);
-        }
-
-        private static decimal GetAmount(object amount)
-        {
-            return decimal.TryParse(amount.ToString() ?? "", out var amountParsed)
-                ? amountParsed
-                : default(decimal);
         }
 
         private static string GetLabel(object label)

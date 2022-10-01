@@ -21,14 +21,14 @@ public class BudgetController : ControllerBase
 
     [HttpGet]
     [Route("budgets/find")]
-    public IEnumerable<IBudget> Get()
+    public IEnumerable<IBudget> Find()
     {
         return _budgetRepo.Find();
     }
 
     [HttpGet]
     [Route("budgets/find/{categoryId}")]
-    public IEnumerable<IBudget> Get(Guid categoryId)
+    public IEnumerable<IBudget> FindByCategoryId(Guid categoryId)
     {
         return _budgetRepo.FindCategorizedAs(categoryId);
     }

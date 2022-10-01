@@ -3,5 +3,8 @@ using Lifestyles.Domain.Categorize.Entities;
 
 namespace Lifestyles.Domain.Categorize.Repositories
 {
-    public interface ICategoryRepo : IRepository<ICategory> { }
+    public interface ICategoryRepo : IRepository<ICategory> 
+    { 
+        IEnumerable<ICategory> FindCategorizedAs(Guid categoryId);
+    }
 }
