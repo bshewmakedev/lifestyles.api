@@ -52,13 +52,11 @@ namespace Lifestyles.Infrastructure.Database.Budget.Repositories
             return budgetsDb.Where(predicate ?? ((b) => true));
         }
 
-        public IEnumerable<IBudget> Upsert(IEnumerable<IBudget> budgets)
+        public IEnumerable<IBudget> FindCategorizedAs(Guid categoryId)
         {
-            return budgets;
-        }
+            var categoryRows = GetRows(_context.GetItem<DataTable>("tbl_Category"))
+                .Where(r => (r["CategoryId"]?.ToString() ?? "").Equals(categoryId.ToString()));
 
-        public IEnumerable<IBudget> Remove(IEnumerable<IBudget> budgets)
-        {
             var budgetsDb = new List<IBudget>();
             var budgetTable = _context.GetItem<DataTable>("tbl_Budget");
             budgetTable.Columns.Add("RecurrenceAlias", typeof(string));
@@ -67,7 +65,10 @@ namespace Lifestyles.Infrastructure.Database.Budget.Repositories
             var budgetTypeRows = GetRows(_context.GetItem<DataTable>("tbl_BudgetType"));
             var recurrenceRows = GetRows(_context.GetItem<DataTable>("tbl_Recurrence"));
             var existenceRows = GetRows(_context.GetItem<DataTable>("tbl_Existence"));
-            foreach (DataRow row in budgetRows
+            foreach (DataRow row in budgetRows.Join(
+                categoryRows, 
+                br => br["Id"], 
+                cr => cr["BudgetId"], (br, cr) => br)
                 .Where(br =>
                 {
                     return br["BudgetTypeId"].ToString()
@@ -83,6 +84,18 @@ namespace Lifestyles.Infrastructure.Database.Budget.Repositories
             {
                 budgetsDb.Add(new BudgetMap(row));
             }
+            
+            return budgetsDb;
+        }
+
+        public IEnumerable<IBudget> Upsert(IEnumerable<IBudget> budgets)
+        {
+            return budgets;
+        }
+
+        public IEnumerable<IBudget> Remove(IEnumerable<IBudget> budgets)
+        {
+            var budgetsDb = Find();
 
             return budgetsDb.Where(b => budgets.All(b2 => !b.Id.Equals(b2.Id)));
         }

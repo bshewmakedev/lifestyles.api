@@ -25,4 +25,11 @@ public class BudgetController : ControllerBase
     {
         return _budgetRepo.Find();
     }
+
+    [HttpGet]
+    [Route("budgets/find/{categoryId}")]
+    public IEnumerable<IBudget> Get(Guid categoryId)
+    {
+        return _budgetRepo.FindCategorizedAs(categoryId);
+    }
 }

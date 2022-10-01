@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped<IKeyValueStorage, SessionStorage>();
+builder.Services.AddSingleton<IKeyValueStorage, SessionStorage>();
 builder.Services.AddScoped<IBudgetRepo, BudgetRepo>();
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
 builder.Services.AddScoped<ILifestyleRepo, LifestyleRepo>();

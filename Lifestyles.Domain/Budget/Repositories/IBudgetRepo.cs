@@ -3,5 +3,8 @@ using Lifestyles.Domain.Budget.Entities;
 
 namespace Lifestyles.Domain.Budget.Repositories
 {
-    public interface IBudgetRepo : IRepository<IBudget> { }
+    public interface IBudgetRepo : IRepository<IBudget>
+    { 
+        IEnumerable<IBudget> FindCategorizedAs(Guid categoryId);
+    }
 }
