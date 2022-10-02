@@ -1,4 +1,5 @@
 using Lifestyles.Domain.Live.Constants;
+using Lifestyles.Domain.Live.Repositories;
 using LifestyleMap = Lifestyles.Service.Live.Map.Lifestyle;
 using Lifestyles.Infrastructure.Database.Live.Models;
 using Lifestyles.Infrastructure.Database.Live.Extensions;
@@ -9,7 +10,7 @@ namespace Lifestyles.Infrastructure.Database.Live.Map
     public class Lifestyle : LifestyleMap
     {
         public Lifestyle(
-            IKeyValueStorage context,
+            IKeyValueRepo context,
             DbLifestyle dbLifestyle) : base(
             dbLifestyle.Id,
             dbLifestyle.Label,
@@ -33,7 +34,7 @@ namespace Lifestyles.Infrastructure.Database.Live.Map
         }
 
         public static Recurrence GetRecurrence(
-            IKeyValueStorage context,
+            IKeyValueRepo context,
             Guid? recurrenceId)
         {
             var dbRecurrences = context.GetItem<DataTable>("tbl_Recurrence").GetRows().Select(r => new DbRecurrence(r));
@@ -42,7 +43,7 @@ namespace Lifestyles.Infrastructure.Database.Live.Map
         }
 
         public static Existence GetExistence(
-            IKeyValueStorage context,
+            IKeyValueRepo context,
             Guid? existenceId)
         {
             var dbExistences = context.GetItem<DataTable>("tbl_Existence").GetRows().Select(r => new DbExistence(r));

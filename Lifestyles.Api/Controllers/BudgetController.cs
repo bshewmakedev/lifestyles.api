@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Lifestyles.Domain.Budget.Entities;
+using Lifestyles.Api.Budget.Models;
 using Lifestyles.Domain.Budget.Repositories;
 using BudgetTypeMap = Lifestyles.Domain.Budget.Map.BudgetType;
 
@@ -32,15 +32,15 @@ public class BudgetController : ControllerBase
 
     [HttpGet]
     [Route("budgets/find")]
-    public IEnumerable<IBudget> FindBudgets()
+    public IEnumerable<VmBudget> FindBudgets()
     {
-        return _budgetRepo.Find();
+        return _budgetRepo.Find().Select(b => new VmBudget(b));
     }
 
     [HttpGet]
     [Route("budgets/find/{categoryId}")]
-    public IEnumerable<IBudget> FindByCategoryId(Guid categoryId)
+    public IEnumerable<VmBudget> FindByCategoryId(Guid categoryId)
     {
-        return _budgetRepo.FindCategorizedAs(categoryId);
+        return _budgetRepo.FindCategorizedAs(categoryId).Select(b => new VmBudget(b));
     }
 }

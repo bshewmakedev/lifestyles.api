@@ -1,4 +1,4 @@
-using Lifestyles.Infrastructure.Database.Budget.Models;
+using Lifestyles.Domain.Live.Repositories;
 using System.Data;
 
 namespace Lifestyles.Infrastructure.Database.Categorize.Models
@@ -18,7 +18,7 @@ namespace Lifestyles.Infrastructure.Database.Categorize.Models
             Label = row["Label"].ToString() ?? "";
         }
 
-        public static DataTable CreateDataTable(IKeyValueStorage keyValueStorage)
+        public static DataTable CreateDataTable(IKeyValueRepo keyValueStorage)
         {
             var tableBudget = keyValueStorage.GetItem<DataTable>("tbl_Budget");
             if (tableBudget == null)

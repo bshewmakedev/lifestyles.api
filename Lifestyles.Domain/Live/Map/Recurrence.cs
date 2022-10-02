@@ -17,15 +17,15 @@ namespace Lifestyles.Domain.Live.Map
             }
         }
 
-        public static int Map(this RecurrenceEnum recurrence)
+        public static string Map(this RecurrenceEnum recurrence)
         {
             switch (recurrence)
             {
-                case RecurrenceEnum.Daily: return 1;
-                case RecurrenceEnum.Weekly: return 7;
-                case RecurrenceEnum.Monthly: return 31;
-                case RecurrenceEnum.Annually: return 366;
-                default: return 0;
+                case RecurrenceEnum.Daily: return RecurrenceAlias.Daily;
+                case RecurrenceEnum.Weekly: return RecurrenceAlias.Weekly;
+                case RecurrenceEnum.Monthly: return RecurrenceAlias.Monthly;
+                case RecurrenceEnum.Annually: return RecurrenceAlias.Annually;
+                default: return RecurrenceAlias.Never;
             }
         }
     }

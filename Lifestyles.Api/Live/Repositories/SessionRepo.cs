@@ -1,15 +1,13 @@
 using Newtonsoft.Json;
-using Lifestyles.Domain.Budget.Repositories;
-using Lifestyles.Domain.Categorize.Repositories;
 using Lifestyles.Domain.Live.Repositories;
 
 namespace Lifestyles.Api.Live.Repositories
 {
-    public class SessionStorage : IKeyValueStorage
+    public class SessionRepo : IKeyValueRepo
     {
         private readonly IHttpContextAccessor _httpContextAcc;
 
-        public SessionStorage(IHttpContextAccessor httpContextAcc)
+        public SessionRepo(IHttpContextAccessor httpContextAcc)
         {
             _httpContextAcc = httpContextAcc;
         }

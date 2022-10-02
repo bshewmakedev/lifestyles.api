@@ -32,7 +32,6 @@ namespace Lifestyles.Service.Live.Map
             return Children.Remove(node);
         }
 
-        // TODO : Unit test this method.
         public void Traverse(Action<T> action)
         {
             action(Value);
@@ -40,7 +39,6 @@ namespace Lifestyles.Service.Live.Map
                 child.Traverse(action);
         }
 
-        // TODO : Unit test this method.
         public IEnumerable<T> FlattenValues()
         {
             return new[] { Value }.Concat(Children.SelectMany(x => x.FlattenValues()));

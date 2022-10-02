@@ -4,8 +4,7 @@ namespace Lifestyles.Domain.Categorize.Entities
 {
     public partial interface ICategory : IIdentified
     {
-        string Label { get; }
-        
+        string Label { get; }        
         void Relabel(string label = "");
     }
 }

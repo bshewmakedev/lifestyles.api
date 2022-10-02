@@ -1,3 +1,4 @@
+using Lifestyles.Domain.Live.Repositories;
 using Lifestyles.Domain.Budget.Repositories;
 using Lifestyles.Infrastructure.Database.Budget.Models;
 using Lifestyles.Infrastructure.Database.Live.Extensions;
@@ -9,9 +10,9 @@ namespace Lifestyles.Infrastructure.Database.Budget.Repositories
 {
     public class BudgetTypeRepo : IBudgetTypeRepo
     {
-        private readonly IKeyValueStorage _context;
+        private readonly IKeyValueRepo _context;
 
-        public BudgetTypeRepo(IKeyValueStorage context)
+        public BudgetTypeRepo(IKeyValueRepo context)
         {
             _context = context;
         }

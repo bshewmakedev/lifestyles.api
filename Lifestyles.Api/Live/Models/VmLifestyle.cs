@@ -1,11 +1,19 @@
 using Lifestyles.Api.Categorize.Models;
+using Lifestyles.Domain.Live.Entities;
 
 namespace Lifestyles.Api.Live.Models
 {
     public class VmLifestyle : VmCategory
     {
-        public decimal Lifetime { get; set; }
+        public int? Lifetime { get; set; }
         public string Recurrence { get; set; }
         public string Existence { get; set; }
+
+        public VmLifestyle(ILifestyle lifestyle) : base(lifestyle)
+        {
+            Lifetime = lifestyle.Lifetime;
+            Recurrence = Lifestyles.Domain.Live.Map.Recurrence.Map(lifestyle.Recurrence);
+            Existence = Lifestyles.Domain.Live.Map.Existence.Map(lifestyle.Existence);
+        }
     }
 }

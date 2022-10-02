@@ -5,7 +5,7 @@ namespace Lifestyles.Infrastructure.Database.Live.Models
 {
     public class DbLifestyle : DbCategory
     {
-        public decimal? Lifetime { get; set; }
+        public int? Lifetime { get; set; }
         public Guid? RecurrenceId { get; set; }
         public Guid? ExistenceId { get; set; }
 
@@ -13,7 +13,7 @@ namespace Lifestyles.Infrastructure.Database.Live.Models
 
         public DbLifestyle(DataRow row) : base(row)
         {
-            Lifetime = decimal.TryParse(row["Lifetime"].ToString() ?? "", out var lifetimeParsed)
+            Lifetime = int.TryParse(row["Lifetime"].ToString() ?? "", out var lifetimeParsed)
                 ? lifetimeParsed
                 : null;
             RecurrenceId = Guid.TryParse(row["RecurrenceId"].ToString() ?? "", out var recurrenceIdParsed)

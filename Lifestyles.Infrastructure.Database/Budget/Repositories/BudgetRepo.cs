@@ -2,23 +2,23 @@ using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Budget.Repositories;
 using Lifestyles.Domain.Categorize.Repositories;
 using Lifestyles.Domain.Live.Repositories;
-using BudgetMap = Lifestyles.Infrastructure.Database.Budget.Map.Budget;
 using Lifestyles.Infrastructure.Database.Budget.Models;
 using Lifestyles.Infrastructure.Database.Categorize.Models;
 using Lifestyles.Infrastructure.Database.Live.Models;
 using Lifestyles.Infrastructure.Database.Live.Extensions;
 using System.Data;
+using BudgetMap = Lifestyles.Infrastructure.Database.Budget.Map.Budget;
 
 namespace Lifestyles.Infrastructure.Database.Budget.Repositories
 {
     public class BudgetRepo : IBudgetRepo
     {
-        private readonly IKeyValueStorage _context;
+        private readonly IKeyValueRepo _context;
         private readonly ICategoryRepo _categoryRepo;
         private readonly ILifestyleRepo _lifestyleRepo;
 
         public BudgetRepo(
-            IKeyValueStorage context,
+            IKeyValueRepo context,
             ICategoryRepo categoryRepo,
             ILifestyleRepo lifestyleRepo)
         {

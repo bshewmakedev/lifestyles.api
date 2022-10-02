@@ -1,3 +1,4 @@
+using Lifestyles.Domain.Live.Repositories;
 using System.Data;
 
 namespace Lifestyles.Infrastructure.Database.Live.Models
@@ -15,7 +16,7 @@ namespace Lifestyles.Infrastructure.Database.Live.Models
             Alias = row["Alias"].ToString() ?? "";
         }
 
-        public static DataTable CreateDataTable(IKeyValueStorage keyValueStorage)
+        public static DataTable CreateDataTable(IKeyValueRepo keyValueStorage)
         {
             var tableExistence = keyValueStorage.GetItem<DataTable>("tbl_Existence");
             if (tableExistence == null)

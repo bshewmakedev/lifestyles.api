@@ -1,5 +1,5 @@
-using Lifestyles.Domain.Live.Repositories;
 using Lifestyles.Domain.Categorize.Entities;
+using Lifestyles.Domain.Live.Repositories;
 
 namespace Lifestyles.Domain.Categorize.Repositories
 {

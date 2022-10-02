@@ -9,9 +9,9 @@ namespace Lifestyles.Infrastructure.Database.Live.Repositories
 {
     public class RecurrenceRepo : IRecurrenceRepo
     {
-        private readonly IKeyValueStorage _context;
+        private readonly IKeyValueRepo _context;
 
-        public RecurrenceRepo(IKeyValueStorage context)
+        public RecurrenceRepo(IKeyValueRepo context)
         {
             _context = context;
         }

@@ -10,9 +10,9 @@ namespace Lifestyles.Infrastructure.Database.Live.Repositories
 {
     public class LifestyleRepo : ILifestyleRepo
     {
-        private readonly IKeyValueStorage _context;
+        private readonly IKeyValueRepo _context;
 
-        public LifestyleRepo(IKeyValueStorage context)
+        public LifestyleRepo(IKeyValueRepo context)
         {
             _context = context;
         }

@@ -1,3 +1,4 @@
+using Lifestyles.Domain.Live.Repositories;
 using System.Data;
 
 namespace Lifestyles.Infrastructure.Database.Budget.Models
@@ -15,7 +16,7 @@ namespace Lifestyles.Infrastructure.Database.Budget.Models
             Alias = row["Alias"].ToString() ?? "";
         }
 
-        public static DataTable CreateDataTable(IKeyValueStorage keyValueStorage)
+        public static DataTable CreateDataTable(IKeyValueRepo keyValueStorage)
         {
             var tableBudgetType = keyValueStorage.GetItem<DataTable>("tbl_BudgetType");
             if (tableBudgetType == null)

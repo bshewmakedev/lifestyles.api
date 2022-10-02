@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Lifestyles.Domain.Live.Entities;
 using Lifestyles.Domain.Budget.Repositories;
 using Lifestyles.Domain.Categorize.Repositories;
-using Lifestyles.Domain.Live.Constants;
+using Lifestyles.Api.Live.Models;
 using Lifestyles.Domain.Live.Repositories;
 using RecurrenceMap = Lifestyles.Domain.Live.Map.Recurrence;
 using ExistenceMap = Lifestyles.Domain.Live.Map.Existence;
@@ -14,7 +14,7 @@ namespace Lifestyles.Api.Controllers;
 public class LiveController : ControllerBase
 {
     private readonly ILogger<BudgetController> _logger;
-    private readonly IKeyValueStorage _context;
+    private readonly IKeyValueRepo _context;
     private readonly IBudgetTypeRepo _budgetTypeRepo;
     private readonly IRecurrenceRepo _recurrenceRepo;
     private readonly IExistenceRepo _existenceRepo;
@@ -24,7 +24,7 @@ public class LiveController : ControllerBase
 
     public LiveController(
         ILogger<BudgetController> logger,
-        IKeyValueStorage context,
+        IKeyValueRepo context,
         IBudgetTypeRepo budgetTypeRepo,
         IRecurrenceRepo recurrenceRepo,
         IExistenceRepo existenceRepo,
@@ -44,7 +44,7 @@ public class LiveController : ControllerBase
 
     [HttpGet]
     [Route("recurrences/find")]
-    public IEnumerable<int> FindRecurrences()
+    public IEnumerable<string> FindRecurrences()
     {
         return _recurrenceRepo.Find().Select(r => RecurrenceMap.Map(r));
     }
@@ -58,9 +58,9 @@ public class LiveController : ControllerBase
 
     [HttpGet]
     [Route("lifestyles/find")]
-    public IEnumerable<ILifestyle> FindLifestyles()
+    public IEnumerable<VmLifestyle> FindLifestyles()
     {
-        return _lifestyleRepo.Find();
+        return _lifestyleRepo.Find().Select(b => new VmLifestyle(b));
     }
 
     [HttpGet]
@@ -70,7 +70,7 @@ public class LiveController : ControllerBase
         var lifestyle = _lifestyleRepo.Find().FirstOrDefault(l => l.Id.Equals(lifestyleId));
 
         var budgets = _budgetRepo.FindCategorizedAs(lifestyleId);
-
+        
         return lifestyle.GetAmount(budgets);
     }
 

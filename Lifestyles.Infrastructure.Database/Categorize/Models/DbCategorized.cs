@@ -1,3 +1,4 @@
+using Lifestyles.Domain.Live.Repositories;
 using System.Data;
 
 namespace Lifestyles.Infrastructure.Database.Categorize.Models
@@ -8,7 +9,7 @@ namespace Lifestyles.Infrastructure.Database.Categorize.Models
         public Guid BudgetId { get; set; }
         public Guid CategoryId { get; set; }
 
-        public static DataTable CreateDataTable(IKeyValueStorage keyValueStorage)
+        public static DataTable CreateDataTable(IKeyValueRepo keyValueStorage)
         {
             var tableCategorized = keyValueStorage.GetItem<DataTable>("tbl_Categorized");
             if (tableCategorized == null)

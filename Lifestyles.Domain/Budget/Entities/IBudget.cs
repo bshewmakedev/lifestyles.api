@@ -7,6 +7,6 @@ namespace Lifestyles.Domain.Budget.Entities
     {
         decimal Amount { get; }
         Direction Direction { get; }
-        void Value(decimal amount);
+        void Value(decimal amount = 0);
     }
 }

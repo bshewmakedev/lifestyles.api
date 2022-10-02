@@ -6,16 +6,12 @@ namespace Lifestyles.Domain.Live.Entities
 {
     public partial interface ILifestyle : ICategory
     {
-        Existence Existence { get; }
-        void Exist(Existence existence);
-    }
-
-    public partial interface ILifestyle
-    {
-        decimal? Lifetime { get; }
+        int? Lifetime { get; }
         Recurrence Recurrence { get; }
-        decimal GetAmount(IEnumerable<IBudget> budgets, decimal? interval = null);
+        Existence Existence { get; }
+        decimal GetAmount(IEnumerable<IBudget> budgets, int? interval = null);
         Direction GetDirection(IEnumerable<IBudget> budgets);
-        void Recur(Recurrence recurrence, decimal? lifetime = null);
+        void Recur(Recurrence recurrence = Recurrence.Never, int? lifetime = null);
+        void Exist(Existence existence = Existence.Expected);
     }
 }

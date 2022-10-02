@@ -7,35 +7,23 @@ namespace Lifestyles.Service.Live.Map
 {
     public partial class Lifestyle : Category, ILifestyle
     {
+        public int? Lifetime { get; private set; }
+        public Recurrence Recurrence { get; private set; }
+        public Existence Existence { get; private set; }
+
         public Lifestyle(
             Guid? id = null,
             string label = "",
-            decimal? lifetime = null,
+            int? lifetime = null,
             Recurrence recurrence = Recurrence.Never,
-            Existence existence = Existence.Excluded
+            Existence existence = Existence.Expected
         ) : base(id, label)
         {
             Recur(recurrence, lifetime);
             Exist(existence);
         }
-    }
 
-    public partial class Lifestyle
-    {
-        public Existence Existence { get; private set; }
-
-        public void Exist(Existence existence)
-        {
-            Existence = existence;
-        }
-    }
-
-    public partial class Lifestyle
-    {
-        public decimal? Lifetime { get; private set; }
-        public Recurrence Recurrence { get; private set; }
-
-        public decimal GetAmount(IEnumerable<IBudget> budgets, decimal? interval = null)
+        public decimal GetAmount(IEnumerable<IBudget> budgets, int? interval = null)
         {
             interval = interval ?? Lifetime - 1;
 
@@ -52,22 +40,27 @@ namespace Lifestyles.Service.Live.Map
 
             return budgets.Where(b => b.Existence.Equals(Existence.Expected)).Select(b =>
             {
+                var recurrenceToInt = (Recurrence r) => {
+                    switch (r) {
+                        case Recurrence.Daily: return 1;
+                        case Recurrence.Weekly: return 7;
+                        case Recurrence.Monthly: return 31;
+                        case Recurrence.Annually: return 366;
+                        default: return 0;
+                    }
+                };
+
                 var directionInt = Lifestyles.Domain.Live.Map.Direction.Map(b.Direction);
-                var recurrenceIntLifestyle = Lifestyles.Domain.Live.Map.Recurrence.Map(Recurrence);
-                var recurrenceIntBudget = Lifestyles.Domain.Live.Map.Recurrence.Map(b.Recurrence);
+                var recurrenceIntLifestyle = recurrenceToInt(Recurrence);
+                var recurrenceIntBudget = recurrenceToInt(b.Recurrence);
 
                 if (b.Recurrence.Equals(Recurrence.Never))
                 {
-                    var amountFragment = directionInt * b.Amount;
-                    Console.WriteLine($"{amountFragment} on {b.Label}");
-                    return amountFragment;
+                    return directionInt * b.Amount;
                 }
                 else
                 {
-                    var amountFragment = directionInt * b.Amount * (((interval + 1) * recurrenceIntLifestyle) / Math.Max(recurrenceIntBudget, 1) / Math.Max(b.Lifetime ?? 0, 1)); 
-                    
-                    Console.WriteLine($"{amountFragment} on {b.Label}, given interval {interval}, lifestyle recurrence {recurrenceIntLifestyle}, budget recurrence {recurrenceIntBudget}, budget lifetime {b.Lifetime}");
-                    return amountFragment;
+                    return directionInt * (((interval + 1) * recurrenceIntLifestyle) / Math.Max(recurrenceIntBudget, 1) / Math.Max(b.Lifetime ?? 0, 1)) * b.Amount;   
                 }
             }).Sum() ?? 0;
         }
@@ -79,7 +72,7 @@ namespace Lifestyles.Service.Live.Map
             return Lifestyles.Domain.Live.Map.Direction.Map((int)(sum / Math.Max(Math.Abs(sum), 1)));
         }
 
-        public void Recur(Recurrence recurrence, decimal? lifetime = null)
+        public void Recur(Recurrence recurrence = Recurrence.Never, int? lifetime = null)
         {
             Recurrence = recurrence;
 
@@ -91,6 +84,11 @@ namespace Lifestyles.Service.Live.Map
             {
                 Lifetime = lifetime;
             }
+        }
+
+        public void Exist(Existence existence = Existence.Expected)
+        {
+            Existence = existence;
         }
     }
 }

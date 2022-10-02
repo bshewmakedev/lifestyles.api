@@ -11,11 +11,11 @@ namespace Lifestyles.Infrastructure.Database.Categorize.Repositories
 {
     public class CategoryRepo : ICategoryRepo
     {
-        private readonly IKeyValueStorage _context;
+        private readonly IKeyValueRepo _context;
         private readonly ILifestyleRepo _lifestyleRepo;
 
         public CategoryRepo(
-            IKeyValueStorage context,
+            IKeyValueRepo context,
             ILifestyleRepo lifestyleRepo)
         {
             _context = context;
