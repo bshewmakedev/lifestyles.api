@@ -44,7 +44,7 @@ public class LiveController : ControllerBase
 
     [HttpGet]
     [Route("recurrences/find")]
-    public IEnumerable<string> FindRecurrences()
+    public IEnumerable<int> FindRecurrences()
     {
         return _recurrenceRepo.Find().Select(r => RecurrenceMap.Map(r));
     }
@@ -61,6 +61,17 @@ public class LiveController : ControllerBase
     public IEnumerable<ILifestyle> FindLifestyles()
     {
         return _lifestyleRepo.Find();
+    }
+
+    [HttpGet]
+    [Route("lifestyles/amount/{lifestyleId}")]
+    public decimal CalculateAmount(Guid lifestyleId)
+    {
+        var lifestyle = _lifestyleRepo.Find().FirstOrDefault(l => l.Id.Equals(lifestyleId));
+
+        var budgets = _budgetRepo.FindCategorizedAs(lifestyleId);
+
+        return lifestyle.GetAmount(budgets);
     }
 
     [HttpGet]

@@ -8,6 +8,7 @@ namespace Lifestyles.Api.Budget.Map
         public Lifestyle(VmLifestyle vmLifestyle) : base(
             vmLifestyle.Id,
             vmLifestyle.Label,
+            vmLifestyle.Lifetime,
             Lifestyles.Domain.Live.Map.Recurrence.Map(vmLifestyle.Recurrence),
             Lifestyles.Domain.Live.Map.Existence.Map(vmLifestyle.Existence))
         { }

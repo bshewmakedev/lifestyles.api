@@ -10,13 +10,12 @@ namespace Lifestyles.Service.Budget.Map
             decimal amount,
             Guid? id = null,
             string label = "",
+            decimal? lifetime = null,
             Recurrence recurrence = Recurrence.Never,
             Existence existence = Existence.Excluded
-        ) : base(id, label)
+        ) : base(id, label, lifetime, recurrence, existence)
         {
             Value(amount);
-            Recur(recurrence);
-            Exist(existence);
         }
     }
 

@@ -61,11 +61,11 @@ namespace Lifestyles.Infrastructure.Database.Budget.Repositories
                     else if (lifestyle.Label.Equals("Appalachian Trail") && category.Label.Equals("connect"))
                     {
                         new DbBudget[] {
-                                new DbBudget { Id = Guid.NewGuid(), BudgetTypeId = dbBudgetTypeDict["budget"], Amount = -5,    ExistenceId = dbExistenceDict["expected"],  Label = "whistle",               Lifetime = null, RecurrenceId = dbRecurrenceDict["never"] },
-                                new DbBudget { Id = Guid.NewGuid(), BudgetTypeId = dbBudgetTypeDict["budget"], Amount = -65,   ExistenceId = dbExistenceDict["expected"],  Label = "mobile service",        Lifetime = 1,    RecurrenceId = dbRecurrenceDict["monthly"] },
-                                new DbBudget { Id = Guid.NewGuid(), BudgetTypeId = dbBudgetTypeDict["budget"], Amount = -25,   ExistenceId = dbExistenceDict["expected"],  Label = "power brick",           Lifetime = null, RecurrenceId = dbRecurrenceDict["never"] },
-                                new DbBudget { Id = Guid.NewGuid(), BudgetTypeId = dbBudgetTypeDict["budget"], Amount = -25,   ExistenceId = dbExistenceDict["suggested"], Label = "mobile phone",          Lifetime = 1,    RecurrenceId = dbRecurrenceDict["monthly"] },
-                                new DbBudget { Id = Guid.NewGuid(), BudgetTypeId = dbBudgetTypeDict["budget"], Amount = -15,   ExistenceId = dbExistenceDict["suggested"], Label = "wall charger",          Lifetime = null, RecurrenceId = dbRecurrenceDict["never"] },
+                            new DbBudget { Id = Guid.NewGuid(), BudgetTypeId = dbBudgetTypeDict["budget"], Amount = -5,    ExistenceId = dbExistenceDict["expected"],  Label = "whistle",               Lifetime = null, RecurrenceId = dbRecurrenceDict["never"] },
+                            new DbBudget { Id = Guid.NewGuid(), BudgetTypeId = dbBudgetTypeDict["budget"], Amount = -65,   ExistenceId = dbExistenceDict["expected"],  Label = "mobile service",        Lifetime = 1,    RecurrenceId = dbRecurrenceDict["monthly"] },
+                            new DbBudget { Id = Guid.NewGuid(), BudgetTypeId = dbBudgetTypeDict["budget"], Amount = -25,   ExistenceId = dbExistenceDict["expected"],  Label = "power brick",           Lifetime = null, RecurrenceId = dbRecurrenceDict["never"] },
+                            new DbBudget { Id = Guid.NewGuid(), BudgetTypeId = dbBudgetTypeDict["budget"], Amount = -25,   ExistenceId = dbExistenceDict["suggested"], Label = "mobile phone",          Lifetime = 1,    RecurrenceId = dbRecurrenceDict["monthly"] },
+                            new DbBudget { Id = Guid.NewGuid(), BudgetTypeId = dbBudgetTypeDict["budget"], Amount = -15,   ExistenceId = dbExistenceDict["suggested"], Label = "wall charger",          Lifetime = null, RecurrenceId = dbRecurrenceDict["never"] },
                         }.ToList().ForEach(budget =>
                         {
                             DbBudget.AddDataRow(tableBudget, dbBudgetTypeDict, budget);

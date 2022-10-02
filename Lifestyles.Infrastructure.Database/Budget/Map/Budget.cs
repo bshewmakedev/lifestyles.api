@@ -15,30 +15,10 @@ namespace Lifestyles.Infrastructure.Database.Budget.Map
             dbBudget.Amount.HasValue ? dbBudget.Amount.Value : default(decimal),
             dbBudget.Id,
             dbBudget.Label,
+            dbBudget.Lifetime,
             GetRecurrence(context, dbBudget.RecurrenceId),
             GetExistence(context, dbBudget.ExistenceId))
         { }
-
-        private static Guid GetId(object id)
-        {
-            var idStr = id.ToString() ?? "";
-
-            return string.IsNullOrWhiteSpace(idStr)
-                ? Guid.NewGuid()
-                : Guid.Parse(idStr);
-        }
-
-        private static decimal GetAmount(object amount)
-        {
-            return decimal.TryParse(amount.ToString() ?? "", out var amountParsed)
-                ? amountParsed
-                : default(decimal);
-        }
-
-        private static string GetLabel(object label)
-        {
-            return label.ToString() ?? "";
-        }
 
         public static Recurrence GetRecurrence(
             IKeyValueStorage context,

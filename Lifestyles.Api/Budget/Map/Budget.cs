@@ -9,6 +9,7 @@ namespace Lifestyles.Api.Budget.Map
             vmBudget.Amount,
             vmBudget.Id,
             vmBudget.Label,
+            vmBudget.Lifetime,
             Lifestyles.Domain.Live.Map.Recurrence.Map(vmBudget.Recurrence),
             Lifestyles.Domain.Live.Map.Existence.Map(vmBudget.Existence))
         { }

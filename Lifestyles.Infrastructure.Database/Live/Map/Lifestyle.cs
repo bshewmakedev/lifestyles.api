@@ -13,6 +13,7 @@ namespace Lifestyles.Infrastructure.Database.Live.Map
             DbLifestyle dbLifestyle) : base(
             dbLifestyle.Id,
             dbLifestyle.Label,
+            dbLifestyle.Lifetime,
             GetRecurrence(context, dbLifestyle.RecurrenceId),
             GetExistence(context, dbLifestyle.ExistenceId))
         { }
