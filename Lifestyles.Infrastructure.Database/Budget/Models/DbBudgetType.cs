@@ -17,9 +17,13 @@ namespace Lifestyles.Infrastructure.Database.Budget.Models
 
         public static DataTable CreateDataTable(IKeyValueStorage keyValueStorage)
         {
-            var tableBudgetType = new DataTable();
-            tableBudgetType.Columns.Add("Id", typeof(Guid));
-            tableBudgetType.Columns.Add("Alias", typeof(string));
+            var tableBudgetType = keyValueStorage.GetItem<DataTable>("tbl_BudgetType");
+            if (tableBudgetType == null)
+            {
+                tableBudgetType = new DataTable();
+                tableBudgetType.Columns.Add("Id", typeof(Guid));
+                tableBudgetType.Columns.Add("Alias", typeof(string));
+            }
 
             return tableBudgetType;
         }
@@ -34,24 +38,6 @@ namespace Lifestyles.Infrastructure.Database.Budget.Models
             table.Rows.Add(row);
 
             return row;
-        }
-
-        public static Dictionary<string, Guid> Default(IKeyValueStorage keyValueStorage)
-        {
-            var tableBudgetType = CreateDataTable(keyValueStorage);
-            var budgetTypeIds = new Dictionary<string, Guid>();
-            foreach (var dbBudgetType in new DbBudgetType[] {
-                new DbBudgetType { Id = Guid.NewGuid(), Alias = "budget" },
-                new DbBudgetType { Id = Guid.NewGuid(), Alias = "category" },
-                new DbBudgetType { Id = Guid.NewGuid(), Alias = "lifestyle" }
-            })
-            {
-                AddDataRow(tableBudgetType, dbBudgetType);
-                budgetTypeIds.Add(dbBudgetType.Alias, dbBudgetType.Id);
-            }
-            keyValueStorage.SetItem("tbl_BudgetType", tableBudgetType);
-
-            return budgetTypeIds;
         }
     }
 }
