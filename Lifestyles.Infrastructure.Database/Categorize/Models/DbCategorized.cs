@@ -10,16 +10,16 @@ namespace Lifestyles.Infrastructure.Database.Categorize.Models
 
         public static DataTable CreateDataTable(IKeyValueStorage keyValueStorage)
         {
-            var tableCategory = keyValueStorage.GetItem<DataTable>("tbl_Categorized");
-            if (tableCategory == null)
+            var tableCategorized = keyValueStorage.GetItem<DataTable>("tbl_Categorized");
+            if (tableCategorized == null)
             {
-                tableCategory = new DataTable();
-                tableCategory.Columns.Add("Id", typeof(Guid));
-                tableCategory.Columns.Add("BudgetId", typeof(Guid));
-                tableCategory.Columns.Add("CategoryId", typeof(Guid));
+                tableCategorized = new DataTable();
+                tableCategorized.Columns.Add("Id", typeof(Guid));
+                tableCategorized.Columns.Add("BudgetId", typeof(Guid));
+                tableCategorized.Columns.Add("CategoryId", typeof(Guid));
             }
 
-            return tableCategory;
+            return tableCategorized;
         }
 
         public static DataRow AddDataRow(
@@ -29,7 +29,7 @@ namespace Lifestyles.Infrastructure.Database.Categorize.Models
             DataRow categorizedRow = tableCategorized.NewRow();
             categorizedRow["Id"] = dbCategorized.Id;
             categorizedRow["BudgetId"] = dbCategorized.BudgetId;
-            categorizedRow["CategoryId"] = dbCategorized.BudgetId;
+            categorizedRow["CategoryId"] = dbCategorized.CategoryId;
             tableCategorized.Rows.Add(categorizedRow);
 
             return categorizedRow;

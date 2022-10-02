@@ -41,27 +41,5 @@ namespace Lifestyles.Infrastructure.Database.Live.Models
 
             return lifestyleRow;
         }
-
-        public static Dictionary<string, Guid> Default(
-            IKeyValueStorage keyValueStorage,
-            Dictionary<string, Guid> budgetTypeIds,
-            Dictionary<string, Guid> recurrenceIds,
-            Dictionary<string, Guid> existenceIds)
-        {
-            var tableBudget = CreateDataTable(keyValueStorage);
-            var lifestyleIds = new Dictionary<string, Guid>();
-            foreach (var lifestyle in new DbLifestyle[] {
-                new DbLifestyle { Id = Guid.NewGuid(), Label = "Appalachian Trail",        Lifetime = 6, RecurrenceId = recurrenceIds["monthly"], ExistenceId = existenceIds["expected"] },
-                new DbLifestyle { Id = Guid.NewGuid(), Label = "Pacific Crest Trail",      Lifetime = 5, RecurrenceId = recurrenceIds["monthly"], ExistenceId = existenceIds["expected"] },
-                new DbLifestyle { Id = Guid.NewGuid(), Label = "Continental Divide Trail", Lifetime = 6, RecurrenceId = recurrenceIds["monthly"], ExistenceId = existenceIds["expected"] },
-            })
-            {
-                AddDataRow(tableBudget, budgetTypeIds, lifestyle);
-                lifestyleIds.Add(lifestyle.Label, lifestyle.Id);
-            }
-            keyValueStorage.SetItem("tbl_Budget", tableBudget);
-
-            return lifestyleIds;
-        }
     }
 }

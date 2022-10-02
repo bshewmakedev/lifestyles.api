@@ -37,7 +37,7 @@ namespace Lifestyles.Infrastructure.Database.Live.Map
         {
             var dbRecurrences = context.GetItem<DataTable>("tbl_Recurrence").GetRows().Select(r => new DbRecurrence(r));
 
-            return Lifestyles.Domain.Live.Map.Recurrence.Map(dbRecurrences.FirstOrDefault(r => r.Id.Equals(recurrenceId)).Alias);
+            return Lifestyles.Domain.Live.Map.Recurrence.Map(dbRecurrences.FirstOrDefault(r => r.Id.Equals(recurrenceId))?.Alias);
         }
 
         public static Existence GetExistence(
@@ -46,7 +46,7 @@ namespace Lifestyles.Infrastructure.Database.Live.Map
         {
             var dbExistences = context.GetItem<DataTable>("tbl_Existence").GetRows().Select(r => new DbExistence(r));
 
-            return Lifestyles.Domain.Live.Map.Existence.Map(dbExistences.FirstOrDefault(r => r.Id.Equals(existenceId)).Alias);
+            return Lifestyles.Domain.Live.Map.Existence.Map(dbExistences.FirstOrDefault(r => r.Id.Equals(existenceId))?.Alias);
         }
     }
 }

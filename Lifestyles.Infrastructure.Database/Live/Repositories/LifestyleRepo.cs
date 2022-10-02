@@ -17,12 +17,34 @@ namespace Lifestyles.Infrastructure.Database.Live.Repositories
             _context = context;
         }
 
+        public IEnumerable<ILifestyle> Default()
+        {
+            var lifestyles = new List<ILifestyle>();
+
+            var dbBudgetTypeDict = DbBudgetType.CreateDataTable(_context).GetRows().Select(r => new DbBudgetType(r)).ToDictionary(t => t.Alias, t => t.Id);
+            var dbRecurrenceDict = DbRecurrence.CreateDataTable(_context).GetRows().Select(r => new DbRecurrence(r)).ToDictionary(t => t.Alias, t => t.Id);
+            var dbExistenceDict = DbExistence.CreateDataTable(_context).GetRows().Select(r => new DbExistence(r)).ToDictionary(t => t.Alias, t => t.Id);
+            var tableBudget = DbLifestyle.CreateDataTable(_context);
+            new List<DbLifestyle> {
+                new DbLifestyle { Id = Guid.NewGuid(), Label = "Appalachian Trail",        Lifetime = 6, RecurrenceId = dbRecurrenceDict["monthly"], ExistenceId = dbExistenceDict["expected"] },
+                new DbLifestyle { Id = Guid.NewGuid(), Label = "Pacific Crest Trail",      Lifetime = 5, RecurrenceId = dbRecurrenceDict["monthly"], ExistenceId = dbExistenceDict["expected"] },
+                new DbLifestyle { Id = Guid.NewGuid(), Label = "Continental Divide Trail", Lifetime = 6, RecurrenceId = dbRecurrenceDict["monthly"], ExistenceId = dbExistenceDict["expected"] },
+            }.ForEach(dbLifestyle =>
+            {
+                DbLifestyle.AddDataRow(tableBudget, dbBudgetTypeDict, dbLifestyle);
+                lifestyles.Add(new LifestyleMap(_context, dbLifestyle));
+            });
+            _context.SetItem("tbl_Budget", tableBudget);
+
+            return lifestyles;
+        }
+
         public IEnumerable<ILifestyle> Find(Func<ILifestyle, bool>? predicate = null)
         {
-            var dbBudgetTypes = _context.GetItem<DataTable>("tbl_BudgetType")
+            var dbBudgetTypes = DbBudgetType.CreateDataTable(_context)
                 .GetRows()
                 .Select(r => new DbBudgetType(r));
-            var lifestyles = _context.GetItem<DataTable>("tbl_Budget")
+            var lifestyles = DbBudget.CreateDataTable(_context)
                 .GetRows()
                 .Select(r => new DbLifestyle(r))
                 .Where(l => l.BudgetTypeId.Equals(
@@ -30,7 +52,7 @@ namespace Lifestyles.Infrastructure.Database.Live.Repositories
                 .Select(l => new LifestyleMap(_context, l))
                 .Where(predicate ?? ((b) => true));
 
-                return lifestyles;
+            return lifestyles;
         }
 
         public IEnumerable<ILifestyle> Upsert(IEnumerable<ILifestyle> lifestyles)

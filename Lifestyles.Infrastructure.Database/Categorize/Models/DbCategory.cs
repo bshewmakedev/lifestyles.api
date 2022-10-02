@@ -53,44 +53,5 @@ namespace Lifestyles.Infrastructure.Database.Categorize.Models
 
             return categoryRow;
         }
-        
-        public static Dictionary<string, Guid> Default(
-            IKeyValueStorage keyValueStorage,
-            Dictionary<string, Guid> budgetTypeIds,
-            Dictionary<string, Guid> lifestyleIds)
-        {
-            var tableBudget = CreateDataTable(keyValueStorage);
-            var tableCategorized = DbCategorized.CreateDataTable(keyValueStorage);
-
-            var categoryIds = new Dictionary<string, Guid>();
-            foreach (var category in new DbCategory[] {
-                new DbCategory { Id = Guid.NewGuid(), Label = "connect" },
-                new DbCategory { Id = Guid.NewGuid(), Label = "eat & hydrate" },
-                new DbCategory { Id = Guid.NewGuid(), Label = "hike" },
-                new DbCategory { Id = Guid.NewGuid(), Label = "shelter" },
-                new DbCategory { Id = Guid.NewGuid(), Label = "wear" }
-            })
-            {
-                var dbCategory = AddDataRow(tableBudget, budgetTypeIds, category);
-                categoryIds.Add(category.Label, category.Id);
-
-                foreach (var lifestyleId in lifestyleIds)
-                {
-                    DbCategorized.AddDataRow(
-                        tableCategorized, 
-                        new DbCategorized 
-                        { 
-                            Id = Guid.NewGuid(), 
-                            BudgetId = category.Id,
-                            CategoryId = lifestyleId.Value 
-                        }
-                    );
-                }
-            }
-            keyValueStorage.SetItem("tbl_Budget", tableBudget);
-            keyValueStorage.SetItem("tbl_Categorized", tableCategorized);
-            
-            return categoryIds;
-        }
     }
 }
