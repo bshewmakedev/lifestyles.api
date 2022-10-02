@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Budget.Repositories;
+using BudgetTypeMap = Lifestyles.Domain.Budget.Map.BudgetType;
 
 namespace Lifestyles.Api.Controllers;
 
@@ -9,19 +10,29 @@ namespace Lifestyles.Api.Controllers;
 public class BudgetController : ControllerBase
 {
     private readonly ILogger<BudgetController> _logger;
+    private readonly IBudgetTypeRepo _budgetTypeRepo;
     private readonly IBudgetRepo _budgetRepo;
 
     public BudgetController(
         ILogger<BudgetController> logger,
+        IBudgetTypeRepo budgetTypeRepo,
         IBudgetRepo budgetRepo)
     {
-        _budgetRepo = budgetRepo;
         _logger = logger;
+        _budgetTypeRepo = budgetTypeRepo;
+        _budgetRepo = budgetRepo;
+    }
+
+    [HttpGet]
+    [Route("budgettypes/find")]
+    public IEnumerable<string> FindBudgetTypes()
+    {
+        return _budgetTypeRepo.Find().Select(r => BudgetTypeMap.Map(r));
     }
 
     [HttpGet]
     [Route("budgets/find")]
-    public IEnumerable<IBudget> Find()
+    public IEnumerable<IBudget> FindBudgets()
     {
         return _budgetRepo.Find();
     }

@@ -2,9 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Lifestyles.Domain.Live.Entities;
 using Lifestyles.Domain.Budget.Repositories;
 using Lifestyles.Domain.Categorize.Repositories;
+using Lifestyles.Domain.Live.Constants;
 using Lifestyles.Domain.Live.Repositories;
-using Lifestyles.Infrastructure.Database.Budget.Models;
-using Lifestyles.Infrastructure.Database.Live.Models;
+using RecurrenceMap = Lifestyles.Domain.Live.Map.Recurrence;
+using ExistenceMap = Lifestyles.Domain.Live.Map.Existence;
 
 namespace Lifestyles.Api.Controllers;
 
@@ -42,8 +43,22 @@ public class LiveController : ControllerBase
     }
 
     [HttpGet]
+    [Route("recurrences/find")]
+    public IEnumerable<string> FindRecurrences()
+    {
+        return _recurrenceRepo.Find().Select(r => RecurrenceMap.Map(r));
+    }
+
+    [HttpGet]
+    [Route("existences/find")]
+    public IEnumerable<string> FindExistences()
+    {
+        return _existenceRepo.Find().Select(e => ExistenceMap.Map(e));
+    }
+
+    [HttpGet]
     [Route("lifestyles/find")]
-    public IEnumerable<ILifestyle> Find()
+    public IEnumerable<ILifestyle> FindLifestyles()
     {
         return _lifestyleRepo.Find();
     }

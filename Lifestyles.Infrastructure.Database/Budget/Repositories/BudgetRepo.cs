@@ -169,7 +169,7 @@ namespace Lifestyles.Infrastructure.Database.Budget.Repositories
                     b => b.Id, 
                     cr => Guid.Parse(cr["BudgetId"].ToString() ?? ""), (br, cr) => br)
                 .Where(c => c.BudgetTypeId.Equals(
-                    dbBudgetTypes.FirstOrDefault(bt => bt.Alias.Equals("category"))?.Id))
+                    dbBudgetTypes.FirstOrDefault(bt => bt.Alias.Equals("budget"))?.Id))
                 .Select(c => new BudgetMap(_context, c));
             
             return budgets;
