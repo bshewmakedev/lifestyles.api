@@ -1,4 +1,0 @@
-[
-  { "existenceAlias": "expected",  "label": "Thru-Hiker",      "lifetime": 6, "recurrenceAlias": "monthly" },
-  { "existenceAlias": "expected",  "label": "Weekend Warrior", "lifetime": 6, "recurrenceAlias": "monthly" }
-]

@@ -1,8 +1,0 @@
-[
-  { "amount": -400,  "existenceAlias": "expected",  "label": "tent",         "lifetime": null, "recurrenceAlias": "never"   },
-  { "amount": -150,  "existenceAlias": "expected",  "label": "sleeping bag", "lifetime": null, "recurrenceAlias": "never"   },
-  { "amount": -45,   "existenceAlias": "expected",  "label": "sleeping pad", "lifetime": null, "recurrenceAlias": "never"   },
-  { "amount": -35,   "existenceAlias": "expected",  "label": "town lodging", "lifetime": 4,    "recurrenceAlias": "daily"   },
-  { "amount": -1000, "existenceAlias": "suggested", "label": "home payment", "lifetime": 1,    "recurrenceAlias": "monthly" },
-  { "amount": 1000,  "existenceAlias": "suggested", "label": "home lease",   "lifetime": 1,    "recurrenceAlias": "monthly" }
-]

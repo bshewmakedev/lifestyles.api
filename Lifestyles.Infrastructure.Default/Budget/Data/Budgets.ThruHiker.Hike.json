@@ -1,9 +1,0 @@
-[
-  { "amount": -50,  "existenceAlias": "expected",  "label": "headlamp",         "lifetime": null, "recurrenceAlias": "never"   },
-  { "amount": -75,  "existenceAlias": "expected",  "label": "trekking poles",   "lifetime": null, "recurrenceAlias": "never"   },
-  { "amount": -220, "existenceAlias": "expected",  "label": "backpack",         "lifetime": null, "recurrenceAlias": "never"   },
-  { "amount": -21,  "existenceAlias": "expected",  "label": "compass",          "lifetime": null, "recurrenceAlias": "never"   },
-  { "amount": -40,  "existenceAlias": "expected",  "label": "maps",             "lifetime": null, "recurrenceAlias": "never"   },
-  { "amount": -20,  "existenceAlias": "expected",  "label": "first aid kit",    "lifetime": 3,    "recurrenceAlias": "monthly" },
-  { "amount": -500, "existenceAlias": "suggested", "label": "health insurance", "lifetime": 1,    "recurrenceAlias": "monthly" }
-]
