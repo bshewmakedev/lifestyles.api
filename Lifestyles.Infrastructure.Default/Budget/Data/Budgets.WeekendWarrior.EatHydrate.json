@@ -1,0 +1,6 @@
+[
+  { "amount": -40,  "existenceAlias": "expected", "label": "water bill",            "lifetime": 1, "recurrenceAlias": "monthly" },
+  { "amount": -240, "existenceAlias": "expected", "label": "groceries",             "lifetime": 1, "recurrenceAlias": "monthly" },
+  { "amount": -70,  "existenceAlias": "expected", "label": "gas bill",              "lifetime": 1, "recurrenceAlias": "monthly" },
+  { "amount": -60,  "existenceAlias": "expected", "label": "eating & drinking out", "lifetime": 1, "recurrenceAlias": "weekly"  }
+]

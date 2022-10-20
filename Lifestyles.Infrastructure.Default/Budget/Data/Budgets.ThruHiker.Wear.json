@@ -1,0 +1,14 @@
+[
+  { "amount": -90,  "existenceAlias": "expected",  "label": "trail shoes",        "lifetime": 2,    "recurrenceAlias": "monthly" },
+  { "amount": -30,  "existenceAlias": "expected",  "label": "socks",              "lifetime": null, "recurrenceAlias": "never"   },
+  { "amount": -30,  "existenceAlias": "expected",  "label": "underwear",          "lifetime": null, "recurrenceAlias": "never"   },
+  { "amount": -80,  "existenceAlias": "expected",  "label": "base layer bottoms", "lifetime": null, "recurrenceAlias": "never"   },
+  { "amount": -50,  "existenceAlias": "expected",  "label": "bottoms",            "lifetime": null, "recurrenceAlias": "never"   },
+  { "amount": -90,  "existenceAlias": "expected",  "label": "shell bottoms",      "lifetime": null, "recurrenceAlias": "never"   },
+  { "amount": -80,  "existenceAlias": "expected",  "label": "base layer top",     "lifetime": null, "recurrenceAlias": "never"   },
+  { "amount": -35,  "existenceAlias": "expected",  "label": "top",                "lifetime": null, "recurrenceAlias": "never"   },
+  { "amount": -225, "existenceAlias": "expected",  "label": "insulated top",      "lifetime": null, "recurrenceAlias": "never"   },
+  { "amount": -90,  "existenceAlias": "expected",  "label": "shell top",          "lifetime": null, "recurrenceAlias": "never"   },
+  { "amount": -15,  "existenceAlias": "expected",  "label": "head net",           "lifetime": null, "recurrenceAlias": "never"   },
+  { "amount": -15,  "existenceAlias": "expected",  "label": "beanie",             "lifetime": null, "recurrenceAlias": "never"   }
+]

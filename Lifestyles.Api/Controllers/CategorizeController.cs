@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using Lifestyles.Api.Categorize.Models;
 using Lifestyles.Domain.Categorize.Entities;
+using Lifestyles.Domain.Budget.Repositories;
 using Lifestyles.Domain.Categorize.Repositories;
+using CategoryMap = Lifestyles.Api.Categorize.Map.Category;
 
 namespace Lifestyles.Api.Controllers;
 
@@ -15,8 +18,8 @@ public class CategorizeController : ControllerBase
         ILogger<BudgetController> logger,
         ICategoryRepo categoryRepo)
     {
-        _categoryRepo = categoryRepo;
         _logger = logger;
+        _categoryRepo = categoryRepo;
     }
 
     [HttpGet]
@@ -27,9 +30,27 @@ public class CategorizeController : ControllerBase
     }
 
     [HttpGet]
-    [Route("categories/find/{categoryId}")]
-    public IEnumerable<ICategory> FindByCategoryId(Guid categoryId)
+    [Route("categories/find/{lifestyleId}")]
+    public IEnumerable<ICategory> FindByLifestyleId(Guid lifestyleId)
     {
-        return _categoryRepo.FindCategorizedAs(categoryId);
+        return _categoryRepo.FindCategorizedAs(lifestyleId);
+    }
+
+    [HttpGet]
+    [Route("categories/upsert")]
+    public IEnumerable<VmCategory> UpsertCategories(List<VmCategory> vmCategories)
+    {
+        return _categoryRepo
+            .Upsert(vmCategories.Select(c => new CategoryMap(c)))
+            .Select(c => new VmCategory(c));
+    }
+
+    [HttpPost]
+    [Route("categories/remove")]
+    public IEnumerable<VmCategory> RemoveCategories(List<VmCategory> vmCategories)
+    {
+        return _categoryRepo
+            .Remove(vmCategories.Select(c => new CategoryMap(c)))
+            .Select(c => new VmCategory(c));
     }
 }

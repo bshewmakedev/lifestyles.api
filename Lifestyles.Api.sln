@@ -7,15 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Api", "Lifestyle
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Domain", "Lifestyles.Domain\Lifestyles.Domain.csproj", "{33EE467C-211C-4698-8BFA-EF703976607A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Infrastructure.Database", "Lifestyles.Infrastructure.Database\Lifestyles.Infrastructure.Database.csproj", "{23550631-41D5-40A0-8585-9AECCD45BC3F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Infrastructure.Default", "Lifestyles.Infrastructure.Default\Lifestyles.Infrastructure.Default.csproj", "{A0DF87EC-8CD5-4318-8402-6FD5F7E5547B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Infrastructure.Session", "Lifestyles.Infrastructure.Session\Lifestyles.Infrastructure.Session.csproj", "{9CDC9DFF-BD3A-43D2-B2D5-D30EE5FAE2F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Service", "Lifestyles.Service\Lifestyles.Service.csproj", "{2E3DA2BE-467D-4F57-A4DD-4D394883A6AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Functional.Lifestyles.Api", "Test.Functional.Lifestyles.Api\Test.Functional.Lifestyles.Api.csproj", "{48B49F8A-B59F-4F67-9209-5A1FF9AFF6F3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Integration.Lifestyles.Infrastructure.Database", "Test.Integration.Lifestyles.Infrastructure.Database\Test.Integration.Lifestyles.Infrastructure.Database.csproj", "{9403E7C4-D709-46BC-9F78-56E06EB75BB4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Unit.Lifestyles.Service", "Test.Unit.Lifestyles.Service\Test.Unit.Lifestyles.Service.csproj", "{8B6EDD57-83A9-4449-AC63-A77C90C595FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Integration.Lifestyles.Infrastructure.Default", "Test.Integration.Lifestyles.Infrastructure.Default\Test.Integration.Lifestyles.Infrastructure.Default.csproj", "{31AB07D1-840B-47CA-83EC-CFE0C9841842}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,5 +52,25 @@ Global
 		{8B6EDD57-83A9-4449-AC63-A77C90C595FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B6EDD57-83A9-4449-AC63-A77C90C595FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B6EDD57-83A9-4449-AC63-A77C90C595FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0DF87EC-8CD5-4318-8402-6FD5F7E5547B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0DF87EC-8CD5-4318-8402-6FD5F7E5547B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0DF87EC-8CD5-4318-8402-6FD5F7E5547B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0DF87EC-8CD5-4318-8402-6FD5F7E5547B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31AB07D1-840B-47CA-83EC-CFE0C9841842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31AB07D1-840B-47CA-83EC-CFE0C9841842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31AB07D1-840B-47CA-83EC-CFE0C9841842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31AB07D1-840B-47CA-83EC-CFE0C9841842}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFB691E9-FA6F-408D-97D1-E7A464815F4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFB691E9-FA6F-408D-97D1-E7A464815F4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFB691E9-FA6F-408D-97D1-E7A464815F4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFB691E9-FA6F-408D-97D1-E7A464815F4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10E40190-CC64-42CB-9DC0-57F86E9FC253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10E40190-CC64-42CB-9DC0-57F86E9FC253}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10E40190-CC64-42CB-9DC0-57F86E9FC253}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10E40190-CC64-42CB-9DC0-57F86E9FC253}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CDC9DFF-BD3A-43D2-B2D5-D30EE5FAE2F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CDC9DFF-BD3A-43D2-B2D5-D30EE5FAE2F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CDC9DFF-BD3A-43D2-B2D5-D30EE5FAE2F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CDC9DFF-BD3A-43D2-B2D5-D30EE5FAE2F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,5 @@
+[
+  { "amount": -65, "existenceAlias": "expected",  "label": "mobile service", "lifetime": 1,    "recurrenceAlias": "monthly" },
+  { "amount": -25, "existenceAlias": "suggested", "label": "mobile phone",   "lifetime": 1,    "recurrenceAlias": "monthly" },
+  { "amount": -15, "existenceAlias": "suggested", "label": "wall charger",   "lifetime": null, "recurrenceAlias": "never"   }
+]

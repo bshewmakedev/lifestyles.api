@@ -12,8 +12,8 @@ namespace Lifestyles.Api.Live.Models
         public VmLifestyle(ILifestyle lifestyle) : base(lifestyle)
         {
             Lifetime = lifestyle.Lifetime;
-            Recurrence = Lifestyles.Domain.Live.Map.Recurrence.Map(lifestyle.Recurrence);
-            Existence = Lifestyles.Domain.Live.Map.Existence.Map(lifestyle.Existence);
+            Recurrence = Lifestyles.Service.Live.Map.Recurrence.Map(lifestyle.Recurrence);
+            Existence = Lifestyles.Service.Live.Map.Existence.Map(lifestyle.Existence);
         }
     }
 }

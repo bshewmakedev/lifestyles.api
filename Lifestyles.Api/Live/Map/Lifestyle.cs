@@ -1,7 +1,7 @@
 using Lifestyles.Api.Live.Models;
 using LifestyleMap = Lifestyles.Service.Live.Map.Lifestyle;
 
-namespace Lifestyles.Api.Budget.Map
+namespace Lifestyles.Api.Live.Map
 {
     public class Lifestyle : LifestyleMap
     {
@@ -9,8 +9,8 @@ namespace Lifestyles.Api.Budget.Map
             vmLifestyle.Id,
             vmLifestyle.Label,
             vmLifestyle.Lifetime,
-            Lifestyles.Domain.Live.Map.Recurrence.Map(vmLifestyle.Recurrence),
-            Lifestyles.Domain.Live.Map.Existence.Map(vmLifestyle.Existence))
+            Lifestyles.Service.Live.Map.Recurrence.Map(vmLifestyle.Recurrence),
+            Lifestyles.Service.Live.Map.Existence.Map(vmLifestyle.Existence))
         { }
     }
 }

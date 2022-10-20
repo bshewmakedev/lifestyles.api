@@ -1,22 +1,24 @@
 using Lifestyles.Domain.Budget.Entities;
-using Lifestyles.Domain.Live.Constants;
 using Lifestyles.Domain.Live.Entities;
 using Lifestyles.Service.Categorize.Map;
+using DirectionEntity = Lifestyles.Domain.Live.Entities.Direction;
+using RecurrenceEntity = Lifestyles.Domain.Live.Entities.Recurrence;
+using ExistenceEntity = Lifestyles.Domain.Live.Entities.Existence;
 
 namespace Lifestyles.Service.Live.Map
 {
     public partial class Lifestyle : Category, ILifestyle
     {
         public int? Lifetime { get; private set; }
-        public Recurrence Recurrence { get; private set; }
-        public Existence Existence { get; private set; }
+        public RecurrenceEntity Recurrence { get; private set; }
+        public ExistenceEntity Existence { get; private set; }
 
         public Lifestyle(
             Guid? id = null,
             string label = "",
             int? lifetime = null,
-            Recurrence recurrence = Recurrence.Never,
-            Existence existence = Existence.Expected
+            RecurrenceEntity recurrence = RecurrenceEntity.Never,
+            ExistenceEntity existence = ExistenceEntity.Expected
         ) : base(id, label)
         {
             Recur(recurrence, lifetime);
@@ -29,54 +31,47 @@ namespace Lifestyles.Service.Live.Map
 
             if (budgets.Count() == 0) return 0;
 
-            //     const budgetsValidExpected = this.budgets.filter(
-            //       (b) =>
-            //         b.existence === Existence.Expected &&
-            //         !isNaN(b.amount) &&
-            //         ((b.isRecurring && b.recurrence && b.lifetime > 0) || !b.isRecurring)
-            //     );
-
-            //     const filteredBudgets = category ? category.filter(budgetsValidExpected) : budgetsValidExpected;
-
-            return budgets.Where(b => b.Existence.Equals(Existence.Expected)).Select(b =>
+            return budgets.Where(b => b.Existence.Equals(ExistenceEntity.Expected)).Select(b =>
             {
-                var recurrenceToInt = (Recurrence r) => {
-                    switch (r) {
-                        case Recurrence.Daily: return 1;
-                        case Recurrence.Weekly: return 7;
-                        case Recurrence.Monthly: return 31;
-                        case Recurrence.Annually: return 366;
+                var recurrenceToInt = (RecurrenceEntity r) =>
+                {
+                    switch (r)
+                    {
+                        case RecurrenceEntity.Daily: return 1;
+                        case RecurrenceEntity.Weekly: return 7;
+                        case RecurrenceEntity.Monthly: return 31;
+                        case RecurrenceEntity.Annually: return 366;
                         default: return 0;
                     }
                 };
 
-                var directionInt = Lifestyles.Domain.Live.Map.Direction.Map(b.Direction);
+                var directionInt = Lifestyles.Service.Live.Map.Direction.Map(b.Direction);
                 var recurrenceIntLifestyle = recurrenceToInt(Recurrence);
                 var recurrenceIntBudget = recurrenceToInt(b.Recurrence);
 
-                if (b.Recurrence.Equals(Recurrence.Never))
+                if (b.Recurrence.Equals(RecurrenceEntity.Never))
                 {
                     return directionInt * b.Amount;
                 }
                 else
                 {
-                    return directionInt * (((interval + 1) * recurrenceIntLifestyle) / Math.Max(recurrenceIntBudget, 1) / Math.Max(b.Lifetime ?? 0, 1)) * b.Amount;   
+                    return directionInt * (((interval + 1) * recurrenceIntLifestyle) / Math.Max(recurrenceIntBudget, 1) / Math.Max(b.Lifetime ?? 0, 1)) * b.Amount;
                 }
             }).Sum() ?? 0;
         }
 
-        public Direction GetDirection(IEnumerable<IBudget> budgets)
+        public DirectionEntity GetDirection(IEnumerable<IBudget> budgets)
         {
-            var sum = budgets.Sum(b => b.Amount * Lifestyles.Domain.Live.Map.Direction.Map(b.Direction));
+            var sum = budgets.Sum(b => b.Amount * Lifestyles.Service.Live.Map.Direction.Map(b.Direction));
 
-            return Lifestyles.Domain.Live.Map.Direction.Map((int)(sum / Math.Max(Math.Abs(sum), 1)));
+            return Lifestyles.Service.Live.Map.Direction.Map((int)(sum / Math.Max(Math.Abs(sum), 1)));
         }
 
-        public void Recur(Recurrence recurrence = Recurrence.Never, int? lifetime = null)
+        public void Recur(RecurrenceEntity recurrence = RecurrenceEntity.Never, int? lifetime = null)
         {
             Recurrence = recurrence;
 
-            if (recurrence.Equals(Lifestyles.Domain.Live.Constants.Recurrence.Never))
+            if (recurrence.Equals(Lifestyles.Domain.Live.Entities.Recurrence.Never))
             {
                 Lifetime = null;
             }
@@ -86,7 +81,7 @@ namespace Lifestyles.Service.Live.Map
             }
         }
 
-        public void Exist(Existence existence = Existence.Expected)
+        public void Exist(ExistenceEntity existence = ExistenceEntity.Expected)
         {
             Existence = existence;
         }

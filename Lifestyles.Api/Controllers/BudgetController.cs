@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Lifestyles.Api.Budget.Models;
 using Lifestyles.Domain.Budget.Repositories;
-using BudgetTypeMap = Lifestyles.Domain.Budget.Map.BudgetType;
+using BudgetTypeMap = Lifestyles.Service.Budget.Map.BudgetType;
+using BudgetMap = Lifestyles.Api.Budget.Map.Budget;
 
 namespace Lifestyles.Api.Controllers;
 
@@ -42,5 +43,23 @@ public class BudgetController : ControllerBase
     public IEnumerable<VmBudget> FindByCategoryId(Guid categoryId)
     {
         return _budgetRepo.FindCategorizedAs(categoryId).Select(b => new VmBudget(b));
+    }
+
+    [HttpPost]
+    [Route("budgets/upsert/{categoryId}")]
+    public IEnumerable<VmBudget> Upsert(List<VmBudget> vmBudgets)
+    {
+        return _budgetRepo
+            .Upsert(vmBudgets.Select(b => new BudgetMap(b)))
+            .Select(b => new VmBudget(b));
+    }
+
+    [HttpPost]
+    [Route("budgets/remove")]
+    public IEnumerable<VmBudget> Remove(List<VmBudget> vmBudgets)
+    {
+        return _budgetRepo
+            .Remove(vmBudgets.Select(b => new BudgetMap(b)))
+            .Select(b => new VmBudget(b));
     }
 }
