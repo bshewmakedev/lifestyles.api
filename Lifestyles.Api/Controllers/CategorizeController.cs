@@ -36,7 +36,7 @@ public class CategorizeController : ControllerBase
         return _categoryRepo.FindCategorizedAs(lifestyleId);
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("categories/upsert")]
     public IEnumerable<VmCategory> UpsertCategories(List<VmCategory> vmCategories)
     {

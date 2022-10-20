@@ -5,7 +5,7 @@ namespace Lifestyles.Service.Categorize.Map
 {
     public partial class Category : ICategory
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public string Label { get; set; } = string.Empty;
 
         public Category(

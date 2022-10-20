@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Domain", "Lifest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Infrastructure.Default", "Lifestyles.Infrastructure.Default\Lifestyles.Infrastructure.Default.csproj", "{A0DF87EC-8CD5-4318-8402-6FD5F7E5547B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Infrastructure.Session", "Lifestyles.Infrastructure.Session\Lifestyles.Infrastructure.Session.csproj", "{9CDC9DFF-BD3A-43D2-B2D5-D30EE5FAE2F2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Service", "Lifestyles.Service\Lifestyles.Service.csproj", "{2E3DA2BE-467D-4F57-A4DD-4D394883A6AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Integration.Lifestyles.Infrastructure.Default", "Test.Integration.Lifestyles.Infrastructure.Default\Test.Integration.Lifestyles.Infrastructure.Default.csproj", "{31AB07D1-840B-47CA-83EC-CFE0C9841842}"

@@ -52,7 +52,7 @@ public class LiveController : ControllerBase
         return _lifestyleRepo.Find().Select(l => new VmLifestyle(l));
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("lifestyles/upsert")]
     public IEnumerable<VmLifestyle> UpsertLifestyles(List<VmLifestyle> vmLifestyles)
     {
