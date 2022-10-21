@@ -10,10 +10,10 @@ namespace Lifestyles.Infrastructure.Session.Categorize.Models
         public JsonCategorize() { }
 
         public JsonCategorize(
-            IIdentified entityId, 
+            IIdentified entity, 
             Guid categoryId)
         {
-            EntityId = entityId.Id;
+            EntityId = entity.Id;
             CategoryId = categoryId;
         }
     }

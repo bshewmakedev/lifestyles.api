@@ -5,6 +5,7 @@ using Lifestyles.Domain.Live.Repositories;
 using Lifestyles.Infrastructure.Session.Budget.Models;
 using Lifestyles.Infrastructure.Session.Categorize.Comparers;
 using Lifestyles.Infrastructure.Session.Categorize.Models;
+using Newtonsoft.Json;
 using BudgetMap = Lifestyles.Infrastructure.Session.Budget.Map.Budget;
 
 namespace Lifestyles.Infrastructure.Session.Budget.Repositories
@@ -60,9 +61,12 @@ namespace Lifestyles.Infrastructure.Session.Budget.Repositories
         {
             var jsonCategorize = _jsonCategorize;
 
+            Console.WriteLine("Current Categorize Suite:");
+            Console.WriteLine(JsonConvert.SerializeObject(_jsonCategorize));
+
             return Find(b => jsonCategorize.Contains(
                 new JsonCategorize(b, categoryId),
-                new CategoryComparer()));
+                new CategorizeComparer()));
         }
 
         public IEnumerable<IBudget> Categorize(Guid categoryId, IEnumerable<IBudget> budgets)
@@ -71,9 +75,9 @@ namespace Lifestyles.Infrastructure.Session.Budget.Repositories
                 .Select(b => new JsonCategorize(b, categoryId))
                 .Union(_jsonCategorize, new EntityComparer())
                 .ToList();
-            
+
             _jsonCategorize = categorizeMerged;
-            
+
             return FindCategorizedAs(categoryId);
         }
 

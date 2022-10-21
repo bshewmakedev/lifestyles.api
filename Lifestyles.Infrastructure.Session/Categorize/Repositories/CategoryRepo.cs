@@ -63,7 +63,7 @@ namespace Lifestyles.Infrastructure.Session.Categorize.Repositories
 
             return Find(c => jsonCategorize.Contains(
                 new JsonCategorize(c, categoryId),
-                new CategoryComparer()));
+                new CategorizeComparer()));
         }
 
         public IEnumerable<ICategory> Categorize(Guid categoryId, IEnumerable<ICategory> categories)
