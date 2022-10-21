@@ -18,6 +18,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IBudgetService, BudgetService>();
 builder.Services.AddScoped<ICategorizeService, CategorizeService>();
 builder.Services.AddScoped<ILiveService, LiveService>();
+builder.Services.AddScoped<IKeyValueRepo, SessionRepo>();
 builder.Services.AddScoped<IBudgetRepo, BudgetRepo>();
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
 builder.Services.AddScoped<ILifestyleRepo, LifestyleRepo>();

@@ -22,15 +22,6 @@ public class BudgetController : ControllerBase
     }
 
     [HttpGet]
-    [Route("budgettypes/find")]
-    public IEnumerable<string> FindBudgetTypes()
-    {
-        return _budgetService
-            .FindBudgetTypes()
-            .Select(r => VmBudgetType.Map(r));
-    }
-
-    [HttpGet]
     [Route("budgets/find")]
     public IEnumerable<VmBudget> FindBudgets()
     {

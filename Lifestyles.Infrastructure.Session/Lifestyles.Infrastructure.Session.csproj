@@ -7,11 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Lifestyles.Domain\Lifestyles.Domain.csproj" />
+    <ProjectReference Include="..\Lifestyles.Service\Lifestyles.Service.csproj" />
   </ItemGroup>
 
 </Project>

@@ -13,11 +13,6 @@ namespace Lifestyles.Service.Budget.Services
             _budgetRepo = budgetRepo;
         }
 
-        public IEnumerable<BudgetType> FindBudgetTypes()
-        {
-            return Enum.GetValues(typeof(BudgetType)).Cast<BudgetType>();
-        }
-
         public IEnumerable<IBudget> FindBudgets()
         {
             return _budgetRepo.Find();

@@ -1,8 +1,8 @@
 using Lifestyles.Domain.Budget.Entities;
 
-namespace Lifestyles.Api.Budget.Models
+namespace Lifestyles.Infrastructure.Session.Budget.Models
 {
-    public static class VmBudgetType
+    public static class JsonBudgetType
     {
         public static string Map(this BudgetType budgetType)
         {
