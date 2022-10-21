@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Lifestyles.Domain\Lifestyles.Domain.csproj" />
     <ProjectReference Include="..\Lifestyles.Service\Lifestyles.Service.csproj" />
+    <ProjectReference Include="..\Lifestyles.Infrastructure.Session\Lifestyles.Infrastructure.Session.csproj" />
   </ItemGroup>
 
 </Project>

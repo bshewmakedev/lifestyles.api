@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Domain", "Lifest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Service", "Lifestyles.Service\Lifestyles.Service.csproj", "{2E3DA2BE-467D-4F57-A4DD-4D394883A6AC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Infrastructure.Session", "Lifestyles.Infrastructure.Session\Lifestyles.Infrastructure.Session.csproj", "{EFC9A2A1-1D4D-4032-9DBD-45A53D175BFB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,5 +68,9 @@ Global
 		{9CDC9DFF-BD3A-43D2-B2D5-D30EE5FAE2F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CDC9DFF-BD3A-43D2-B2D5-D30EE5FAE2F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CDC9DFF-BD3A-43D2-B2D5-D30EE5FAE2F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFC9A2A1-1D4D-4032-9DBD-45A53D175BFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFC9A2A1-1D4D-4032-9DBD-45A53D175BFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFC9A2A1-1D4D-4032-9DBD-45A53D175BFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFC9A2A1-1D4D-4032-9DBD-45A53D175BFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
