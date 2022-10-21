@@ -84,4 +84,11 @@ public class LiveController : ControllerBase
             .CompareLifestyles(vmLifestyles.Select(l => new LifestyleMap(l)))
             .Select(l => new VmComparison<VmLifestyle, ILifestyle>(l));
     }
+
+    [HttpGet]
+    [Route("amount/get/{lifestyleId}")]
+    public decimal GetSignedAmount(Guid lifestyleId)
+    {
+        return _liveService.GetSignedAmount(lifestyleId);
+    }
 }

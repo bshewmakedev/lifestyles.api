@@ -25,7 +25,7 @@ namespace Lifestyles.Service.Live.Map
             Exist(existence);
         }
 
-        public decimal GetAmount(IEnumerable<IBudget> budgets, int? interval = null)
+        public decimal GetSignedAmount(IEnumerable<IBudget> budgets, int? interval = null)
         {
             interval = interval ?? Lifetime - 1;
 
@@ -59,22 +59,22 @@ namespace Lifestyles.Service.Live.Map
             }).Sum() ?? 0;
         }
 
-        public DirectionEntity GetDirection(IEnumerable<IBudget> budgets)
-        {
-            var sum = budgets.Sum(b => b.Amount * (int)b.Direction);
+        // public DirectionEntity GetDirection(IEnumerable<IBudget> budgets)
+        // {
+        //     var sum = budgets.Sum(b => b.Amount * (int)b.Direction);
 
-            if (sum > 0)
-            {
-                return DirectionEntity.In;
-            }
+        //     if (sum > 0)
+        //     {
+        //         return DirectionEntity.In;
+        //     }
 
-            if (sum < 0)
-            {
-                return DirectionEntity.Out;
-            }
+        //     if (sum < 0)
+        //     {
+        //         return DirectionEntity.Out;
+        //     }
 
-            return DirectionEntity.Neutral;
-        }
+        //     return DirectionEntity.Neutral;
+        // }
 
         public void Recur(RecurrenceEntity recurrence = RecurrenceEntity.Never, int? lifetime = null)
         {
