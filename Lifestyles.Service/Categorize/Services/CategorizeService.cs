@@ -1,28 +1,36 @@
 using Lifestyles.Domain.Categorize.Entities;
+using Lifestyles.Domain.Categorize.Repositories;
 using Lifestyles.Domain.Categorize.Services;
 
 namespace Lifestyles.Service.Categorize.Services
 {
     public class CategorizeService : ICategorizeService
     {
+        private readonly ICategoryRepo _categoryRepo;
+
+        public CategorizeService(ICategoryRepo categoryRepo)
+        {
+            _categoryRepo = categoryRepo;
+        }
+
         public IEnumerable<ICategory> FindCategories()
         {
-            throw new System.NotImplementedException();
+            return _categoryRepo.Find();
         }
 
         public IEnumerable<ICategory> FindCategoriesByCategoryId(Guid categoryId)
         {
-            throw new System.NotImplementedException();
+            return _categoryRepo.FindCategorizedAs(categoryId);
         }
 
-        public IEnumerable<ICategory> UpsertCategories(IEnumerable<ICategory> budgets)
+        public IEnumerable<ICategory> UpsertCategories(IEnumerable<ICategory> categories)
         {
-            throw new System.NotImplementedException();
+            return _categoryRepo.Upsert(categories);
         }
 
-        public IEnumerable<ICategory> RemoveCategories(IEnumerable<ICategory> budgets)
+        public IEnumerable<ICategory> RemoveCategories(IEnumerable<ICategory> categories)
         {
-            throw new System.NotImplementedException();
+            return _categoryRepo.Remove(categories);
         }
     }
 }

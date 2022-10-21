@@ -1,39 +1,47 @@
 using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Live.Entities;
+using Lifestyles.Domain.Live.Repositories;
 using Lifestyles.Domain.Live.Services;
 
 namespace Lifestyles.Service.Live.Services
 {
     public class LiveService : ILiveService
     {
+        private readonly ILifestyleRepo _lifestyleRepo;
+
+        public LiveService(ILifestyleRepo lifestyleRepo)
+        {
+            _lifestyleRepo = lifestyleRepo;
+        }
+        
         public IEnumerable<Direction> FindDirections()
         {
-            throw new System.NotImplementedException();
+            return Enum.GetValues(typeof(Direction)).Cast<Direction>();
         }
 
         public IEnumerable<Recurrence> FindRecurrences()
         {
-            throw new System.NotImplementedException();
+            return Enum.GetValues(typeof(Recurrence)).Cast<Recurrence>();
         }
 
         public IEnumerable<Existence> FindExistences()
         {
-            throw new System.NotImplementedException();
+            return Enum.GetValues(typeof(Existence)).Cast<Existence>();
         }
 
         public IEnumerable<ILifestyle> FindLifestyles()
         {
-            throw new System.NotImplementedException();
+            return _lifestyleRepo.Find();
         }
 
-        public IEnumerable<ILifestyle> UpsertLifestyles(IEnumerable<ILifestyle> budgets)
+        public IEnumerable<ILifestyle> UpsertLifestyles(IEnumerable<ILifestyle> lifestyles)
         {
-            throw new System.NotImplementedException();
+            return _lifestyleRepo.Upsert(lifestyles);
         }
 
-        public IEnumerable<ILifestyle> RemoveLifestyles(IEnumerable<ILifestyle> budgets)
+        public IEnumerable<ILifestyle> RemoveLifestyles(IEnumerable<ILifestyle> lifestyles)
         {
-            throw new System.NotImplementedException();
+            return _lifestyleRepo.Remove(lifestyles);
         }
 
         public IEnumerable<IComparison<ILifestyle>> CompareLifestyles(IEnumerable<ILifestyle> lifestyles)
