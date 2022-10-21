@@ -1,5 +1,4 @@
 using Lifestyles.Domain.Live.Entities;
-using Lifestyles.Domain.Live.Entities;
 
 namespace Lifestyles.Domain.Budget.Entities
 {

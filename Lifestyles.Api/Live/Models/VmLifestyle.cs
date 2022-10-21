@@ -9,13 +9,13 @@ namespace Lifestyles.Api.Live.Models
         public string Recurrence { get; set; } = "never";
         public string Existence { get; set; } = "expected";
 
-        public VmLifestyle() {}
+        public VmLifestyle() { }
 
         public VmLifestyle(ILifestyle lifestyle) : base(lifestyle)
         {
             Lifetime = lifestyle.Lifetime;
-            Recurrence = Lifestyles.Service.Live.Map.Recurrence.Map(lifestyle.Recurrence);
-            Existence = Lifestyles.Service.Live.Map.Existence.Map(lifestyle.Existence);
+            Recurrence = Lifestyles.Api.Live.Models.VmRecurrence.Map(lifestyle.Recurrence);
+            Existence = Lifestyles.Api.Live.Models.VmExistence.Map(lifestyle.Existence);
         }
     }
 }

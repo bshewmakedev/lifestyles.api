@@ -3,7 +3,6 @@ using Lifestyles.Service.Live.Map;
 using DirectionEntity = Lifestyles.Domain.Live.Entities.Direction;
 using RecurrenceEntity = Lifestyles.Domain.Live.Entities.Recurrence;
 using ExistenceEntity = Lifestyles.Domain.Live.Entities.Existence;
-using DirectionMap = Lifestyles.Service.Live.Map.Direction;
 
 namespace Lifestyles.Service.Budget.Map
 {
@@ -27,7 +26,19 @@ namespace Lifestyles.Service.Budget.Map
         public void Value(decimal amount = 0)
         {
             Amount = Math.Abs(amount);
-            Direction = DirectionMap.Map((int)(amount / Math.Max(Amount, 1)));
+
+            if ((int)amount > 0)
+            {
+                Direction = DirectionEntity.In;
+            }
+            else if ((int)amount < 0)
+            {
+                Direction = DirectionEntity.Out;
+            }
+            else
+            {
+                Direction = DirectionEntity.Neutral;
+            }
         }
     }
 }

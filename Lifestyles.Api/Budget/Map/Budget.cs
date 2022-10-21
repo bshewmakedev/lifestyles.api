@@ -10,8 +10,8 @@ namespace Lifestyles.Api.Budget.Map
             vmBudget.Id,
             vmBudget.Label,
             vmBudget.Lifetime,
-            Lifestyles.Service.Live.Map.Recurrence.Map(vmBudget.Recurrence),
-            Lifestyles.Service.Live.Map.Existence.Map(vmBudget.Existence))
+            Lifestyles.Api.Live.Map.Recurrence.Map(vmBudget.Recurrence),
+            Lifestyles.Api.Live.Map.Existence.Map(vmBudget.Existence))
         { }
     }
 }

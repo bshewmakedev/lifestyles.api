@@ -1,18 +1,7 @@
-using Lifestyles.Domain.Budget.Repositories;
-using Lifestyles.Domain.Categorize.Repositories;
-using Lifestyles.Domain.Live.Repositories;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-// builder.Services.AddSingleton<IKeyValueRepo, SessionRepo>();
-// builder.Services.AddScoped<IBudgetTypeRepo, BudgetTypeRepo>();
-// builder.Services.AddScoped<IRecurrenceRepo, RecurrenceRepo>();
-// builder.Services.AddScoped<IExistenceRepo, ExistenceRepo>();
-// builder.Services.AddScoped<IBudgetRepo, BudgetRepo>();
-// builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
-// builder.Services.AddScoped<ILifestyleRepo, LifestyleRepo>();
 builder.Services.AddControllers().AddNewtonsoftJson();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

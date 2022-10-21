@@ -9,8 +9,8 @@ namespace Lifestyles.Api.Live.Map
             vmLifestyle.Id,
             vmLifestyle.Label,
             vmLifestyle.Lifetime,
-            Lifestyles.Service.Live.Map.Recurrence.Map(vmLifestyle.Recurrence),
-            Lifestyles.Service.Live.Map.Existence.Map(vmLifestyle.Existence))
+            Lifestyles.Api.Live.Map.Recurrence.Map(vmLifestyle.Recurrence),
+            Lifestyles.Api.Live.Map.Existence.Map(vmLifestyle.Existence))
         { }
     }
 }

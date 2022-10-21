@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Lifestyles.Api.Categorize.Models;
-using Lifestyles.Domain.Categorize.Entities;
-using Lifestyles.Domain.Budget.Repositories;
-using Lifestyles.Domain.Categorize.Repositories;
+using Lifestyles.Domain.Categorize.Services;
 using CategoryMap = Lifestyles.Api.Categorize.Map.Category;
 
 namespace Lifestyles.Api.Controllers;
@@ -12,36 +10,40 @@ namespace Lifestyles.Api.Controllers;
 public class CategorizeController : ControllerBase
 {
     private readonly ILogger<BudgetController> _logger;
-    private readonly ICategoryRepo _categoryRepo;
+    private readonly ICategorizeService _categorizeService;
 
     public CategorizeController(
         ILogger<BudgetController> logger,
-        ICategoryRepo categoryRepo)
+        ICategorizeService categorizeService)
     {
         _logger = logger;
-        _categoryRepo = categoryRepo;
+        _categorizeService = categorizeService;
     }
 
     [HttpGet]
     [Route("categories/find")]
-    public IEnumerable<ICategory> Find()
+    public IEnumerable<VmCategory> FindCategories()
     {
-        return _categoryRepo.Find();
+        return _categorizeService
+            .FindCategories()
+            .Select(c => new VmCategory(c));
     }
 
     [HttpGet]
-    [Route("categories/find/{lifestyleId}")]
-    public IEnumerable<ICategory> FindByLifestyleId(Guid lifestyleId)
+    [Route("categories/find/{categoryId}")]
+    public IEnumerable<VmCategory> FindCategoriesByCategoryId(Guid categoryId)
     {
-        return _categoryRepo.FindCategorizedAs(lifestyleId);
+        return _categorizeService
+            .FindCategoriesByCategoryId(categoryId)
+            .Select(c => new VmCategory(c));
     }
 
     [HttpPost]
     [Route("categories/upsert")]
     public IEnumerable<VmCategory> UpsertCategories(List<VmCategory> vmCategories)
     {
-        return _categoryRepo
-            .Upsert(vmCategories.Select(c => new CategoryMap(c)))
+        return _categorizeService
+            .UpsertCategories(vmCategories.Select(c => new CategoryMap(c)))
             .Select(c => new VmCategory(c));
     }
 
@@ -49,8 +51,8 @@ public class CategorizeController : ControllerBase
     [Route("categories/remove")]
     public IEnumerable<VmCategory> RemoveCategories(List<VmCategory> vmCategories)
     {
-        return _categoryRepo
-            .Remove(vmCategories.Select(c => new CategoryMap(c)))
+        return _categorizeService
+            .RemoveCategories(vmCategories.Select(c => new CategoryMap(c)))
             .Select(c => new VmCategory(c));
     }
 }

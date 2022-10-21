@@ -45,26 +45,35 @@ namespace Lifestyles.Service.Live.Map
                     }
                 };
 
-                var directionInt = Lifestyles.Service.Live.Map.Direction.Map(b.Direction);
                 var recurrenceIntLifestyle = recurrenceToInt(Recurrence);
                 var recurrenceIntBudget = recurrenceToInt(b.Recurrence);
 
                 if (b.Recurrence.Equals(RecurrenceEntity.Never))
                 {
-                    return directionInt * b.Amount;
+                    return (int)b.Direction * b.Amount;
                 }
                 else
                 {
-                    return directionInt * (((interval + 1) * recurrenceIntLifestyle) / Math.Max(recurrenceIntBudget, 1) / Math.Max(b.Lifetime ?? 0, 1)) * b.Amount;
+                    return (int)b.Direction * (((interval + 1) * recurrenceIntLifestyle) / Math.Max(recurrenceIntBudget, 1) / Math.Max(b.Lifetime ?? 0, 1)) * b.Amount;
                 }
             }).Sum() ?? 0;
         }
 
         public DirectionEntity GetDirection(IEnumerable<IBudget> budgets)
         {
-            var sum = budgets.Sum(b => b.Amount * Lifestyles.Service.Live.Map.Direction.Map(b.Direction));
+            var sum = budgets.Sum(b => b.Amount * (int)b.Direction);
 
-            return Lifestyles.Service.Live.Map.Direction.Map((int)(sum / Math.Max(Math.Abs(sum), 1)));
+            if (sum > 0)
+            {
+                return DirectionEntity.In;
+            }
+
+            if (sum < 0)
+            {
+                return DirectionEntity.Out;
+            }
+
+            return DirectionEntity.Neutral;
         }
 
         public void Recur(RecurrenceEntity recurrence = RecurrenceEntity.Never, int? lifetime = null)

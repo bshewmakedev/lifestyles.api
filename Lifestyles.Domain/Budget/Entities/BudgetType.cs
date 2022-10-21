@@ -6,11 +6,4 @@ namespace Lifestyles.Domain.Budget.Entities
         Category,
         Lifestyle
     }
-
-    public class BudgetTypeAlias
-    {
-        public const string Budget = "budget";
-        public const string Category = "category";
-        public const string Lifestyle = "lifestyle";
-    }
 }

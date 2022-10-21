@@ -1,0 +1,14 @@
+using Lifestyles.Domain.Budget.Entities;
+
+namespace Lifestyles.Domain.Budget.Services
+{
+    public interface IBudgetService
+    {
+        IEnumerable<BudgetType> FindBudgetTypes();
+        IEnumerable<IBudget> FindBudgets();
+        IEnumerable<IBudget> FindBudgetsByCategoryId(Guid categoryId);
+        IEnumerable<IBudget> UpsertBudgets(IEnumerable<IBudget> budgets);
+        IEnumerable<IBudget> RemoveBudgets(IEnumerable<IBudget> budgets);
+        IEnumerable<IComparison<IBudget>> CompareBudgets(IEnumerable<IBudget> budgets);
+    }
+}
