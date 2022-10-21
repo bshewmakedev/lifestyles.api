@@ -6,9 +6,9 @@ namespace Lifestyles.Infrastructure.Session.Live.Map
 {
     public class Lifestyle : LifestyleMap
     {
-        public Lifestyle(
-            JsonBudget jsonBudget,
-            JsonCategorize? jsonCategorize = null) : base(
+        public Lifestyle() { }
+
+        public Lifestyle(JsonBudget jsonBudget) : base(
             jsonBudget.Id,
             jsonBudget.Label,
             jsonBudget.Lifetime,

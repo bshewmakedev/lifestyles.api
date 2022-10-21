@@ -6,9 +6,9 @@ namespace Lifestyles.Infrastructure.Session.Budget.Map
 {
     public class Budget : BudgetMap
     {
-        public Budget(
-            JsonBudget jsonBudget,
-            JsonCategorize? jsonCategorize = null) : base(
+        public Budget() { }
+
+        public Budget(JsonBudget jsonBudget) : base(
             jsonBudget.Amount ?? 0,
             jsonBudget.Id,
             jsonBudget.Label,
