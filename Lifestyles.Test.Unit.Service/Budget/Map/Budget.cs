@@ -6,8 +6,6 @@ namespace Lifestyles.Test.Unit.Service.Budget.Map
 {
     public class Budget
     {
-
-
         [Fact]
         public void Should_GetBudget_GivenNoParams()
         {

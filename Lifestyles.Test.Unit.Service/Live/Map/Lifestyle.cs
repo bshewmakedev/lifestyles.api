@@ -6,7 +6,6 @@ namespace Lifestyles.Test.Unit.Service.Live.Map
 {
     public class Lifestyle
     {
-
         [Fact]
         public void Should_GetLifestyle_GivenNoParams()
         {
