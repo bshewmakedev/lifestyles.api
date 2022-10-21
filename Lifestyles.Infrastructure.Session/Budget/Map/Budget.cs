@@ -1,11 +1,14 @@
 using Lifestyles.Infrastructure.Session.Budget.Models;
+using Lifestyles.Infrastructure.Session.Categorize.Models;
 using BudgetMap = Lifestyles.Service.Budget.Map.Budget;
 
 namespace Lifestyles.Infrastructure.Session.Budget.Map
 {
     public class Budget : BudgetMap
     {
-        public Budget(JsonBudget jsonBudget) : base(
+        public Budget(
+            JsonBudget jsonBudget,
+            JsonCategorize? jsonCategorize = null) : base(
             jsonBudget.Amount ?? 0,
             jsonBudget.Id,
             jsonBudget.Label,

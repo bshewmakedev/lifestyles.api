@@ -1,11 +1,14 @@
 using Lifestyles.Infrastructure.Session.Budget.Models;
+using Lifestyles.Infrastructure.Session.Categorize.Models;
 using LifestyleMap = Lifestyles.Service.Live.Map.Lifestyle;
 
 namespace Lifestyles.Infrastructure.Session.Live.Map
 {
     public class Lifestyle : LifestyleMap
     {
-        public Lifestyle(JsonBudget jsonBudget) : base(
+        public Lifestyle(
+            JsonBudget jsonBudget,
+            JsonCategorize? jsonCategorize = null) : base(
             jsonBudget.Id,
             jsonBudget.Label,
             jsonBudget.Lifetime,

@@ -19,7 +19,11 @@ namespace Lifestyles.Infrastructure.Session.Live.Repositories
             }
             set
             {
-                _keyValueRepo.SetItem("tbl_Budget", value);
+                _keyValueRepo.SetItem("tbl_Budget", _keyValueRepo
+                    .GetItem<List<JsonBudget>>("tbl_Budget")
+                    .Where(b => !b.BudgetType.Equals("lifestyle"))
+                    .Union(value)
+                    .ToList());
             }
         }
         
@@ -32,30 +36,28 @@ namespace Lifestyles.Infrastructure.Session.Live.Repositories
 
         public IEnumerable<ILifestyle> Find(Func<ILifestyle, bool>? predicate = null)
         {
-            return _jsonLifestyles.Select(l => new LifestyleMap(l));
+            return _jsonLifestyles
+                .Select(l => new LifestyleMap(l))
+                .Where(l => predicate == null ? true : predicate(l));
         }
 
         public IEnumerable<ILifestyle> Upsert(IEnumerable<ILifestyle> lifestyles)
         {
             var lifestylesMerged = lifestyles
-                .Except(
-                    _jsonLifestyles.Select(l => new LifestyleMap(l)),
-                    new IdentifiedComparer<ILifestyle>());
+                .Union(Find(), new IdentifiedComparer<ILifestyle>());
 
             _jsonLifestyles = lifestylesMerged.Select(l => new JsonBudget(l)).ToList();
             
-            return lifestylesMerged;
+            return Find();
         }
 
         public IEnumerable<ILifestyle> Remove(IEnumerable<ILifestyle> lifestyles)
         {
-            var lifestylesFiltered = _jsonLifestyles
-                .Select(l => new LifestyleMap(l))
-                .Except(lifestyles, new IdentifiedComparer<ILifestyle>());
+            var lifestylesFiltered = Find().Except(lifestyles, new IdentifiedComparer<ILifestyle>());
 
             _jsonLifestyles = lifestylesFiltered.Select(l => new JsonBudget(l)).ToList();
             
-            return lifestylesFiltered;
+            return Find();
         }
     }
 }

@@ -7,6 +7,8 @@ namespace Lifestyles.Api.Budget.Models
     {
         public decimal Amount { get; set; }
 
+        public VmBudget() { }
+
         public VmBudget(IBudget budget) : base(budget)
         {
             Amount = budget.Amount;

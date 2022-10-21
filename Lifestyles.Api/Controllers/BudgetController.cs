@@ -40,7 +40,18 @@ public class BudgetController : ControllerBase
     }
 
     [HttpPost]
-    [Route("budgets/upsert/{categoryId}")]
+    [Route("budgets/categorize/{categoryId}")]
+    public IEnumerable<VmBudget> CategorizeBudgets(
+        Guid categoryId, 
+        List<VmBudget> vmBudgets)
+    {
+        return _budgetService
+            .CategorizeBudgets(categoryId, vmBudgets.Select(b => new BudgetMap(b)))
+            .Select(b => new VmBudget(b));
+    }
+
+    [HttpPost]
+    [Route("budgets/upsert")]
     public IEnumerable<VmBudget> UpsertBudgets(List<VmBudget> vmBudgets)
     {
         return _budgetService

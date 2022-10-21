@@ -14,6 +14,8 @@ namespace Lifestyles.Infrastructure.Session.Budget.Models
         public string? Recurrence { get; set; }
         public string? Existence { get; set; }
 
+        public JsonBudget() { }
+
         public JsonBudget(IBudget budget)
         {
             Id = budget.Id;

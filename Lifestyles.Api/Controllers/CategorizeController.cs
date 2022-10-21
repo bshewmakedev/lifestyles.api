@@ -39,6 +39,15 @@ public class CategorizeController : ControllerBase
     }
 
     [HttpPost]
+    [Route("categories/categorize/{categoryId}")]
+    public IEnumerable<VmCategory> CategorizeCategories(Guid categoryId, List<VmCategory> vmCategories)
+    {
+        return _categorizeService
+            .CategorizeCategories(categoryId, vmCategories.Select(c => new CategoryMap(c)))
+            .Select(b => new VmCategory(b));
+    }
+
+    [HttpPost]
     [Route("categories/upsert")]
     public IEnumerable<VmCategory> UpsertCategories(List<VmCategory> vmCategories)
     {
