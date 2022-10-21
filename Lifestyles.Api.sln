@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Service", "Lifes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Infrastructure.Session", "Lifestyles.Infrastructure.Session\Lifestyles.Infrastructure.Session.csproj", "{EFC9A2A1-1D4D-4032-9DBD-45A53D175BFB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Test.Unit.Service", "Lifestyles.Test.Unit.Service\Lifestyles.Test.Unit.Service.csproj", "{392C4BD5-1B73-48AE-8785-9A942780CADB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,5 +74,9 @@ Global
 		{EFC9A2A1-1D4D-4032-9DBD-45A53D175BFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFC9A2A1-1D4D-4032-9DBD-45A53D175BFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFC9A2A1-1D4D-4032-9DBD-45A53D175BFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{392C4BD5-1B73-48AE-8785-9A942780CADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{392C4BD5-1B73-48AE-8785-9A942780CADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{392C4BD5-1B73-48AE-8785-9A942780CADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{392C4BD5-1B73-48AE-8785-9A942780CADB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
