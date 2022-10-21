@@ -69,16 +69,29 @@ namespace Lifestyles.Infrastructure.Session.Live.Repositories
                 new CategorizeComparer()));
         }
 
-        public IEnumerable<TEntity> Categorize(Guid categoryId, IEnumerable<TEntity> entities)
+        public IEnumerable<TEntity> Categorize(Guid? categoryId, IEnumerable<TEntity> entities)
         {
+            var jsonCategorize = _jsonCategorize;
+
+            // Decategorize when categoryId is null.
+            if (!categoryId.HasValue)
+            {
+                _jsonCategorize = jsonCategorize.Except(
+                    entities.Select(e => new JsonCategorize(e, Guid.Empty)),
+                    new EntityComparer()).ToList();
+
+                return new List<TEntity>();
+            }
+
+            // Categorize when categoryId is present.
             var categorizeMerged = entities
-                .Select(b => new JsonCategorize(b, categoryId))
-                .Union(_jsonCategorize, new EntityComparer())
+                .Select(b => new JsonCategorize(b, categoryId.Value))
+                .Union(jsonCategorize, new EntityComparer())
                 .ToList();
 
             _jsonCategorize = categorizeMerged;
 
-            return FindCategorizedAs(categoryId);
+            return FindCategorizedAs(categoryId.Value);
         }
 
         public IEnumerable<TEntity> Upsert(IEnumerable<TEntity> entities)

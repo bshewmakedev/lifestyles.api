@@ -23,7 +23,7 @@ namespace Lifestyles.Service.Categorize.Services
             return _categoryRepo.FindCategorizedAs(categoryId);
         }
 
-        public IEnumerable<ICategory> CategorizeCategories(Guid categoryId, IEnumerable<ICategory> categories)
+        public IEnumerable<ICategory> CategorizeCategories(Guid? categoryId, IEnumerable<ICategory> categories)
         {
             return _categoryRepo.Categorize(categoryId, categories);
         }

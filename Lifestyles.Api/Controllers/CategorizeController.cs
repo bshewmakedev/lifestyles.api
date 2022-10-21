@@ -39,8 +39,10 @@ public class CategorizeController : ControllerBase
     }
 
     [HttpPost]
-    [Route("categories/categorize/{categoryId}")]
-    public IEnumerable<VmCategory> CategorizeCategories(Guid categoryId, List<VmCategory> vmCategories)
+    [Route("categories/categorize/{categoryId?}")]
+    public IEnumerable<VmCategory> CategorizeCategories(
+        Guid? categoryId, 
+        List<VmCategory> vmCategories)
     {
         return _categorizeService
             .CategorizeCategories(categoryId, vmCategories.Select(c => new CategoryMap(c)))

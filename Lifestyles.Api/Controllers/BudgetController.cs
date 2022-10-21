@@ -40,9 +40,9 @@ public class BudgetController : ControllerBase
     }
 
     [HttpPost]
-    [Route("budgets/categorize/{categoryId}")]
+    [Route("budgets/categorize/{categoryId?}")]
     public IEnumerable<VmBudget> CategorizeBudgets(
-        Guid categoryId, 
+        Guid? categoryId, 
         List<VmBudget> vmBudgets)
     {
         return _budgetService
