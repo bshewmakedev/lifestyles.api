@@ -4,14 +4,19 @@ namespace Lifestyles.Api.Live.Map
 {
     public static class Direction
     {
-        public static DirectionEnum Map(this int direction)
+        public static DirectionEnum Map(this decimal amount)
         {
-            switch (direction)
+            if (amount > 0)
             {
-                case 1: return DirectionEnum.In;
-                case -1: return DirectionEnum.Out;
-                default: return DirectionEnum.Neutral;
+                return DirectionEnum.In;
             }
+
+            if (amount < 0)
+            {
+                return DirectionEnum.Out;
+            }
+
+            return DirectionEnum.Neutral;
         }
     }
 }

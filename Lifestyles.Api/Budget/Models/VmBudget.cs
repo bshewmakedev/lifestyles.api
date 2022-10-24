@@ -11,7 +11,7 @@ namespace Lifestyles.Api.Budget.Models
 
         public VmBudget(IBudget budget) : base(budget)
         {
-            Amount = budget.Amount;
+            Amount = budget.Amount * (int)budget.Direction;
         }
     }
 }

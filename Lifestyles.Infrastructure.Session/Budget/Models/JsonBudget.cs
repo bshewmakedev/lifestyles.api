@@ -21,7 +21,7 @@ namespace Lifestyles.Infrastructure.Session.Budget.Models
             Id = budget.Id;
             Label = budget.Label;
             BudgetType = "budget";
-            Amount = budget.Amount;
+            Amount = budget.Amount * (int)budget.Direction;
             Lifetime = budget.Lifetime;
             Recurrence = Lifestyles.Infrastructure.Session.Live.Models.JsonRecurrence.Map(budget.Recurrence);
             Existence = Lifestyles.Infrastructure.Session.Live.Models.JsonExistence.Map(budget.Existence);

@@ -27,11 +27,11 @@ namespace Lifestyles.Service.Budget.Map
         {
             Amount = Math.Abs(amount);
 
-            if ((int)amount > 0)
+            if (amount > 0)
             {
                 Direction = DirectionEntity.In;
             }
-            else if ((int)amount < 0)
+            else if (amount < 0)
             {
                 Direction = DirectionEntity.Out;
             }

@@ -6,8 +6,8 @@ namespace Lifestyles.Api.Live.Models
     public class VmLifestyle : VmCategory
     {
         public int? Lifetime { get; set; }
-        public string Recurrence { get; set; } = "never";
-        public string Existence { get; set; } = "expected";
+        public string Recurrence { get; set; } = "";
+        public string Existence { get; set; } = "";
 
         public VmLifestyle() { }
 

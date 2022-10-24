@@ -23,15 +23,6 @@ public class LiveController : ControllerBase
     }
 
     [HttpGet]
-    [Route("directions/find")]
-    public IEnumerable<int> FindDirections()
-    {
-        return _liveService
-            .FindDirections()
-            .Select(d => d.Map());
-    }
-
-    [HttpGet]
     [Route("recurrences/find")]
     public IEnumerable<string> FindRecurrences()
     {
