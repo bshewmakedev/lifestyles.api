@@ -1,0 +1,51 @@
+[
+  {
+    "amount": -50,
+    "existence": "expected",
+    "label": "headlamp",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -75,
+    "existence": "expected",
+    "label": "trekking poles",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -220,
+    "existence": "expected",
+    "label": "backpack",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -21,
+    "existence": "expected",
+    "label": "compass",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -40,
+    "existence": "expected",
+    "label": "maps",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -20,
+    "existence": "expected",
+    "label": "first aid kit",
+    "lifetime": 3,
+    "recurrence": "monthly"
+  },
+  {
+    "amount": -500,
+    "existence": "suggested",
+    "label": "health insurance",
+    "lifetime": 1,
+    "recurrence": "monthly"
+  }
+]

@@ -1,0 +1,9 @@
+[
+  {
+    "alias": "thru-hiker",
+    "existence": "expected",
+    "label": "Thru-Hiker",
+    "lifetime": 6,
+    "recurrence": "monthly"
+  }
+]

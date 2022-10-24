@@ -1,0 +1,86 @@
+[
+  {
+    "amount": -90,
+    "existence": "expected",
+    "label": "trail shoes",
+    "lifetime": 2,
+    "recurrence": "monthly"
+  },
+  {
+    "amount": -30,
+    "existence": "expected",
+    "label": "socks",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -30,
+    "existence": "expected",
+    "label": "underwear",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -80,
+    "existence": "expected",
+    "label": "base layer bottoms",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -50,
+    "existence": "expected",
+    "label": "bottoms",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -90,
+    "existence": "expected",
+    "label": "shell bottoms",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -80,
+    "existence": "expected",
+    "label": "base layer top",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -35,
+    "existence": "expected",
+    "label": "top",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -225,
+    "existence": "expected",
+    "label": "insulated top",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -90,
+    "existence": "expected",
+    "label": "shell top",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -15,
+    "existence": "expected",
+    "label": "head net",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -15,
+    "existence": "expected",
+    "label": "beanie",
+    "lifetime": null,
+    "recurrence": "never"
+  }
+]

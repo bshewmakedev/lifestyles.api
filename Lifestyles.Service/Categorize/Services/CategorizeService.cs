@@ -1,6 +1,10 @@
 using Lifestyles.Domain.Categorize.Entities;
 using Lifestyles.Domain.Categorize.Repositories;
 using Lifestyles.Domain.Categorize.Services;
+using Lifestyles.Service.Categorize.Models;
+using Lifestyles.Service.Live.Models;
+using Newtonsoft.Json;
+using CategoryMap = Lifestyles.Service.Categorize.Map.Category;
 
 namespace Lifestyles.Service.Categorize.Services
 {

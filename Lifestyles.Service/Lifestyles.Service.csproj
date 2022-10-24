@@ -4,6 +4,22 @@
     <ProjectReference Include="..\Lifestyles.Domain\Lifestyles.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+   <ItemGroup>
+      <None Update="Budget/Defaults/budgets.thru-hiker.connect.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.thru-hiker.eat-hydrate.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.thru-hiker.hike.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.thru-hiker.shelter.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.thru-hiker.wear.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      
+      <None Update="Categorize/Defaults/categories.thru-hiker.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+
+      <None Update="Live/Defaults/lifestyles.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

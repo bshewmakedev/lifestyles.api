@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Lifestyles.Domain.Live.Services;
 using Lifestyles.Api.Budget.Models;
 using Lifestyles.Api.Live.Models;
+using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Live.Entities;
 using LifestyleMap = Lifestyles.Api.Live.Map.Lifestyle;
 
@@ -20,6 +21,14 @@ public class LiveController : ControllerBase
     {
         _logger = logger;
         _liveService = liveService;
+    }
+
+
+    [HttpGet]
+    [Route("lifetree/get")]
+    public IEnumerable<INode<IBudget>> GetLifeTree()
+    {
+        return _liveService.GetLifeTree();
     }
 
     [HttpGet]

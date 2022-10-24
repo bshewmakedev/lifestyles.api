@@ -1,0 +1,7 @@
+[
+  { "alias": "eat-hydrate", "label": "eat & hydrate" },
+  { "alias": "connect", "label": "connect" },
+  { "alias": "shelter", "label": "shelter" },
+  { "alias": "wear", "label": "wear" },
+  { "alias": "hike", "label": "hike" }
+]

@@ -5,6 +5,7 @@ namespace Lifestyles.Domain.Live.Services
 {
     public interface ILiveService
     {
+        IEnumerable<INode<IBudget>> GetLifeTree();
         IEnumerable<Direction> FindDirections();
         IEnumerable<Recurrence> FindRecurrences();
         IEnumerable<Existence> FindExistences();
