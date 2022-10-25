@@ -1,8 +1,85 @@
 [
   {
-    "amount": 0,
+    "amount": -40,
     "existence": "expected",
-    "label": "placeholder",
+    "label": "gym",
+    "lifetime": 1,
+    "recurrence": "monthly"
+  },
+  {
+    "amount": -40,
+    "existence": "expected",
+    "label": "water filter",
+    "lifetime": 1,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -40,
+    "existence": "expected",
+    "label": "groceries",
+    "lifetime": 4,
+    "recurrence": "daily"
+  },
+  {
+    "amount": -50,
+    "existence": "expected",
+    "label": "stove",
+    "lifetime": 10,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -50,
+    "existence": "expected",
+    "label": "pot",
+    "lifetime": 10,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -10,
+    "existence": "expected",
+    "label": "utensil",
+    "lifetime": 10,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -7,
+    "existence": "expected",
+    "label": "stove fuel",
+    "lifetime": 2,
+    "recurrence": "weekly"
+  },
+  {
+    "amount": -90,
+    "existence": "expected",
+    "label": "food storage",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -25,
+    "existence": "expected",
+    "label": "eating & drinking out",
+    "lifetime": 4,
+    "recurrence": "daily"
+  },
+  {
+    "amount": -12,
+    "existence": "expected",
+    "label": "trowel",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -15,
+    "existence": "expected",
+    "label": "first aid kit",
+    "lifetime": 3,
+    "recurrence": "monthly"
+  },
+  {
+    "amount": -500,
+    "existence": "expected",
+    "label": "health insurance",
     "lifetime": 1,
     "recurrence": "monthly"
   }

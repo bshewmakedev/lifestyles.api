@@ -1,9 +1,58 @@
 [
   {
-    "amount": 0,
+    "amount": -50,
     "existence": "expected",
-    "label": "placeholder",
+    "label": "automobile rental",
+    "lifetime": 1,
+    "recurrence": "weekly"
+  },
+  {
+    "amount": -60,
+    "existence": "expected",
+    "label": "gas for automobile",
     "lifetime": 1,
     "recurrence": "monthly"
+  },
+  {
+    "amount": -100,
+    "existence": "expected",
+    "label": "trekking poles",
+    "lifetime": 10,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -300,
+    "existence": "expected",
+    "label": "backpack",
+    "lifetime": 10,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -75,
+    "existence": "expected",
+    "label": "public transit",
+    "lifetime": 1,
+    "recurrence": "monthly"
+  },
+  {
+    "amount": -300,
+    "existence": "expected",
+    "label": "flight",
+    "lifetime": 4,
+    "recurrence": "monthly"
+  },
+  {
+    "amount": -20,
+    "existence": "expected",
+    "label": "compass",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -60,
+    "existence": "expected",
+    "label": "headlamp",
+    "lifetime": null,
+    "recurrence": "never"
   }
 ]

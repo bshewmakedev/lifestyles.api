@@ -1,9 +1,72 @@
 [
   {
-    "amount": 0,
+    "amount": -18000,
     "existence": "expected",
-    "label": "placeholder",
+    "label": "automobile",
+    "lifetime": 15,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -600,
+    "existence": "expected",
+    "label": "auto insurance",
+    "lifetime": 6,
+    "recurrence": "monthly"
+  },
+  {
+    "amount": -150,
+    "existence": "expected",
+    "label": "auto maintenance",
+    "lifetime": 3,
+    "recurrence": "monthly"
+  },
+  {
+    "amount": -300,
+    "existence": "expected",
+    "label": "gas for automobile",
     "lifetime": 1,
     "recurrence": "monthly"
+  },
+  {
+    "amount": -100,
+    "existence": "expected",
+    "label": "trekking poles",
+    "lifetime": 10,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -300,
+    "existence": "expected",
+    "label": "backpack",
+    "lifetime": 10,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -30,
+    "existence": "expected",
+    "label": "public transit",
+    "lifetime": 1,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -300,
+    "existence": "expected",
+    "label": "flight",
+    "lifetime": 3,
+    "recurrence": "monthly"
+  },
+  {
+    "amount": -20,
+    "existence": "expected",
+    "label": "compass",
+    "lifetime": null,
+    "recurrence": "never"
+  },
+  {
+    "amount": -60,
+    "existence": "expected",
+    "label": "headlamp",
+    "lifetime": null,
+    "recurrence": "never"
   }
 ]

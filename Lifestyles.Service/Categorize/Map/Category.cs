@@ -28,34 +28,38 @@ namespace Lifestyles.Service.Categorize.Map
         {
             interval = interval ?? (recur.Lifetime.HasValue ? recur.Lifetime - 1 : 0);
 
-            if (budgets.Count() == 0) return 0;
+            if (budgets.Where(b => b.Existence.Equals(Existence.Expected)).Count() == 0) return 0;
 
-            return budgets.Where(b => b.Existence.Equals(Existence.Expected)).Select(b =>
+            var recurrenceToDecimal = (Recurrence r) =>
             {
-                var recurrenceToInt = (Recurrence r) =>
+                switch (r)
                 {
-                    switch (r)
-                    {
-                        case Recurrence.Daily: return 1;
-                        case Recurrence.Weekly: return 7;
-                        case Recurrence.Monthly: return 31;
-                        case Recurrence.Annually: return 366;
-                        default: return 0;
-                    }
-                };
+                    case Recurrence.Daily: return 1.0m;
+                    case Recurrence.Weekly: return 7.0m;
+                    case Recurrence.Monthly: return 31.0m;
+                    case Recurrence.Annually: return 366.0m;
+                    default: return 0.0m;
+                }
+            };
 
-                var recurrenceIntLifestyle = recurrenceToInt(recur.Recurrence);
-                var recurrenceIntBudget = recurrenceToInt(b.Recurrence);
+            var recurDecimalLifestyle = recurrenceToDecimal(recur.Recurrence);
+            var sum = budgets.Where(b => b.Existence.Equals(Existence.Expected)).Select(b =>
+            {
+                var recurDecimalBudget = recurrenceToDecimal(b.Recurrence);
 
                 if (b.Recurrence.Equals(Recurrence.Never))
                 {
-                    return (int)b.Direction * b.Amount;
+                    return ((int)b.Direction) * b.Amount;
                 }
                 else
                 {
-                    return (int)b.Direction * (((interval + 1) * recurrenceIntLifestyle) / Math.Max(recurrenceIntBudget, 1) / Math.Max(b.Lifetime ?? 0, 1)) * b.Amount;
+                    var amount = ((int)b.Direction) * (((interval + 1) * recurDecimalLifestyle) / Math.Max(recurDecimalBudget, 1.0m) / Math.Max(b.Lifetime ?? 0.0m, 1.0m)) * b.Amount;
+
+                    return amount;
                 }
-            }).Sum() ?? 0;
+            }).Sum();
+
+            return sum ?? 0;
         }
 
         public Category(
