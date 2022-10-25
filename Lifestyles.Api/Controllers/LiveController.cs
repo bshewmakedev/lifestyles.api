@@ -45,7 +45,7 @@ public class LiveController : ControllerBase
 
     [HttpGet]
     [Route("lifetrees/find/default")]
-    public IEnumerable<INode<VmBudget>> FindDefaultLifeTrees()
+    public IEnumerable<Node<VmBudget>> FindDefaultLifeTrees()
     {
         return _liveService
             .FindDefaultLifeTrees()
@@ -54,7 +54,7 @@ public class LiveController : ControllerBase
 
     [HttpGet]
     [Route("lifetrees/find")]
-    public IEnumerable<INode<VmBudget>> FindSavedLifeTrees()
+    public IEnumerable<Node<VmBudget>> FindSavedLifeTrees()
     {
         return _liveService
             .FindSavedLifeTrees()
@@ -63,7 +63,7 @@ public class LiveController : ControllerBase
 
     [HttpPost]
     [Route("lifetrees/upsert")]
-    public IEnumerable<INode<IBudget>> UpsertSavedLifeTrees(List<Node<VmBudget>> lifeTrees)
+    public IEnumerable<Node<IBudget>> UpsertSavedLifeTrees(List<Node<VmBudget>> lifeTrees)
     {
         return _liveService
             .UpsertSavedLifeTrees(

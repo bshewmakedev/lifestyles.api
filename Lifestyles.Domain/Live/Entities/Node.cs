@@ -1,18 +1,24 @@
-using Lifestyles.Domain.Live.Entities;
-
-namespace Lifestyles.Service.Live.Map
+namespace Lifestyles.Domain.Live.Entities
 {
-    public class Node<T> : INode<T>
+    public class Node<T>
     {
         public T Value { get; private set; }
-        public IList<INode<T>> Children { get; private set; } = new List<INode<T>>();
+        public IList<Node<T>> Children { get; private set; }
 
         public Node(T value)
         {
             Value = value;
+            Children = new List<Node<T>>();
         }
 
-        public INode<T> AddValueAsChild(T value)
+        public Node<T> AddNodeAsChild(Node<T> node)
+        {
+            Children.Add(node);
+
+            return node;
+        }
+
+        public Node<T> AddValueAsChild(T value)
         {
             var node = new Node<T>(value);
             Children.Add(node);
@@ -20,12 +26,12 @@ namespace Lifestyles.Service.Live.Map
             return node;
         }
 
-        public IList<INode<T>> AddValuesAsChildren(params T[] values)
+        public IList<Node<T>> AddValuesAsChildren(params T[] values)
         {
-            return values.Select(AddValueAsChild).ToArray();
+            return values.Select(AddValueAsChild).ToList();
         }
 
-        public bool RemoveChild(INode<T> node)
+        public bool RemoveChild(Node<T> node)
         {
             return Children.Remove(node);
         }
@@ -37,7 +43,7 @@ namespace Lifestyles.Service.Live.Map
                 child.Traverse(action);
         }
 
-        public INode<G> Map<G>(Func<T, G> map)
+        public Node<G> Map<G>(Func<T, G> map)
         {
             var root = new Node<G>(map(Value));
             root.Children = Children.Select(child => child.Map<G>(map)).ToList();

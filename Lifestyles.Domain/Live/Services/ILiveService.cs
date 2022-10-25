@@ -7,9 +7,9 @@ namespace Lifestyles.Domain.Live.Services
     {
         IEnumerable<Recurrence> FindRecurrences();
         IEnumerable<Existence> FindExistences();
-        IEnumerable<INode<IBudget>> FindDefaultLifeTrees();
-        IEnumerable<INode<IBudget>> FindSavedLifeTrees();
-        IEnumerable<INode<IBudget>> UpsertSavedLifeTrees(IEnumerable<INode<IBudget>> lifeTrees);
+        IEnumerable<Node<IBudget>> FindDefaultLifeTrees();
+        IEnumerable<Node<IBudget>> FindSavedLifeTrees();
+        IEnumerable<Node<IBudget>> UpsertSavedLifeTrees(IEnumerable<Node<IBudget>> lifeTrees);
         IEnumerable<IComparison<ILifestyle>> CompareLifestyles(IEnumerable<ILifestyle> lifestyles);
     }
 }

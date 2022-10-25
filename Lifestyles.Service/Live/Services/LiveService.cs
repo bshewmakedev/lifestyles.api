@@ -50,9 +50,9 @@ namespace Lifestyles.Service.Live.Services
             return Enum.GetValues(typeof(Lifestyles.Domain.Live.Entities.Existence)).Cast<Lifestyles.Domain.Live.Entities.Existence>();
         }
 
-        public IEnumerable<INode<IBudget>> FindDefaultLifeTrees()
+        public IEnumerable<Node<IBudget>> FindDefaultLifeTrees()
         {
-            var lifeTrees = new List<INode<IBudget>>();
+            var lifeTrees = new List<Node<IBudget>>();
             var dfLifestyles = _dfLifestyleRepo.Find();
             dfLifestyles.ToList().ForEach(dfLifestyle =>
             {
@@ -71,14 +71,14 @@ namespace Lifestyles.Service.Live.Services
                         var nodeBudget = new Node<IBudget>(new BudgetMap(dfBudget));
 
                         // Add node as leaf.
-                        nodeCategory.Children.Add(nodeBudget);
+                        nodeCategory.AddNodeAsChild(nodeBudget);
                     });
 
                     // Calculate & map signed amount.
                     nodeCategory.Value.Value(new CategoryMap(dfCategory).GetSignedAmount(new LifestyleMap(dfLifestyle), dfBudgets.Select(d => new BudgetMap(d))));
 
                     // Add node.
-                    nodeLifestyle.Children.Add(nodeCategory);
+                    nodeLifestyle.AddNodeAsChild(nodeCategory);
                 });
 
                 // Calculate & map signed amount. 
@@ -91,48 +91,9 @@ namespace Lifestyles.Service.Live.Services
             return lifeTrees;
         }
 
-        // var jsonLifestyles = FindDefaultLifestyles();
-        // foreach (var jsonLifestyle in jsonLifestyles)
-        // {
-        //     var lifestyle = new LifestyleMap(
-        //         null,
-        //         jsonLifestyle.Label,
-        //         jsonLifestyle.Lifetime,
-        //         RecurrenceMap.Map(jsonLifestyle.Recurrence),
-        //         ExistenceMap.Map(jsonLifestyle.Existence));
-
-        //     _lifestyleRepo.Upsert(new[] { lifestyle });
-
-        //     var jsonCategories = FindDefaultCategoriesBy(jsonLifestyle);
-        //     foreach (var jsonCategory in jsonCategories)
-        //     {
-        //         var category = new CategoryMap(
-        //             null,
-        //             jsonCategory.Label);
-
-        //         _categoryRepo.Upsert(new[] { category });
-        //         _categoryRepo.Categorize(lifestyle.Id, new[] { category });
-
-        //         var jsonBudgets = FindDefaultBudgetsBy(jsonLifestyle, jsonCategory);
-        //         foreach (var jsonBudget in jsonBudgets)
-        //         {
-        //             var budget = new BudgetMap(
-        //                 jsonBudget.Amount,
-        //                 null,
-        //                 jsonBudget.Label,
-        //                 jsonBudget.Lifetime,
-        //                 RecurrenceMap.Map(jsonBudget.Recurrence),
-        //                 ExistenceMap.Map(jsonBudget.Existence));
-
-        //             _budgetRepo.Upsert(new[] { budget });
-        //             _budgetRepo.Categorize(category.Id, new[] { budget });
-        //         }
-        //     }
-        // }
-
-        public IEnumerable<INode<IBudget>> FindSavedLifeTrees()
+        public IEnumerable<Node<IBudget>> FindSavedLifeTrees()
         {
-            var lifeTrees = new List<INode<IBudget>>();
+            var lifeTrees = new List<Node<IBudget>>();
             var lifestyles = _lifestyleRepo.Find();
             lifestyles.ToList().ForEach(lifestyle =>
             {
@@ -151,14 +112,14 @@ namespace Lifestyles.Service.Live.Services
                         var nodeBudget = new Node<IBudget>(budget);
 
                         // Add node as leaf.
-                        nodeCategory.Children.Add(nodeBudget);
+                        nodeCategory.AddNodeAsChild(nodeBudget);
                     });
 
                     // Calculate & map signed amount.
                     nodeCategory.Value.Value(category.GetSignedAmount(lifestyle, budgets));
 
                     // Add node.
-                    nodeLifestyle.Children.Add(nodeCategory);
+                    nodeLifestyle.AddNodeAsChild(nodeCategory);
                 });
 
                 // Calculate & map signed amount. 
@@ -171,19 +132,40 @@ namespace Lifestyles.Service.Live.Services
             return lifeTrees;
         }
 
-        public IEnumerable<INode<IBudget>> UpsertSavedLifeTrees(IEnumerable<INode<IBudget>> lifeTrees)
+        public IEnumerable<Node<IBudget>> UpsertSavedLifeTrees(IEnumerable<Node<IBudget>> lifeTrees)
         {
-            lifeTrees.ToList().ForEach(root => {
-                var lifestyle = new BudgetMap(root.Value);
+            lifeTrees.ToList().ForEach(root =>
+            {
+                var lifestyle = new LifestyleMap(
+                    root.Value.Id,
+                    root.Value.Label,
+                    root.Value.Lifetime,
+                    root.Value.Recurrence,
+                    root.Value.Existence
+                );
                 _lifestyleRepo.Upsert(new[] { lifestyle });
 
-                root.Children.ToList().ForEach(child => {
-                    var category = new BudgetMap(root.Value);
+                root.Children.ToList().ForEach(child =>
+                {
+                    var category = new CategoryMap(
+                        child.Value.Id,
+                        child.Value.Label
+                    );
                     _categoryRepo.Upsert(new[] { category });
+                    _categoryRepo.Categorize(lifestyle.Id, new[] { category });
 
-                    child.Children.ToList().ForEach(leaf => {
-                        var budget = new BudgetMap(root.Value);
+                    child.Children.ToList().ForEach(leaf =>
+                    {
+                        var budget = new BudgetMap(
+                            leaf.Value.Amount,
+                            leaf.Value.Id,
+                            leaf.Value.Label,
+                            leaf.Value.Lifetime,
+                            leaf.Value.Recurrence,
+                            leaf.Value.Existence
+                        );
                         _budgetRepo.Upsert(new[] { budget });
+                        _budgetRepo.Categorize(category.Id, new[] { budget });
                     });
                 });
             });

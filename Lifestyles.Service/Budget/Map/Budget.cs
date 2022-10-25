@@ -80,7 +80,7 @@ namespace Lifestyles.Service.Budget.Map
             Value();
             Recur(lifestyle.Recurrence, lifestyle.Lifetime);
             Exist(lifestyle.Existence);
-            Identify();
+            Identify(category.Id);
             Relabel(category.Label);
         }
 
@@ -89,7 +89,7 @@ namespace Lifestyles.Service.Budget.Map
             Value();
             Recur(lifestyle.Recurrence, lifestyle.Lifetime);
             Exist(lifestyle.Existence);
-            Identify();
+            Identify(lifestyle.Id);
             Relabel(lifestyle.Label);
         }
     }
