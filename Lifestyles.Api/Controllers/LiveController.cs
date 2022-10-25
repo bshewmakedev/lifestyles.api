@@ -4,7 +4,8 @@ using Lifestyles.Api.Live.Models;
 using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Live.Entities;
 using Lifestyles.Domain.Live.Services;
-using VmBudgetMap = Lifestyles.Api.Budget.Models.VmBudget;
+using Lifestyles.Service.Live.Map;
+using BudgetMap = Lifestyles.Api.Budget.Map.Budget;
 using LifestyleMap = Lifestyles.Api.Live.Map.Lifestyle;
 
 namespace Lifestyles.Api.Controllers;
@@ -48,7 +49,7 @@ public class LiveController : ControllerBase
     {
         return _liveService
             .FindDefaultLifeTrees()
-            .Select(tree => tree.Map<VmBudget>((budget) => new VmBudgetMap(budget)));
+            .Select(tree => tree.Map<VmBudget>((budget) => new VmBudget(budget)));
     }
 
     [HttpGet]
@@ -57,16 +58,17 @@ public class LiveController : ControllerBase
     {
         return _liveService
             .FindSavedLifeTrees()
-            .Select(tree => tree.Map<VmBudget>((budget) => new VmBudgetMap(budget)));
+            .Select(tree => tree.Map<VmBudget>((budget) => new VmBudget(budget)));
     }
 
-    // [HttpPost]
-    // [Route("lifetrees/upsert")]
-    // public IEnumerable<INode<IBudget>> UpsertSavedLifeTrees(List<Node<VmBudget>> lifeTrees)
-    // {
-    //     return _liveService
-    //         .UpsertSavedLifeTrees(lifeTrees);
-    // }
+    [HttpPost]
+    [Route("lifetrees/upsert")]
+    public IEnumerable<INode<IBudget>> UpsertSavedLifeTrees(List<Node<VmBudget>> lifeTrees)
+    {
+        return _liveService
+            .UpsertSavedLifeTrees(
+                lifeTrees.Select(tree => tree.Map<IBudget>((vmBudget) => new BudgetMap(vmBudget))));
+    }
     
     [HttpPost]
     [Route("lifestyles/compare")]

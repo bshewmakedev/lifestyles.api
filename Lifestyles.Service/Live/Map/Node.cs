@@ -5,7 +5,6 @@ namespace Lifestyles.Service.Live.Map
     public class Node<T> : INode<T>
     {
         public T Value { get; private set; }
-        public INode<T>? Parent { get; private set; }
         public IList<INode<T>> Children { get; private set; } = new List<INode<T>>();
 
         public Node(T value)
@@ -15,7 +14,7 @@ namespace Lifestyles.Service.Live.Map
 
         public INode<T> AddValueAsChild(T value)
         {
-            var node = new Node<T>(value) { Parent = this };
+            var node = new Node<T>(value);
             Children.Add(node);
 
             return node;
