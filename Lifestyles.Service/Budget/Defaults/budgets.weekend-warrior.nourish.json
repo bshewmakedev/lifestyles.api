@@ -1,0 +1,9 @@
+[
+  {
+    "amount": -5,
+    "existence": "expected",
+    "label": "whistle",
+    "lifetime": null,
+    "recurrence": "never"
+  }
+]

@@ -9,13 +9,34 @@
   </ItemGroup>
 
    <ItemGroup>
+      <None Update="Budget/Defaults/budgets.digital-nomad.connect.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.digital-nomad.nourish.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.digital-nomad.shelter.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.digital-nomad.travel.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.digital-nomad.wear.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      
       <None Update="Budget/Defaults/budgets.thru-hiker.connect.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
-      <None Update="Budget/Defaults/budgets.thru-hiker.eat-hydrate.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
-      <None Update="Budget/Defaults/budgets.thru-hiker.hike.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.thru-hiker.nourish.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
       <None Update="Budget/Defaults/budgets.thru-hiker.shelter.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.thru-hiker.travel.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
       <None Update="Budget/Defaults/budgets.thru-hiker.wear.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
       
+      <None Update="Budget/Defaults/budgets.thru-traveler.connect.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.thru-traveler.nourish.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.thru-traveler.shelter.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.thru-traveler.travel.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.thru-traveler.wear.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      
+      <None Update="Budget/Defaults/budgets.weekend-warrior.connect.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.weekend-warrior.nourish.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.weekend-warrior.shelter.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.weekend-warrior.travel.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Budget/Defaults/budgets.weekend-warrior.wear.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      
+      <None Update="Categorize/Defaults/categories.digital-nomad.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
       <None Update="Categorize/Defaults/categories.thru-hiker.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Categorize/Defaults/categories.thru-traveler.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+      <None Update="Categorize/Defaults/categories.weekend-warrior.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
 
       <None Update="Live/Defaults/lifestyles.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
   </ItemGroup>

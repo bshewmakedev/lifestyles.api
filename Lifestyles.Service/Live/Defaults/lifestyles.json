@@ -1,9 +1,30 @@
 [
   {
+    "alias": "weekend-warrior",
+    "existence": "expected",
+    "label": "The Weekend Warrior",
+    "lifetime": 20,
+    "recurrence": "weekly"
+  },
+  {
+    "alias": "digital-nomad",
+    "existence": "expected",
+    "label": "The Digital Nomad",
+    "lifetime": 16,
+    "recurrence": "weekly"
+  },
+  {
+    "alias": "thru-traveler",
+    "existence": "expected",
+    "label": "The Thru-Traveler",
+    "lifetime": 4,
+    "recurrence": "weekly"
+  },
+  {
     "alias": "thru-hiker",
     "existence": "expected",
-    "label": "Thru-Hiker",
-    "lifetime": 6,
-    "recurrence": "monthly"
+    "label": "The Thru-Hiker",
+    "lifetime": 4,
+    "recurrence": "weekly"
   }
 ]
