@@ -1,9 +1,9 @@
 [
   {
-    "amount": -5,
+    "amount": 0,
     "existence": "expected",
-    "label": "whistle",
-    "lifetime": null,
-    "recurrence": "never"
+    "label": "placeholder",
+    "lifetime": 1,
+    "recurrence": "monthly"
   }
 ]

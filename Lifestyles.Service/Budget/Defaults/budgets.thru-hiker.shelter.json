@@ -1,44 +1,30 @@
 [
   {
+    "amount": -50,
+    "existence": "expected",
+    "label": "hostel",
+    "lifetime": 4,
+    "recurrence": "daily"
+  },
+  {
+    "amount": -150,
+    "existence": "expected",
+    "label": "homestay",
+    "lifetime": 1,
+    "recurrence": "monthly"
+  },
+  {
     "amount": -400,
     "existence": "expected",
     "label": "tent",
-    "lifetime": null,
-    "recurrence": "never"
+    "lifetime": 10,
+    "recurrence": "annually"
   },
   {
     "amount": -150,
     "existence": "expected",
     "label": "sleeping bag",
-    "lifetime": null,
-    "recurrence": "never"
-  },
-  {
-    "amount": -45,
-    "existence": "expected",
-    "label": "sleeping pad",
-    "lifetime": null,
-    "recurrence": "never"
-  },
-  {
-    "amount": -35,
-    "existence": "expected",
-    "label": "town lodging",
-    "lifetime": 4,
-    "recurrence": "daily"
-  },
-  {
-    "amount": -1000,
-    "existence": "suggested",
-    "label": "home payment",
-    "lifetime": 1,
-    "recurrence": "monthly"
-  },
-  {
-    "amount": 1000,
-    "existence": "suggested",
-    "label": "home lease",
-    "lifetime": 1,
-    "recurrence": "monthly"
+    "lifetime": 10,
+    "recurrence": "annually"
   }
 ]

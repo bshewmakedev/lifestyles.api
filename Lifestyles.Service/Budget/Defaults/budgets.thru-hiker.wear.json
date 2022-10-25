@@ -3,84 +3,98 @@
     "amount": -90,
     "existence": "expected",
     "label": "trail shoes",
-    "lifetime": 2,
-    "recurrence": "monthly"
+    "lifetime": 1,
+    "recurrence": "annually"
   },
   {
-    "amount": -30,
+    "amount": -20,
+    "existence": "expected",
+    "label": "flip flops",
+    "lifetime": 1,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -90,
     "existence": "expected",
     "label": "socks",
-    "lifetime": null,
-    "recurrence": "never"
+    "lifetime": 2,
+    "recurrence": "annually"
   },
   {
-    "amount": -30,
+    "amount": -90,
     "existence": "expected",
     "label": "underwear",
-    "lifetime": null,
-    "recurrence": "never"
+    "lifetime": 2,
+    "recurrence": "annually"
   },
   {
     "amount": -80,
     "existence": "expected",
     "label": "base layer bottoms",
-    "lifetime": null,
-    "recurrence": "never"
+    "lifetime": 8,
+    "recurrence": "annually"
   },
   {
-    "amount": -50,
+    "amount": -90,
     "existence": "expected",
-    "label": "bottoms",
-    "lifetime": null,
-    "recurrence": "never"
+    "label": "pants",
+    "lifetime": 4,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -60,
+    "existence": "expected",
+    "label": "shorts",
+    "lifetime": 4,
+    "recurrence": "annually"
   },
   {
     "amount": -90,
     "existence": "expected",
     "label": "shell bottoms",
-    "lifetime": null,
-    "recurrence": "never"
+    "lifetime": 4,
+    "recurrence": "annually"
   },
   {
     "amount": -80,
     "existence": "expected",
     "label": "base layer top",
-    "lifetime": null,
-    "recurrence": "never"
+    "lifetime": 8,
+    "recurrence": "annually"
   },
   {
-    "amount": -35,
+    "amount": -90,
     "existence": "expected",
     "label": "top",
-    "lifetime": null,
-    "recurrence": "never"
+    "lifetime": 4,
+    "recurrence": "annually"
   },
   {
     "amount": -225,
     "existence": "expected",
     "label": "insulated top",
-    "lifetime": null,
-    "recurrence": "never"
+    "lifetime": 4,
+    "recurrence": "annually"
   },
   {
     "amount": -90,
     "existence": "expected",
     "label": "shell top",
-    "lifetime": null,
-    "recurrence": "never"
+    "lifetime": 4,
+    "recurrence": "annually"
   },
   {
     "amount": -15,
     "existence": "expected",
     "label": "head net",
-    "lifetime": null,
-    "recurrence": "never"
+    "lifetime": 8,
+    "recurrence": "annually"
   },
   {
-    "amount": -15,
+    "amount": -30,
     "existence": "expected",
     "label": "beanie",
-    "lifetime": null,
-    "recurrence": "never"
+    "lifetime": 4,
+    "recurrence": "annually"
   }
 ]

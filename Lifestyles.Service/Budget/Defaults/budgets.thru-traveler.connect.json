@@ -1,9 +1,30 @@
 [
   {
-    "amount": -5,
+    "amount": -65,
     "existence": "expected",
-    "label": "whistle",
-    "lifetime": null,
-    "recurrence": "never"
+    "label": "mobile service",
+    "lifetime": 1,
+    "recurrence": "monthly"
+  },
+  {
+    "amount": -1000,
+    "existence": "suggested",
+    "label": "mobile phone",
+    "lifetime": 5,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -25,
+    "existence": "expected",
+    "label": "power brick",
+    "lifetime": 8,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -15,
+    "existence": "suggested",
+    "label": "wall charger",
+    "lifetime": 5,
+    "recurrence": "annually"
   }
 ]

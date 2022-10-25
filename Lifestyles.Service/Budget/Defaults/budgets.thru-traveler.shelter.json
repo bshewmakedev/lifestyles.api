@@ -1,9 +1,30 @@
 [
   {
-    "amount": -5,
+    "amount": -750,
     "existence": "expected",
-    "label": "whistle",
-    "lifetime": null,
-    "recurrence": "never"
+    "label": "hostel",
+    "lifetime": 1,
+    "recurrence": "monthly"
+  },
+  {
+    "amount": -375,
+    "existence": "expected",
+    "label": "homestay",
+    "lifetime": 1,
+    "recurrence": "monthly"
+  },
+  {
+    "amount": -400,
+    "existence": "expected",
+    "label": "tent",
+    "lifetime": 10,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -150,
+    "existence": "expected",
+    "label": "sleeping bag",
+    "lifetime": 10,
+    "recurrence": "annually"
   }
 ]

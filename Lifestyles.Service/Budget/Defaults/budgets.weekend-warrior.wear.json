@@ -1,9 +1,107 @@
 [
   {
-    "amount": -5,
+    "amount": -90,
     "existence": "expected",
-    "label": "whistle",
-    "lifetime": null,
-    "recurrence": "never"
+    "label": "trail shoes",
+    "lifetime": 2,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -20,
+    "existence": "expected",
+    "label": "flip flops",
+    "lifetime": 2,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -90,
+    "existence": "expected",
+    "label": "casual shoes",
+    "lifetime": 5,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -180,
+    "existence": "expected",
+    "label": "socks",
+    "lifetime": 3,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -180,
+    "existence": "expected",
+    "label": "underwear",
+    "lifetime": 3,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -80,
+    "existence": "expected",
+    "label": "base layer bottoms",
+    "lifetime": 10,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -180,
+    "existence": "expected",
+    "label": "pants",
+    "lifetime": 5,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -120,
+    "existence": "expected",
+    "label": "shorts",
+    "lifetime": 5,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -90,
+    "existence": "expected",
+    "label": "shell bottoms",
+    "lifetime": 5,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -80,
+    "existence": "expected",
+    "label": "base layer top",
+    "lifetime": 10,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -180,
+    "existence": "expected",
+    "label": "top",
+    "lifetime": 5,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -225,
+    "existence": "expected",
+    "label": "insulated top",
+    "lifetime": 5,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -90,
+    "existence": "expected",
+    "label": "shell top",
+    "lifetime": 5,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -15,
+    "existence": "expected",
+    "label": "head net",
+    "lifetime": 10,
+    "recurrence": "annually"
+  },
+  {
+    "amount": -30,
+    "existence": "expected",
+    "label": "beanie",
+    "lifetime": 5,
+    "recurrence": "annually"
   }
 ]
