@@ -1,10 +1,13 @@
+using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Live.Entities;
 
 namespace Lifestyles.Domain.Categorize.Entities
 {
-    public partial interface ICategory : IIdentified
+    public interface ICategory : IIdentified, ILabelled
     {
-        string Label { get; }
-        void Relabel(string label = "");
+        decimal GetSignedAmount(
+            IRecur recur,
+            IEnumerable<IBudget> budgets,
+            int? interval = null);
     }
 }

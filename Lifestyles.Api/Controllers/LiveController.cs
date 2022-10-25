@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using Lifestyles.Domain.Live.Services;
 using Lifestyles.Api.Budget.Models;
 using Lifestyles.Api.Live.Models;
 using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Live.Entities;
+using Lifestyles.Domain.Live.Services;
+using VmBudgetMap = Lifestyles.Api.Budget.Models.VmBudget;
 using LifestyleMap = Lifestyles.Api.Live.Map.Lifestyle;
 
 namespace Lifestyles.Api.Controllers;
@@ -21,14 +22,6 @@ public class LiveController : ControllerBase
     {
         _logger = logger;
         _liveService = liveService;
-    }
-
-
-    [HttpGet]
-    [Route("lifetree/get")]
-    public IEnumerable<INode<IBudget>> GetLifeTree()
-    {
-        return _liveService.GetLifeTree();
     }
 
     [HttpGet]
@@ -50,32 +43,31 @@ public class LiveController : ControllerBase
     }
 
     [HttpGet]
-    [Route("lifestyles/find")]
-    public IEnumerable<VmLifestyle> FindLifestyles()
+    [Route("lifetrees/find/default")]
+    public IEnumerable<INode<VmBudget>> FindDefaultLifeTrees()
     {
         return _liveService
-            .FindLifestyles()
-            .Select(l => new VmLifestyle(l));
+            .FindDefaultLifeTrees()
+            .Select(tree => tree.Map<VmBudget>((budget) => new VmBudgetMap(budget)));
     }
 
-    [HttpPost]
-    [Route("lifestyles/upsert")]
-    public IEnumerable<VmLifestyle> UpsertLifestyles(List<VmLifestyle> vmLifestyles)
+    [HttpGet]
+    [Route("lifetrees/find")]
+    public IEnumerable<INode<VmBudget>> FindSavedLifeTrees()
     {
         return _liveService
-            .UpsertLifestyles(vmLifestyles.Select(l => new LifestyleMap(l)))
-            .Select(l => new VmLifestyle(l));
+            .FindSavedLifeTrees()
+            .Select(tree => tree.Map<VmBudget>((budget) => new VmBudgetMap(budget)));
     }
 
-    [HttpPost]
-    [Route("lifestyles/remove")]
-    public IEnumerable<VmLifestyle> RemoveLifestyles(List<VmLifestyle> vmLifestyles)
-    {
-        return _liveService
-            .RemoveLifestyles(vmLifestyles.Select(l => new LifestyleMap(l)))
-            .Select(l => new VmLifestyle(l));
-    }
-
+    // [HttpPost]
+    // [Route("lifetrees/upsert")]
+    // public IEnumerable<INode<IBudget>> UpsertSavedLifeTrees(List<Node<VmBudget>> lifeTrees)
+    // {
+    //     return _liveService
+    //         .UpsertSavedLifeTrees(lifeTrees);
+    // }
+    
     [HttpPost]
     [Route("lifestyles/compare")]
     public IEnumerable<VmComparison<VmLifestyle, ILifestyle>> CompareLifestyles(List<VmLifestyle> vmLifestyles)
@@ -83,12 +75,5 @@ public class LiveController : ControllerBase
         return _liveService
             .CompareLifestyles(vmLifestyles.Select(l => new LifestyleMap(l)))
             .Select(l => new VmComparison<VmLifestyle, ILifestyle>(l));
-    }
-
-    [HttpGet]
-    [Route("amount/get/{lifestyleId}")]
-    public decimal GetSignedAmount(Guid lifestyleId)
-    {
-        return _liveService.GetSignedAmount(lifestyleId);
     }
 }

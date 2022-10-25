@@ -1,18 +1,16 @@
 using Lifestyles.Domain.Budget.Entities;
-using Lifestyles.Domain.Live.Entities;
 using Lifestyles.Domain.Budget.Repositories;
+using Lifestyles.Domain.Categorize.Entities;
 using Lifestyles.Domain.Categorize.Repositories;
+using Lifestyles.Domain.Live.Entities;
 using Lifestyles.Domain.Live.Repositories;
 using Lifestyles.Domain.Live.Services;
+using Lifestyles.Service.Budget.Repositories;
+using Lifestyles.Service.Categorize.Repositories;
 using Lifestyles.Service.Live.Map;
-using Lifestyles.Service.Budget.Models;
-using Lifestyles.Service.Categorize.Models;
-using Lifestyles.Service.Live.Models;
-using Newtonsoft.Json;
+using Lifestyles.Service.Live.Repositories;
 using BudgetMap = Lifestyles.Service.Budget.Map.Budget;
 using CategoryMap = Lifestyles.Service.Categorize.Map.Category;
-using RecurrenceMap = Lifestyles.Service.Live.Map.Recurrence;
-using ExistenceMap = Lifestyles.Service.Live.Map.Existence;
 using LifestyleMap = Lifestyles.Service.Live.Map.Lifestyle;
 
 namespace Lifestyles.Service.Live.Services
@@ -20,120 +18,26 @@ namespace Lifestyles.Service.Live.Services
     public class LiveService : ILiveService
     {
         private readonly IBudgetRepo _budgetRepo;
+        private readonly DefaultBudgetRepo _dfBudgetRepo;
         private readonly ICategoryRepo _categoryRepo;
+        private readonly DefaultCategoryRepo _dfCategoryRepo;
         private readonly ILifestyleRepo _lifestyleRepo;
+        private readonly DefaultLifestyleRepo _dfLifestyleRepo;
 
         public LiveService(
             IBudgetRepo budgetRepo,
+            DefaultBudgetRepo dfBudgetRepo,
             ICategoryRepo categoryRepo,
-            ILifestyleRepo lifestyleRepo)
+            DefaultCategoryRepo dfCategoryRepo,
+            ILifestyleRepo lifestyleRepo,
+            DefaultLifestyleRepo dfLifestyleRepo)
         {
             _budgetRepo = budgetRepo;
+            _dfBudgetRepo = dfBudgetRepo;
             _categoryRepo = categoryRepo;
+            _dfCategoryRepo = dfCategoryRepo;
             _lifestyleRepo = lifestyleRepo;
-        }
-
-        private void Default()
-        {
-            using (StreamReader reader1 = File.OpenText(Path.GetFullPath(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), $"Live/Defaults/lifestyles.json"))))
-            {
-                var jsonLifestyles = JsonConvert.DeserializeObject<List<DefaultLifestyle>>(reader1.ReadToEnd()) ?? new List<DefaultLifestyle>();
-                foreach (var jsonLifestyle in jsonLifestyles)
-                {
-                    var lifestyle = new LifestyleMap(
-                        null,
-                        jsonLifestyle.Label,
-                        jsonLifestyle.Lifetime,
-                        RecurrenceMap.Map(jsonLifestyle.Recurrence),
-                        ExistenceMap.Map(jsonLifestyle.Existence));
-
-                    _lifestyleRepo.Upsert(new[] { lifestyle });
-
-                    using (StreamReader reader2 = File.OpenText(Path.GetFullPath(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), $"Categorize/Defaults/categories.{jsonLifestyle.Alias}.json"))))
-                    {
-                        var jsonCategories = (JsonConvert.DeserializeObject<List<DefaultCategory>>(reader2.ReadToEnd()) ?? new List<DefaultCategory>());
-                        foreach (var jsonCategory in jsonCategories)
-                        {
-                            var category = new CategoryMap(
-                                null,
-                                jsonCategory.Label);
-
-                            _categoryRepo.Upsert(new[] { category });
-                            _categoryRepo.Categorize(lifestyle.Id, new[] { category });
-
-                            using (StreamReader reader3 = File.OpenText(Path.GetFullPath(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), $"Budget/Defaults/budgets.{jsonLifestyle.Alias}.{jsonCategory.Alias}.json"))))
-                            {
-                                var jsonBudgets = (JsonConvert.DeserializeObject<List<DefaultBudget>>(reader3.ReadToEnd()) ?? new List<DefaultBudget>());
-                                foreach (var jsonBudget in jsonBudgets)
-                                {
-                                    var budget = new BudgetMap(
-                                        jsonBudget.Amount,
-                                        null,
-                                        jsonBudget.Label,
-                                        jsonBudget.Lifetime,
-                                        RecurrenceMap.Map(jsonBudget.Recurrence),
-                                        ExistenceMap.Map(jsonBudget.Existence));
-
-                                    _budgetRepo.Upsert(new[] { budget });
-                                    _budgetRepo.Categorize(category.Id, new[] { budget });
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        public IEnumerable<INode<IBudget>> GetLifeTree()
-        {
-            var lifeTree = new List<INode<IBudget>>();
-            var lifestyles = FindLifestyles();
-
-            // If user has no lifestyles, then load defaults.
-            if (!lifestyles.Any())
-            {
-                Default();
-                lifestyles = FindLifestyles();
-            }
-
-            foreach (var lifestyle in lifestyles)
-            {
-                var lifestyleAsBudget = new BudgetMap(
-                    GetSignedAmount(lifestyle.Id),
-                    lifestyle.Id,
-                    lifestyle.Label,
-                    lifestyle.Lifetime,
-                    lifestyle.Recurrence,
-                    lifestyle.Existence
-                );
-                var nodeLifestyle = new Node<IBudget>(lifestyleAsBudget);
-                foreach (var category in _categoryRepo.FindCategorizedAs(lifestyle.Id))
-                {
-                    var categoryAsBudget = new BudgetMap(
-                        0, // TODO
-                        category.Id,
-                        category.Label,
-                        lifestyle.Lifetime,
-                        lifestyle.Recurrence,
-                        lifestyle.Existence
-                    );
-                    var nodeCategory = new Node<IBudget>(categoryAsBudget);
-                    foreach (var budget in _budgetRepo.FindCategorizedAs(category.Id))
-                    {
-                        var nodeBudget = new Node<IBudget>(budget);
-                        nodeCategory.Children.Add(nodeBudget);
-                    }
-                    nodeLifestyle.Children.Add(nodeCategory);
-                }
-                lifeTree.Add(nodeLifestyle);
-            }
-
-            return lifeTree;
-        }
-
-        public IEnumerable<Direction> FindDirections()
-        {
-            return Enum.GetValues(typeof(Direction)).Cast<Direction>();
+            _dfLifestyleRepo = dfLifestyleRepo;
         }
 
         public IEnumerable<Lifestyles.Domain.Live.Entities.Recurrence> FindRecurrences()
@@ -146,34 +50,145 @@ namespace Lifestyles.Service.Live.Services
             return Enum.GetValues(typeof(Lifestyles.Domain.Live.Entities.Existence)).Cast<Lifestyles.Domain.Live.Entities.Existence>();
         }
 
-        public IEnumerable<ILifestyle> FindLifestyles()
+        public IEnumerable<INode<IBudget>> FindDefaultLifeTrees()
         {
-            return _lifestyleRepo.Find();
-        }
-
-        public IEnumerable<ILifestyle> UpsertLifestyles(IEnumerable<ILifestyle> lifestyles)
-        {
-            return _lifestyleRepo.Upsert(lifestyles);
-        }
-
-        public IEnumerable<ILifestyle> RemoveLifestyles(IEnumerable<ILifestyle> lifestyles)
-        {
-            return _lifestyleRepo.Remove(lifestyles);
-        }
-
-        public decimal GetSignedAmount(Guid lifestyleId)
-        {
-            var lifestyle = FindLifestyles().FirstOrDefault(l => l.Id.Equals(lifestyleId));
-
-            if (lifestyle == null)
+            var lifeTrees = new List<INode<IBudget>>();
+            var dfLifestyles = _dfLifestyleRepo.Find();
+            dfLifestyles.ToList().ForEach(dfLifestyle =>
             {
-                // TODO : Log a message.
-                throw new NullReferenceException();
-            }
+                var nodeLifestyle = new Node<IBudget>(new BudgetMap(dfLifestyle));
 
-            var budgets = _budgetRepo.FindCategorizedAs(lifestyleId);
+                var dfCategories = _dfCategoryRepo.FindBy(dfLifestyle);
+                var budgetsByLifestyle = new List<IBudget>();
+                dfCategories.ToList().ForEach(dfCategory =>
+                {
+                    var nodeCategory = new Node<IBudget>(new BudgetMap(dfLifestyle, dfCategory));
 
-            return lifestyle.GetSignedAmount(budgets);
+                    var dfBudgets = _dfBudgetRepo.FindBy(dfLifestyle, dfCategory);
+                    budgetsByLifestyle.AddRange(dfBudgets.Select(d => new BudgetMap(d)));
+                    dfBudgets.ToList().ForEach(dfBudget =>
+                    {
+                        var nodeBudget = new Node<IBudget>(new BudgetMap(dfBudget));
+
+                        // Add node as leaf.
+                        nodeCategory.Children.Add(nodeBudget);
+                    });
+
+                    // Calculate & map signed amount.
+                    nodeCategory.Value.Value(new CategoryMap(dfCategory).GetSignedAmount(new LifestyleMap(dfLifestyle), dfBudgets.Select(d => new BudgetMap(d))));
+
+                    // Add node.
+                    nodeLifestyle.Children.Add(nodeCategory);
+                });
+
+                // Calculate & map signed amount. 
+                nodeLifestyle.Value.Value(new LifestyleMap(dfLifestyle).GetSignedAmount(budgetsByLifestyle));
+
+                // Add node as root.
+                lifeTrees.Add(nodeLifestyle);
+            });
+
+            return lifeTrees;
+        }
+
+        // var jsonLifestyles = FindDefaultLifestyles();
+        // foreach (var jsonLifestyle in jsonLifestyles)
+        // {
+        //     var lifestyle = new LifestyleMap(
+        //         null,
+        //         jsonLifestyle.Label,
+        //         jsonLifestyle.Lifetime,
+        //         RecurrenceMap.Map(jsonLifestyle.Recurrence),
+        //         ExistenceMap.Map(jsonLifestyle.Existence));
+
+        //     _lifestyleRepo.Upsert(new[] { lifestyle });
+
+        //     var jsonCategories = FindDefaultCategoriesBy(jsonLifestyle);
+        //     foreach (var jsonCategory in jsonCategories)
+        //     {
+        //         var category = new CategoryMap(
+        //             null,
+        //             jsonCategory.Label);
+
+        //         _categoryRepo.Upsert(new[] { category });
+        //         _categoryRepo.Categorize(lifestyle.Id, new[] { category });
+
+        //         var jsonBudgets = FindDefaultBudgetsBy(jsonLifestyle, jsonCategory);
+        //         foreach (var jsonBudget in jsonBudgets)
+        //         {
+        //             var budget = new BudgetMap(
+        //                 jsonBudget.Amount,
+        //                 null,
+        //                 jsonBudget.Label,
+        //                 jsonBudget.Lifetime,
+        //                 RecurrenceMap.Map(jsonBudget.Recurrence),
+        //                 ExistenceMap.Map(jsonBudget.Existence));
+
+        //             _budgetRepo.Upsert(new[] { budget });
+        //             _budgetRepo.Categorize(category.Id, new[] { budget });
+        //         }
+        //     }
+        // }
+
+        public IEnumerable<INode<IBudget>> FindSavedLifeTrees()
+        {
+            var lifeTrees = new List<INode<IBudget>>();
+            var lifestyles = _lifestyleRepo.Find();
+            lifestyles.ToList().ForEach(lifestyle =>
+            {
+                var nodeLifestyle = new Node<IBudget>(new BudgetMap(lifestyle));
+
+                var categories = _categoryRepo.FindCategorizedAs(lifestyle.Id);
+                var budgetsByLifestyle = new List<IBudget>();
+                categories.ToList().ForEach(category =>
+                {
+                    var nodeCategory = new Node<IBudget>(new BudgetMap(lifestyle, category));
+
+                    var budgets = _budgetRepo.FindCategorizedAs(category.Id);
+                    budgetsByLifestyle.AddRange(budgets);
+                    budgets.ToList().ForEach(budget =>
+                    {
+                        var nodeBudget = new Node<IBudget>(budget);
+
+                        // Add node as leaf.
+                        nodeCategory.Children.Add(nodeBudget);
+                    });
+
+                    // Calculate & map signed amount.
+                    nodeCategory.Value.Value(category.GetSignedAmount(lifestyle, budgets));
+
+                    // Add node.
+                    nodeLifestyle.Children.Add(nodeCategory);
+                });
+
+                // Calculate & map signed amount. 
+                nodeLifestyle.Value.Value(lifestyle.GetSignedAmount(budgetsByLifestyle));
+
+                // Add node as root.
+                lifeTrees.Add(nodeLifestyle);
+            });
+
+            return lifeTrees;
+        }
+
+        public IEnumerable<INode<IBudget>> UpsertSavedLifeTrees(IEnumerable<INode<IBudget>> lifeTrees)
+        {
+            lifeTrees.ToList().ForEach(root => {
+                var lifestyle = new BudgetMap(root.Value);
+                _lifestyleRepo.Upsert(new[] { lifestyle });
+
+                root.Children.ToList().ForEach(child => {
+                    var category = new BudgetMap(root.Value);
+                    _categoryRepo.Upsert(new[] { category });
+
+                    child.Children.ToList().ForEach(leaf => {
+                        var budget = new BudgetMap(root.Value);
+                        _budgetRepo.Upsert(new[] { budget });
+                    });
+                });
+            });
+
+            return FindSavedLifeTrees();
         }
 
         public IEnumerable<IComparison<ILifestyle>> CompareLifestyles(IEnumerable<ILifestyle> lifestyles)

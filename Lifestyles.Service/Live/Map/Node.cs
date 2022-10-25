@@ -3,7 +3,6 @@ using Lifestyles.Domain.Live.Entities;
 namespace Lifestyles.Service.Live.Map
 {
     public class Node<T> : INode<T>
-        where T : IIdentified
     {
         public T Value { get; private set; }
         public INode<T>? Parent { get; private set; }
@@ -37,6 +36,13 @@ namespace Lifestyles.Service.Live.Map
             action(Value);
             foreach (var child in Children)
                 child.Traverse(action);
+        }
+
+        public INode<G> Map<G>(Func<T, G> map)
+        {
+            var root = new Node<G>(map(Value));
+            root.Children = Children.Select(child => child.Map<G>(map)).ToList();
+            return root;
         }
 
         public IEnumerable<T> FlattenValues()

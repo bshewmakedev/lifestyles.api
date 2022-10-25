@@ -9,6 +9,7 @@ namespace Lifestyles.Domain.Live.Entities
         IList<INode<T>> AddValuesAsChildren(params T[] values);
         bool RemoveChild(INode<T> node);
         void Traverse(Action<T> action);
+        INode<G> Map<G>(Func<T, G> map);
         IEnumerable<T> FlattenValues();
     }
 }
