@@ -75,5 +75,11 @@ namespace Lifestyles.Service.Categorize.Map
             Identify();
             Relabel(dfCategory.Label);
         }
+
+        public Category(IBudget budget)
+        {
+            Identify(budget.Id);
+            Relabel(budget.Label);
+        }
     }
 }

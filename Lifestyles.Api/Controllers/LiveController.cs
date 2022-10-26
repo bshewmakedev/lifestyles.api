@@ -63,11 +63,11 @@ public class LiveController : ControllerBase
 
     [HttpPost]
     [Route("lifetrees/upsert")]
-    public IEnumerable<Node<IBudget>> UpsertSavedLifeTrees(List<Node<VmBudget>> lifeTrees)
+    public IEnumerable<Node<VmBudget>> UpsertSavedLifeTrees(List<Node<VmBudget>> lifeTrees)
     {
         return _liveService
-            .UpsertSavedLifeTrees(
-                lifeTrees.Select(tree => tree.Map<IBudget>((vmBudget) => new BudgetMap(vmBudget))));
+            .UpsertSavedLifeTrees(lifeTrees.Select(tree => tree.Map<IBudget>((vmBudget) => new BudgetMap(vmBudget))))
+            .Select(tree => tree.Map<VmBudget>((budget) => new VmBudget(budget)));
     }
     
     [HttpPost]

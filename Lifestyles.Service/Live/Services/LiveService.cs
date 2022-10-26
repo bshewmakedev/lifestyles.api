@@ -1,13 +1,11 @@
 using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Budget.Repositories;
-using Lifestyles.Domain.Categorize.Entities;
 using Lifestyles.Domain.Categorize.Repositories;
 using Lifestyles.Domain.Live.Entities;
 using Lifestyles.Domain.Live.Repositories;
 using Lifestyles.Domain.Live.Services;
 using Lifestyles.Service.Budget.Repositories;
 using Lifestyles.Service.Categorize.Repositories;
-using Lifestyles.Service.Live.Map;
 using Lifestyles.Service.Live.Repositories;
 using BudgetMap = Lifestyles.Service.Budget.Map.Budget;
 using CategoryMap = Lifestyles.Service.Categorize.Map.Category;
@@ -52,121 +50,81 @@ namespace Lifestyles.Service.Live.Services
 
         public IEnumerable<Node<IBudget>> FindDefaultLifeTrees()
         {
-            var lifeTrees = new List<Node<IBudget>>();
+            // Map lifestyles to roots.
             var dfLifestyles = _dfLifestyleRepo.Find();
-            dfLifestyles.ToList().ForEach(dfLifestyle =>
+            return dfLifestyles.Select(dfLifestyle =>
             {
-                var nodeLifestyle = new Node<IBudget>(new BudgetMap(dfLifestyle));
+                var lifestyle = new LifestyleMap(dfLifestyle);
+                var lifestyleNode = new Node<IBudget>(new BudgetMap(lifestyle));
 
-                var dfCategories = _dfCategoryRepo.FindBy(dfLifestyle);
+                // Map categories to children.
                 var budgetsByLifestyle = new List<IBudget>();
-                dfCategories.ToList().ForEach(dfCategory =>
+                var dfCategories = _dfCategoryRepo.FindBy(dfLifestyle);
+                lifestyleNode.AddNodesAsChild(dfCategories.Select(dfCategory =>
                 {
-                    var nodeCategory = new Node<IBudget>(new BudgetMap(dfLifestyle, dfCategory));
+                    var category = new CategoryMap(dfCategory);
+                    var categoryNode = new Node<IBudget>(new BudgetMap(lifestyle, category));
 
-                    var dfBudgets = _dfBudgetRepo.FindBy(dfLifestyle, dfCategory);
-                    budgetsByLifestyle.AddRange(dfBudgets.Select(d => new BudgetMap(d)));
-                    dfBudgets.ToList().ForEach(dfBudget =>
-                    {
-                        var nodeBudget = new Node<IBudget>(new BudgetMap(dfBudget));
+                    // Map budgets to leaves.
+                    var budgetsByCategory = _dfBudgetRepo.FindBy(dfLifestyle, dfCategory).Select(e => new BudgetMap(e));
+                    categoryNode.AddNodesAsChild(budgetsByCategory.Select(e => new Node<IBudget>(e)));
+                    categoryNode.Value.Value(category.GetSignedAmount(lifestyle, budgetsByCategory));
+                    budgetsByLifestyle.AddRange(budgetsByCategory);
 
-                        // Add node as leaf.
-                        nodeCategory.AddNodeAsChild(nodeBudget);
-                    });
+                    return categoryNode;
+                }));
+                lifestyleNode.Value.Value(lifestyle.GetSignedAmount(budgetsByLifestyle));
 
-                    // Calculate & map signed amount.
-                    nodeCategory.Value.Value(new CategoryMap(dfCategory).GetSignedAmount(new LifestyleMap(dfLifestyle), dfBudgets.Select(d => new BudgetMap(d))));
-
-                    // Add node.
-                    nodeLifestyle.AddNodeAsChild(nodeCategory);
-                });
-
-                // Calculate & map signed amount. 
-                nodeLifestyle.Value.Value(new LifestyleMap(dfLifestyle).GetSignedAmount(budgetsByLifestyle));
-
-                // Add node as root.
-                lifeTrees.Add(nodeLifestyle);
+                return lifestyleNode;
             });
-
-            return lifeTrees;
         }
 
         public IEnumerable<Node<IBudget>> FindSavedLifeTrees()
         {
-            var lifeTrees = new List<Node<IBudget>>();
+            // Map lifestyles to roots.
             var lifestyles = _lifestyleRepo.Find();
-            lifestyles.ToList().ForEach(lifestyle =>
+            return lifestyles.Select(lifestyle =>
             {
-                var nodeLifestyle = new Node<IBudget>(new BudgetMap(lifestyle));
+                var lifestyleNode = new Node<IBudget>(new BudgetMap(lifestyle));
 
-                var categories = _categoryRepo.FindCategorizedAs(lifestyle.Id);
+                // Map categories to children.
                 var budgetsByLifestyle = new List<IBudget>();
-                categories.ToList().ForEach(category =>
+                var categories = _categoryRepo.FindCategorizedAs(lifestyleNode.Value.Id);
+                lifestyleNode.AddNodesAsChild(categories.Select(category =>
                 {
-                    var nodeCategory = new Node<IBudget>(new BudgetMap(lifestyle, category));
+                    var categoryNode = new Node<IBudget>(new BudgetMap(lifestyle, category));
 
-                    var budgets = _budgetRepo.FindCategorizedAs(category.Id);
-                    budgetsByLifestyle.AddRange(budgets);
-                    budgets.ToList().ForEach(budget =>
-                    {
-                        var nodeBudget = new Node<IBudget>(budget);
+                    // Map budgets to leaves.
+                    var budgetsByCategory = _budgetRepo.FindCategorizedAs(categoryNode.Value.Id);
+                    categoryNode.AddNodesAsChild(budgetsByCategory.Select(e => new Node<IBudget>(new BudgetMap(e))));
+                    categoryNode.Value.Value(new CategoryMap(categoryNode.Value).GetSignedAmount(lifestyle, budgetsByCategory));
+                    budgetsByLifestyle.AddRange(budgetsByCategory);
 
-                        // Add node as leaf.
-                        nodeCategory.AddNodeAsChild(nodeBudget);
-                    });
+                    return categoryNode;
+                }));
+                lifestyleNode.Value.Value(lifestyle.GetSignedAmount(budgetsByLifestyle));
 
-                    // Calculate & map signed amount.
-                    nodeCategory.Value.Value(category.GetSignedAmount(lifestyle, budgets));
-
-                    // Add node.
-                    nodeLifestyle.AddNodeAsChild(nodeCategory);
-                });
-
-                // Calculate & map signed amount. 
-                nodeLifestyle.Value.Value(lifestyle.GetSignedAmount(budgetsByLifestyle));
-
-                // Add node as root.
-                lifeTrees.Add(nodeLifestyle);
+                return lifestyleNode;
             });
-
-            return lifeTrees;
         }
 
         public IEnumerable<Node<IBudget>> UpsertSavedLifeTrees(IEnumerable<Node<IBudget>> lifeTrees)
         {
+            // Map roots to lifestyles; then upsert.
+            var lifestyles = lifeTrees.ToList().Select(node => new LifestyleMap(node.Value));
+            _lifestyleRepo.Upsert(lifestyles);
             lifeTrees.ToList().ForEach(root =>
             {
-                var lifestyle = new LifestyleMap(
-                    root.Value.Id,
-                    root.Value.Label,
-                    root.Value.Lifetime,
-                    root.Value.Recurrence,
-                    root.Value.Existence
-                );
-                _lifestyleRepo.Upsert(new[] { lifestyle });
-
+                // Map children to categories; then upsert & categorize as lifestyles.
+                var categories = root.Children.ToList().Select(node => new CategoryMap(node.Value));
+                _categoryRepo.Upsert(categories);
+                _categoryRepo.Categorize(root.Value.Id, categories);
                 root.Children.ToList().ForEach(child =>
                 {
-                    var category = new CategoryMap(
-                        child.Value.Id,
-                        child.Value.Label
-                    );
-                    _categoryRepo.Upsert(new[] { category });
-                    _categoryRepo.Categorize(lifestyle.Id, new[] { category });
-
-                    child.Children.ToList().ForEach(leaf =>
-                    {
-                        var budget = new BudgetMap(
-                            leaf.Value.Amount,
-                            leaf.Value.Id,
-                            leaf.Value.Label,
-                            leaf.Value.Lifetime,
-                            leaf.Value.Recurrence,
-                            leaf.Value.Existence
-                        );
-                        _budgetRepo.Upsert(new[] { budget });
-                        _budgetRepo.Categorize(category.Id, new[] { budget });
-                    });
+                    // Map leaves to budgets; then upsert & categorize as categories.
+                    var budgets = child.Children.ToList().Select(node => new BudgetMap(node.Value));
+                    _budgetRepo.Upsert(budgets);
+                    _budgetRepo.Categorize(child.Value.Id, budgets);
                 });
             });
 

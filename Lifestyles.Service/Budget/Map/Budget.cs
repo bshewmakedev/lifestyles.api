@@ -75,6 +75,15 @@ namespace Lifestyles.Service.Budget.Map
             Relabel(dfLifestyle.Label);
         }
 
+        public Budget(IBudget budget)
+        {
+            Value(budget.Amount * ((int)budget.Direction));
+            Recur(budget.Recurrence, budget.Lifetime);
+            Exist(budget.Existence);
+            Identify(budget.Id);
+            Relabel(budget.Label);
+        }
+
         public Budget(ILifestyle lifestyle, ICategory category)
         {
             Value();

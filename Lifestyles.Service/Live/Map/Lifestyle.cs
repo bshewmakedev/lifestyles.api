@@ -62,5 +62,13 @@ namespace Lifestyles.Service.Live.Map
             Identify();
             Relabel(dfLifestyle.Label);
         }
+
+        public Lifestyle(IBudget budget)
+        {
+            Recur(budget.Recurrence, budget.Lifetime);
+            Exist(budget.Existence);
+            Identify(budget.Id);
+            Relabel(budget.Label);
+        }
     }
 }

@@ -18,6 +18,16 @@ namespace Lifestyles.Domain.Live.Entities
             return node;
         }
 
+        public IEnumerable<Node<T>> AddNodesAsChild(IEnumerable<Node<T>> nodes)
+        {
+            foreach (var node in nodes)
+            {
+                AddNodeAsChild(node);
+            }
+
+            return nodes;
+        }
+
         public Node<T> AddValueAsChild(T value)
         {
             var node = new Node<T>(value);
