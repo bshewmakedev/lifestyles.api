@@ -3,6 +3,7 @@ namespace Lifestyles.Domain.Live.Entities
     public class Node<T>
     {
         public T Value { get; private set; }
+        public Node<T> Parent { get; private set; }
         public IList<Node<T>> Children { get; private set; }
 
         public Node(T value)
@@ -13,27 +14,20 @@ namespace Lifestyles.Domain.Live.Entities
 
         public Node<T> AddNodeAsChild(Node<T> node)
         {
+            node.Parent = this;
             Children.Add(node);
 
             return node;
         }
 
-        public IEnumerable<Node<T>> AddNodesAsChild(IEnumerable<Node<T>> nodes)
+        public IEnumerable<Node<T>> AddNodesAsChildren(params Node<T>[] nodes)
         {
-            foreach (var node in nodes)
-            {
-                AddNodeAsChild(node);
-            }
-
-            return nodes;
+            return nodes.Select(AddNodeAsChild).ToList();
         }
 
         public Node<T> AddValueAsChild(T value)
         {
-            var node = new Node<T>(value);
-            Children.Add(node);
-
-            return node;
+            return AddNodeAsChild(new Node<T>(value));
         }
 
         public IList<Node<T>> AddValuesAsChildren(params T[] values)

@@ -60,29 +60,31 @@ namespace Lifestyles.Service.Live.Services
                 // Map categories to children.
                 var budgetsByLifestyle = new List<IBudget>();
                 var dfCategories = _dfCategoryRepo.FindBy(dfLifestyle);
-                lifestyleNode.AddNodesAsChild(dfCategories.Select(dfCategory =>
+                lifestyleNode.AddNodesAsChildren(dfCategories.Select(dfCategory =>
                 {
                     var category = new CategoryMap(dfCategory);
                     var categoryNode = new Node<IBudget>(new BudgetMap(lifestyle, category));
 
                     // Map budgets to leaves.
                     var budgetsByCategory = _dfBudgetRepo.FindBy(dfLifestyle, dfCategory).Select(e => new BudgetMap(e));
-                    categoryNode.AddNodesAsChild(budgetsByCategory.Select(e => new Node<IBudget>(e)));
+                    categoryNode.AddNodesAsChildren(budgetsByCategory.Select(e => new Node<IBudget>(e)).ToArray());
                     categoryNode.Value.Value(category.GetSignedAmount(lifestyle, budgetsByCategory));
                     budgetsByLifestyle.AddRange(budgetsByCategory);
 
                     return categoryNode;
-                }));
+                }).ToArray());
                 lifestyleNode.Value.Value(lifestyle.GetSignedAmount(budgetsByLifestyle));
 
                 return lifestyleNode;
             });
         }
 
-        public IEnumerable<Node<IBudget>> FindSavedLifeTrees()
+        public IEnumerable<Node<IBudget>> FindSavedLifeTrees(Guid[]? lifestyleIds = null)
         {
             // Map lifestyles to roots.
-            var lifestyles = _lifestyleRepo.Find();
+            var lifestyles = lifestyleIds == null || !lifestyleIds.Any()
+                ? _lifestyleRepo.Find()
+                : _lifestyleRepo.Find(l => lifestyleIds.Contains(l.Id));
             return lifestyles.Select(lifestyle =>
             {
                 var lifestyleNode = new Node<IBudget>(new BudgetMap(lifestyle));
@@ -90,24 +92,33 @@ namespace Lifestyles.Service.Live.Services
                 // Map categories to children.
                 var budgetsByLifestyle = new List<IBudget>();
                 var categories = _categoryRepo.FindCategorizedAs(lifestyleNode.Value.Id);
-                lifestyleNode.AddNodesAsChild(categories.Select(category =>
+                lifestyleNode.AddNodesAsChildren(categories.Select(category =>
                 {
                     var categoryNode = new Node<IBudget>(new BudgetMap(lifestyle, category));
 
                     // Map budgets to leaves.
                     var budgetsByCategory = _budgetRepo.FindCategorizedAs(categoryNode.Value.Id);
-                    categoryNode.AddNodesAsChild(budgetsByCategory.Select(e => new Node<IBudget>(new BudgetMap(e))));
+                    categoryNode.AddNodesAsChildren(budgetsByCategory.Select(e => new Node<IBudget>(new BudgetMap(e))).ToArray());
                     categoryNode.Value.Value(new CategoryMap(categoryNode.Value).GetSignedAmount(lifestyle, budgetsByCategory));
                     budgetsByLifestyle.AddRange(budgetsByCategory);
 
                     return categoryNode;
-                }));
+                }).ToArray());
                 lifestyleNode.Value.Value(lifestyle.GetSignedAmount(budgetsByLifestyle));
 
                 return lifestyleNode;
             });
         }
 
+        /// <summary>
+        /// Given a flat list of { lifestyles, categories, budgets },
+        ///   - deassociate them with their existing parents
+        ///   - associate   them with their new      parents
+        ///   - insert them if they do not exist
+        ///   - update them if they do     exist
+        /// </summary>
+        /// <param name="lifeTrees">flat list of { lifestyles, categories, budgets } to upsert</param>
+        /// <returns>flat list of upserted { lifestyles, categories, budgets }</returns>
         public IEnumerable<Node<IBudget>> UpsertSavedLifeTrees(IEnumerable<Node<IBudget>> lifeTrees)
         {
             // Map roots to lifestyles; then upsert.

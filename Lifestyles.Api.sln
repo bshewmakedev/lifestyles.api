@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Infrastructure.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Test.Unit.Service", "Lifestyles.Test.Unit.Service\Lifestyles.Test.Unit.Service.csproj", "{392C4BD5-1B73-48AE-8785-9A942780CADB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lifestyles.Test.Unit.Api", "Lifestyles.Test.Unit.Api\Lifestyles.Test.Unit.Api.csproj", "{588E9493-DFF7-4C81-AA1A-9128E65794BD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
