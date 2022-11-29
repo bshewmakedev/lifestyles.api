@@ -6,7 +6,7 @@ namespace Lifestyles.Domain.Live.Entities
 {
     public interface ILifestyle : ICategory, IRecur, IExist
     { 
-        decimal GetSignedAmount(
+        decimal GetValue(
             IEnumerable<IBudget> budgets,
             int? interval = null);
     }

@@ -8,6 +8,8 @@ namespace Lifestyles.Infrastructure.Session.Budget.Repositories
 {
     public class BudgetRepo : EntityRepo<IBudget, BudgetMap>, IBudgetRepo
     {
-        public BudgetRepo(IKeyValueRepo keyValueRepo) : base(keyValueRepo, "budget") { }
+        public BudgetRepo(IKeyValueRepo keyValueRepo) : base(
+            keyValueRepo,
+            Lifestyles.Domain.Tree.Map.NodeType.Budget) { }
     }
 }

@@ -8,6 +8,8 @@ namespace Lifestyles.Infrastructure.Session.Categorize.Repositories
 {
     public class CategoryRepo : EntityRepo<ICategory, CategoryMap>, ICategoryRepo
     {
-        public CategoryRepo(IKeyValueRepo keyValueRepo) : base(keyValueRepo, "category") { }
+        public CategoryRepo(IKeyValueRepo keyValueRepo) : base(
+            keyValueRepo, 
+            Lifestyles.Domain.Tree.Map.NodeType.Category) { }
     }
 }

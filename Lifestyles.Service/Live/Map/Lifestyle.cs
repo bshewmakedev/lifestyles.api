@@ -1,22 +1,21 @@
 using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Live.Entities;
 using Lifestyles.Service.Categorize.Map;
-using Lifestyles.Service.Categorize.Models;
 using Lifestyles.Service.Live.Models;
 using RecurrenceEntity = Lifestyles.Domain.Live.Entities.Recurrence;
 using ExistenceEntity = Lifestyles.Domain.Live.Entities.Existence;
-using RecurrenceMap = Lifestyles.Service.Live.Map.Recurrence;
-using ExistenceMap = Lifestyles.Service.Live.Map.Existence;
+using RecurrenceMap = Lifestyles.Domain.Live.Map.Recurrence;
+using ExistenceMap = Lifestyles.Domain.Live.Map.Existence;
 
 namespace Lifestyles.Service.Live.Map
 {
-    public partial class Lifestyle : Category, ILifestyle
+    public class Lifestyle : Category, ILifestyle
     {
-        public decimal GetSignedAmount(
+        public decimal GetValue(
             IEnumerable<IBudget> budgets,
             int? interval = null)
         {
-            return base.GetSignedAmount(this, budgets, interval);
+            return base.GetValue(this, budgets, interval);
         }
 
         public int? Lifetime { get; private set; }
@@ -25,15 +24,7 @@ namespace Lifestyles.Service.Live.Map
         public void Recur(RecurrenceEntity recurrence = RecurrenceEntity.Never, int? lifetime = null)
         {
             Recurrence = recurrence;
-
-            if (recurrence.Equals(Lifestyles.Domain.Live.Entities.Recurrence.Never))
-            {
-                Lifetime = null;
-            }
-            else
-            {
-                Lifetime = lifetime;
-            }
+            Lifetime = recurrence.Equals(Lifestyles.Domain.Live.Entities.Recurrence.Never) ? null : lifetime;
         }
 
         public ExistenceEntity Existence { get; private set; }
@@ -55,20 +46,16 @@ namespace Lifestyles.Service.Live.Map
             Exist(existence);
         }
 
-        public Lifestyle(DefaultLifestyle dfLifestyle)
+        public Lifestyle(DefaultLifestyle dfLifestyle) : base(label: dfLifestyle.Label)
         {
             Recur(RecurrenceMap.Map(dfLifestyle.Recurrence), dfLifestyle.Lifetime);
             Exist(ExistenceMap.Map(dfLifestyle.Existence));
-            Identify();
-            Relabel(dfLifestyle.Label);
         }
 
-        public Lifestyle(IBudget budget)
+        public Lifestyle(IBudget budget) : base(budget.Id, budget.Label)
         {
             Recur(budget.Recurrence, budget.Lifetime);
             Exist(budget.Existence);
-            Identify(budget.Id);
-            Relabel(budget.Label);
         }
     }
 }

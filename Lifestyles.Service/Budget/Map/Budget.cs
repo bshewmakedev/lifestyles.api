@@ -5,39 +5,24 @@ using Lifestyles.Service.Budget.Models;
 using Lifestyles.Service.Categorize.Models;
 using Lifestyles.Service.Live.Models;
 using Lifestyles.Service.Live.Map;
-using DirectionEntity = Lifestyles.Domain.Live.Entities.Direction;
 using RecurrenceEntity = Lifestyles.Domain.Live.Entities.Recurrence;
 using ExistenceEntity = Lifestyles.Domain.Live.Entities.Existence;
-using RecurrenceMap = Lifestyles.Service.Live.Map.Recurrence;
-using ExistenceMap = Lifestyles.Service.Live.Map.Existence;
+using RecurrenceMap = Lifestyles.Domain.Live.Map.Recurrence;
+using ExistenceMap = Lifestyles.Domain.Live.Map.Existence;
 
 namespace Lifestyles.Service.Budget.Map
 {
-    public partial class Budget : Lifestyle, IBudget
+    public class Budget : Lifestyle, IBudget
     {
-        public decimal Amount { get; private set; }
-        public DirectionEntity Direction { get; private set; }
+        public decimal Value { get; private set; }
 
-        public void Value(decimal amount = 0)
+        public void Valuate(decimal value = 0)
         {
-            Amount = Math.Abs(amount);
-
-            if (amount > 0)
-            {
-                Direction = DirectionEntity.In;
-            }
-            else if (amount < 0)
-            {
-                Direction = DirectionEntity.Out;
-            }
-            else
-            {
-                Direction = DirectionEntity.Neutral;
-            }
+            Value = value;
         }
 
         public Budget(
-            decimal amount = 0,
+            decimal value = 0,
             Guid? id = null,
             string label = "",
             int? lifetime = null,
@@ -45,61 +30,44 @@ namespace Lifestyles.Service.Budget.Map
             ExistenceEntity existence = ExistenceEntity.Expected
         ) : base(id, label, lifetime, recurrence, existence)
         {
-            Value(amount);
+            Valuate(value);
         }
 
-        public Budget(DefaultBudget dfBudget)
+        public Budget(DefaultBudget dfBudget) : base(
+            label: dfBudget.Label,
+            lifetime: dfBudget.Lifetime,
+            recurrence: RecurrenceMap.Map(dfBudget.Recurrence),
+            existence: ExistenceMap.Map(dfBudget.Existence))
         {
-            Value(dfBudget.Amount);
-            Recur(RecurrenceMap.Map(dfBudget.Recurrence), dfBudget.Lifetime);
-            Exist(ExistenceMap.Map(dfBudget.Existence));
-            Identify();
-            Relabel(dfBudget.Label);
+            Valuate(dfBudget.Value);
         }
 
-        public Budget(DefaultLifestyle dfLifestyle, DefaultCategory dfCategory)
+        public Budget(IBudget budget) : base(
+            budget.Id,
+            budget.Label,
+            budget.Lifetime,
+            budget.Recurrence,
+            budget.Existence)
         {
-            Value();
-            Recur(RecurrenceMap.Map(dfLifestyle.Recurrence), dfLifestyle.Lifetime);
-            Exist(ExistenceMap.Map(dfLifestyle.Existence));
-            Identify();
-            Relabel(dfCategory.Label);
+            Valuate(budget.Value);
         }
 
-        public Budget(DefaultLifestyle dfLifestyle)
+        public Budget(ILifestyle lifestyle, ICategory category) : base(
+            label: category.Label,
+            lifetime: lifestyle.Lifetime,
+            recurrence: lifestyle.Recurrence,
+            existence: lifestyle.Existence)
         {
-            Value();
-            Recur(RecurrenceMap.Map(dfLifestyle.Recurrence), dfLifestyle.Lifetime);
-            Exist(ExistenceMap.Map(dfLifestyle.Existence));
-            Identify();
-            Relabel(dfLifestyle.Label);
+            Valuate();
         }
 
-        public Budget(IBudget budget)
+        public Budget(ILifestyle lifestyle) : base(
+            label: lifestyle.Label,
+            lifetime: lifestyle.Lifetime,
+            recurrence: lifestyle.Recurrence,
+            existence: lifestyle.Existence)
         {
-            Value(budget.Amount * ((int)budget.Direction));
-            Recur(budget.Recurrence, budget.Lifetime);
-            Exist(budget.Existence);
-            Identify(budget.Id);
-            Relabel(budget.Label);
-        }
-
-        public Budget(ILifestyle lifestyle, ICategory category)
-        {
-            Value();
-            Recur(lifestyle.Recurrence, lifestyle.Lifetime);
-            Exist(lifestyle.Existence);
-            Identify(category.Id);
-            Relabel(category.Label);
-        }
-
-        public Budget(ILifestyle lifestyle)
-        {
-            Value();
-            Recur(lifestyle.Recurrence, lifestyle.Lifetime);
-            Exist(lifestyle.Existence);
-            Identify(lifestyle.Id);
-            Relabel(lifestyle.Label);
+            Valuate();
         }
     }
 }

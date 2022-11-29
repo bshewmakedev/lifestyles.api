@@ -1,6 +1,8 @@
 using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Categorize.Entities;
 using Lifestyles.Domain.Live.Entities;
+using RecurrenceMap = Lifestyles.Domain.Live.Map.Recurrence;
+using ExistenceMap = Lifestyles.Domain.Live.Map.Existence;
 
 namespace Lifestyles.Infrastructure.Session.Budget.Models
 {
@@ -8,8 +10,8 @@ namespace Lifestyles.Infrastructure.Session.Budget.Models
     {
         public Guid Id { get; set; }
         public string Label { get; set; } = string.Empty;
-        public string BudgetType { get; set; } = string.Empty;
-        public decimal? Amount { get; set; }
+        public string NodeType { get; set; } = string.Empty;
+        public decimal? Value { get; set; }
         public int? Lifetime { get; set; }
         public string? Recurrence { get; set; }
         public string? Existence { get; set; }
@@ -20,19 +22,19 @@ namespace Lifestyles.Infrastructure.Session.Budget.Models
         {
             Id = budget.Id;
             Label = budget.Label;
-            BudgetType = "budget";
-            Amount = budget.Amount * (int)budget.Direction;
+            NodeType = Lifestyles.Domain.Tree.Map.NodeType.Budget;
+            Value = budget.Value;
             Lifetime = budget.Lifetime;
-            Recurrence = Lifestyles.Infrastructure.Session.Live.Models.JsonRecurrence.Map(budget.Recurrence);
-            Existence = Lifestyles.Infrastructure.Session.Live.Models.JsonExistence.Map(budget.Existence);
+            Recurrence = RecurrenceMap.Map(budget.Recurrence);
+            Existence = ExistenceMap.Map(budget.Existence);
         }
 
         public JsonBudget(ICategory category)
         {
             Id = category.Id;
             Label = category.Label;
-            BudgetType = "category";
-            Amount = null;
+            NodeType = Lifestyles.Domain.Tree.Map.NodeType.Category;
+            Value = null;
             Lifetime = null;
             Recurrence = null;
             Existence = null;
@@ -42,11 +44,11 @@ namespace Lifestyles.Infrastructure.Session.Budget.Models
         {
             Id = lifestyle.Id;
             Label = lifestyle.Label;
-            BudgetType = "lifestyle";
-            Amount = null;
+            NodeType = Lifestyles.Domain.Tree.Map.NodeType.Lifestyle;
+            Value = null;
             Lifetime = lifestyle.Lifetime;
-            Recurrence = Lifestyles.Infrastructure.Session.Live.Models.JsonRecurrence.Map(lifestyle.Recurrence);
-            Existence = Lifestyles.Infrastructure.Session.Live.Models.JsonExistence.Map(lifestyle.Existence);
+            Recurrence = RecurrenceMap.Map(lifestyle.Recurrence);
+            Existence = ExistenceMap.Map(lifestyle.Existence);
         }
     }
 }

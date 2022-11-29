@@ -1,27 +1,27 @@
 [
   {
-    "amount": -750,
+    "value": -750,
     "existence": "expected",
     "label": "hostel",
     "lifetime": 1,
     "recurrence": "monthly"
   },
   {
-    "amount": -375,
+    "value": -375,
     "existence": "expected",
     "label": "homestay",
     "lifetime": 1,
     "recurrence": "monthly"
   },
   {
-    "amount": -400,
+    "value": -400,
     "existence": "expected",
     "label": "tent",
     "lifetime": 10,
     "recurrence": "annually"
   },
   {
-    "amount": -150,
+    "value": -150,
     "existence": "expected",
     "label": "sleeping bag",
     "lifetime": 10,

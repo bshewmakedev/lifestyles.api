@@ -9,12 +9,12 @@ namespace Lifestyles.Infrastructure.Session.Budget.Map
         public Budget() { }
 
         public Budget(JsonBudget jsonBudget) : base(
-            jsonBudget.Amount ?? 0,
+            jsonBudget.Value ?? 0,
             jsonBudget.Id,
             jsonBudget.Label,
             jsonBudget.Lifetime,
-            Lifestyles.Infrastructure.Session.Live.Map.Recurrence.Map(jsonBudget.Recurrence),
-            Lifestyles.Infrastructure.Session.Live.Map.Existence.Map(jsonBudget.Existence))
+            Lifestyles.Domain.Live.Map.Recurrence.Map(jsonBudget.Recurrence),
+            Lifestyles.Domain.Live.Map.Existence.Map(jsonBudget.Existence))
         { }
     }
 }

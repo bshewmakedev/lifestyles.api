@@ -1,5 +1,5 @@
-using Lifestyles.Domain.Live.Comparers;
-using Lifestyles.Domain.Live.Entities;
+using Lifestyles.Domain.Categorize.Comparers;
+using Lifestyles.Domain.Categorize.Entities;
 using Lifestyles.Domain.Live.Repositories;
 using Lifestyles.Infrastructure.Session.Budget.Models;
 using Lifestyles.Infrastructure.Session.Categorize.Comparers;
@@ -11,21 +11,21 @@ namespace Lifestyles.Infrastructure.Session.Live.Repositories
         where TEntity : IIdentified
         where TEntityMap : TEntity, new()
     {
-        private string _budgetType;
+        private string _nodeType;
         private List<JsonBudget> _jsonBudgets
         {
             get
             {
                 return _keyValueRepo
                     .GetItem<List<JsonBudget>>("tbl_Budget")
-                    .Where(b => b.BudgetType.Equals(_budgetType))
+                    .Where(b => b.NodeType.Equals(_nodeType))
                     .ToList();
             }
             set
             {
                 _keyValueRepo.SetItem("tbl_Budget", _keyValueRepo
                     .GetItem<List<JsonBudget>>("tbl_Budget")
-                    .Where(b => !b.BudgetType.Equals(_budgetType))
+                    .Where(b => !b.NodeType.Equals(_nodeType))
                     .Union(value)
                     .ToList());
             }
@@ -47,10 +47,10 @@ namespace Lifestyles.Infrastructure.Session.Live.Repositories
 
         public EntityRepo(
             IKeyValueRepo keyValueRepo,
-            string budgetType)
+            string nodeType)
         {
             _keyValueRepo = keyValueRepo;
-            _budgetType = budgetType;
+            _nodeType = nodeType;
         }
 
         public IEnumerable<TEntity> Find(Func<TEntity, bool>? predicate = null)

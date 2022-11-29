@@ -4,6 +4,7 @@ using Lifestyles.Domain.Categorize.Repositories;
 using Lifestyles.Domain.Live.Entities;
 using Lifestyles.Domain.Live.Repositories;
 using Lifestyles.Domain.Live.Services;
+using Lifestyles.Domain.Tree.Entities;
 using Lifestyles.Service.Budget.Repositories;
 using Lifestyles.Service.Categorize.Repositories;
 using Lifestyles.Service.Live.Repositories;
@@ -68,12 +69,12 @@ namespace Lifestyles.Service.Live.Services
                     // Map budgets to leaves.
                     var budgetsByCategory = _dfBudgetRepo.FindBy(dfLifestyle, dfCategory).Select(e => new BudgetMap(e));
                     categoryNode.AddNodesAsChildren(budgetsByCategory.Select(e => new Node<IBudget>(e)).ToArray());
-                    categoryNode.Value.Value(category.GetSignedAmount(lifestyle, budgetsByCategory));
+                    categoryNode.Entity.Valuate(category.GetValue(lifestyle, budgetsByCategory));
                     budgetsByLifestyle.AddRange(budgetsByCategory);
 
                     return categoryNode;
                 }).ToArray());
-                lifestyleNode.Value.Value(lifestyle.GetSignedAmount(budgetsByLifestyle));
+                lifestyleNode.Entity.Valuate(lifestyle.GetValue(budgetsByLifestyle));
 
                 return lifestyleNode;
             });
@@ -91,20 +92,20 @@ namespace Lifestyles.Service.Live.Services
 
                 // Map categories to children.
                 var budgetsByLifestyle = new List<IBudget>();
-                var categories = _categoryRepo.FindCategorizedAs(lifestyleNode.Value.Id);
+                var categories = _categoryRepo.FindCategorizedAs(lifestyleNode.Entity.Id);
                 lifestyleNode.AddNodesAsChildren(categories.Select(category =>
                 {
                     var categoryNode = new Node<IBudget>(new BudgetMap(lifestyle, category));
 
                     // Map budgets to leaves.
-                    var budgetsByCategory = _budgetRepo.FindCategorizedAs(categoryNode.Value.Id);
+                    var budgetsByCategory = _budgetRepo.FindCategorizedAs(categoryNode.Entity.Id);
                     categoryNode.AddNodesAsChildren(budgetsByCategory.Select(e => new Node<IBudget>(new BudgetMap(e))).ToArray());
-                    categoryNode.Value.Value(new CategoryMap(categoryNode.Value).GetSignedAmount(lifestyle, budgetsByCategory));
+                    categoryNode.Entity.Valuate(new CategoryMap(categoryNode.Entity).GetValue(lifestyle, budgetsByCategory));
                     budgetsByLifestyle.AddRange(budgetsByCategory);
 
                     return categoryNode;
                 }).ToArray());
-                lifestyleNode.Value.Value(lifestyle.GetSignedAmount(budgetsByLifestyle));
+                lifestyleNode.Entity.Valuate(lifestyle.GetValue(budgetsByLifestyle));
 
                 return lifestyleNode;
             });
@@ -122,20 +123,20 @@ namespace Lifestyles.Service.Live.Services
         public IEnumerable<Node<IBudget>> UpsertSavedLifeTrees(IEnumerable<Node<IBudget>> lifeTrees)
         {
             // Map roots to lifestyles; then upsert.
-            var lifestyles = lifeTrees.ToList().Select(node => new LifestyleMap(node.Value));
+            var lifestyles = lifeTrees.ToList().Select(node => new LifestyleMap(node.Entity));
             _lifestyleRepo.Upsert(lifestyles);
             lifeTrees.ToList().ForEach(root =>
             {
                 // Map children to categories; then upsert & categorize as lifestyles.
-                var categories = root.Children.ToList().Select(node => new CategoryMap(node.Value));
+                var categories = root.Children.ToList().Select(node => new CategoryMap(node.Entity));
                 _categoryRepo.Upsert(categories);
-                _categoryRepo.Categorize(root.Value.Id, categories);
+                _categoryRepo.Categorize(root.Entity.Id, categories);
                 root.Children.ToList().ForEach(child =>
                 {
                     // Map leaves to budgets; then upsert & categorize as categories.
-                    var budgets = child.Children.ToList().Select(node => new BudgetMap(node.Value));
+                    var budgets = child.Children.ToList().Select(node => new BudgetMap(node.Entity));
                     _budgetRepo.Upsert(budgets);
-                    _budgetRepo.Categorize(child.Value.Id, budgets);
+                    _budgetRepo.Categorize(child.Entity.Id, budgets);
                 });
             });
 

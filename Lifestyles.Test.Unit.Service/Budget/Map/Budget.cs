@@ -11,8 +11,7 @@ namespace Lifestyles.Test.Unit.Service.Budget.Map
         {
             var budget = new BudgetMap();
 
-            Assert.Equal(budget.Amount, 0);
-            Assert.Equal(budget.Direction, Direction.Neutral);
+            Assert.Equal(budget.Value, 0);
 
             Assert.NotNull(budget.Id);
             Assert.NotEqual(budget.Id, Guid.Empty);
@@ -30,17 +29,15 @@ namespace Lifestyles.Test.Unit.Service.Budget.Map
         [Fact]
         public void Should_GetBudget_GivenParams()
         {
-            var amount = 15;
-            var direction = -1;
+            var value = 15;
             var id = Guid.NewGuid();
             var label = "label";
             var lifetime = 6;
             var recurrence = Recurrence.Monthly;
             var existence = Existence.Suggested;
-            var budget = new BudgetMap(amount * direction, id, label, lifetime, recurrence, existence);
+            var budget = new BudgetMap(value, id, label, lifetime, recurrence, existence);
 
-            Assert.Equal(budget.Amount, amount);
-            Assert.Equal(budget.Direction, Direction.Out);
+            Assert.Equal(budget.Value, value);
 
             Assert.NotNull(budget.Id);
             Assert.Equal(budget.Id, id);

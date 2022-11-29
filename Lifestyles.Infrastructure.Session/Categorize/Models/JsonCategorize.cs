@@ -1,4 +1,4 @@
-using Lifestyles.Domain.Live.Entities;
+using Lifestyles.Domain.Categorize.Entities;
 
 namespace Lifestyles.Infrastructure.Session.Categorize.Models
 {

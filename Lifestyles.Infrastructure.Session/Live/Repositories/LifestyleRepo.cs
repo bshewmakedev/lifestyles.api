@@ -6,6 +6,8 @@ namespace Lifestyles.Infrastructure.Session.Live.Repositories
 {
     public class LifestyleRepo : EntityRepo<ILifestyle, LifestyleMap>, ILifestyleRepo
     {
-        public LifestyleRepo(IKeyValueRepo keyValueRepo) : base(keyValueRepo, "lifestyle") { }
+        public LifestyleRepo(IKeyValueRepo keyValueRepo) : base(
+            keyValueRepo,
+            Lifestyles.Domain.Tree.Map.NodeType.Lifestyle) { }
     }
 }

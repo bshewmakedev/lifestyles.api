@@ -5,7 +5,7 @@ using Lifestyles.Service.Categorize.Models;
 
 namespace Lifestyles.Service.Categorize.Map
 {
-    public partial class Category : ICategory
+    public class Category : ICategory
     {
         public Guid Id { get; set; }
 
@@ -21,7 +21,7 @@ namespace Lifestyles.Service.Categorize.Map
             Label = label;
         }
 
-        public decimal GetSignedAmount(
+        public decimal GetValue(
             IRecur recur,
             IEnumerable<IBudget> budgets,
             int? interval = null)
@@ -49,13 +49,13 @@ namespace Lifestyles.Service.Categorize.Map
 
                 if (b.Recurrence.Equals(Recurrence.Never))
                 {
-                    return ((int)b.Direction) * b.Amount;
+                    return b.Value;
                 }
                 else
                 {
-                    var amount = ((int)b.Direction) * (((interval + 1) * recurDecimalLifestyle) / Math.Max(recurDecimalBudget, 1.0m) / Math.Max(b.Lifetime ?? 0.0m, 1.0m)) * b.Amount;
+                    var value = (((interval + 1) * recurDecimalLifestyle) / Math.Max(recurDecimalBudget, 1.0m) / Math.Max(b.Lifetime ?? 0.0m, 1.0m)) * b.Value;
 
-                    return amount;
+                    return value;
                 }
             }).Sum();
 

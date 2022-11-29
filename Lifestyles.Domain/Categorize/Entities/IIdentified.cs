@@ -1,4 +1,4 @@
-namespace Lifestyles.Domain.Live.Entities
+namespace Lifestyles.Domain.Categorize.Entities
 {
     public interface IIdentified
     {

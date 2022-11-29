@@ -1,13 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Lifestyles.Infrastructure.Session.Budget.Models;
-using Lifestyles.Infrastructure.Session.Live.Models;
 using Lifestyles.Domain.Budget.Entities;
-using Lifestyles.Domain.Live.Entities;
 using Lifestyles.Domain.Live.Services;
-using Lifestyles.Service.Live.Map;
+using Lifestyles.Domain.Tree.Entities;
+using RecurrenceMap = Lifestyles.Domain.Live.Map.Recurrence;
+using ExistenceMap = Lifestyles.Domain.Live.Map.Existence;
 using BudgetMap = Lifestyles.Infrastructure.Session.Budget.Map.Budget;
-using CategoryMap = Lifestyles.Infrastructure.Session.Categorize.Map.Category;
-using LifestyleMap = Lifestyles.Infrastructure.Session.Live.Map.Lifestyle;
 
 namespace Lifestyles.Api.Controllers;
 
@@ -36,7 +34,7 @@ public class LiveController : ControllerBase
     {
         return _liveService
             .FindRecurrences()
-            .Select(r => r.Map());
+            .Select(r => RecurrenceMap.Map(r));
     }
 
     /// <summary>
@@ -49,7 +47,7 @@ public class LiveController : ControllerBase
     {
         return _liveService
             .FindExistences()
-            .Select(e => e.Map());
+            .Select(e => ExistenceMap.Map(e));
     }
 
     /// <summary>
@@ -66,7 +64,7 @@ public class LiveController : ControllerBase
     }
 
     /// <summary>
-    /// Find saved { lifestyles, categories } with their {categories, budgets }.
+    /// Find saved { lifestyles, categories } with their { categories, budgets }.
     /// </summary>
     /// <param name="lifestyleIds">optional filter by lifestyles' IDs</param>
     /// <returns>trees that represent saved lifestyles</returns>

@@ -1,5 +1,6 @@
 using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Live.Entities;
+using Lifestyles.Domain.Tree.Entities;
 
 namespace Lifestyles.Domain.Live.Services
 {

@@ -1,6 +1,6 @@
-using Lifestyles.Domain.Live.Entities;
+using Lifestyles.Domain.Categorize.Entities;
 
-namespace Lifestyles.Domain.Live.Comparers
+namespace Lifestyles.Domain.Categorize.Comparers
 {
     public class IdentifiedComparer<TEntity> : IEqualityComparer<TEntity>
         where TEntity : IIdentified
