@@ -16,9 +16,11 @@ namespace Lifestyles.Service.Budget.Map
     {
         public decimal Value { get; private set; }
 
-        public void Valuate(decimal value = 0)
+        public decimal Valuate(decimal value = 0)
         {
             Value = value;
+
+            return Value;
         }
 
         public Budget(

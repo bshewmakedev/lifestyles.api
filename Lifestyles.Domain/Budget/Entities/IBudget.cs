@@ -5,6 +5,6 @@ namespace Lifestyles.Domain.Budget.Entities
     public interface IBudget : ILifestyle
     { 
         decimal Value { get; }
-        void Valuate(decimal value = 0);
+        decimal Valuate(decimal value = 0);
     }
 }

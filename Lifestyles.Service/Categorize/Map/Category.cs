@@ -9,16 +9,20 @@ namespace Lifestyles.Service.Categorize.Map
     {
         public Guid Id { get; set; }
 
-        public void Identify(Guid? id = null)
+        public Guid Identify(Guid? id = null)
         {
             Id = id.HasValue ? id.Value : Guid.NewGuid();
+
+            return Id;
         }
 
         public string Label { get; set; } = string.Empty;
 
-        public void Relabel(string label = "")
+        public string Relabel(string label = "")
         {
             Label = label;
+
+            return Label;
         }
 
         public decimal GetValue(

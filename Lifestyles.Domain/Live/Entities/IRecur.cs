@@ -4,6 +4,6 @@ namespace Lifestyles.Domain.Live.Entities
     {
         int? Lifetime { get; }
         Recurrence Recurrence { get; }
-        void Recur(Recurrence recurrence = Recurrence.Never, int? lifetime = null);
+        IRecur Recur(Recurrence recurrence = Recurrence.Never, int? lifetime = null);
     }
 }

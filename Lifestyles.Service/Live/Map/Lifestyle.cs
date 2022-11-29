@@ -21,17 +21,21 @@ namespace Lifestyles.Service.Live.Map
         public int? Lifetime { get; private set; }
         public RecurrenceEntity Recurrence { get; private set; }
 
-        public void Recur(RecurrenceEntity recurrence = RecurrenceEntity.Never, int? lifetime = null)
+        public IRecur Recur(RecurrenceEntity recurrence = RecurrenceEntity.Never, int? lifetime = null)
         {
             Recurrence = recurrence;
             Lifetime = recurrence.Equals(Lifestyles.Domain.Live.Entities.Recurrence.Never) ? null : lifetime;
+
+            return this;
         }
 
         public ExistenceEntity Existence { get; private set; }
 
-        public void Exist(ExistenceEntity existence = ExistenceEntity.Expected)
+        public ExistenceEntity Exist(ExistenceEntity existence = ExistenceEntity.Expected)
         {
             Existence = existence;
+
+            return Existence;
         }
 
         public Lifestyle(
