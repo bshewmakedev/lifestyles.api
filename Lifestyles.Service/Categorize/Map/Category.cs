@@ -1,28 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Categorize.Entities;
 using Lifestyles.Domain.Live.Entities;
-using Lifestyles.Service.Categorize.Models;
+using Lifestyles.Domain.Node.Entities;
 
 namespace Lifestyles.Service.Categorize.Map
 {
-    public class Category : ICategory
+    public class Category : ICategory, IEntity
     {
         public Guid Id { get; set; }
 
-        public Guid Identify(Guid? id = null)
-        {
-            Id = id.HasValue ? id.Value : Guid.NewGuid();
-
-            return Id;
-        }
+        public string Alias { get; set; } = string.Empty;
 
         public string Label { get; set; } = string.Empty;
 
-        public string Relabel(string label = "")
+        public IEntity Identify(Guid? id = null)
+        {
+            Id = id.HasValue ? id.Value : Guid.NewGuid();
+
+            return this;
+        }
+
+        public IEntity As(string alias = "")
+        {
+            Alias = alias;
+
+            return this;
+        }
+
+        public IEntity Relabel(string label = "")
         {
             Label = label;
 
-            return Label;
+            return this;
         }
 
         public decimal GetValue(
@@ -68,22 +80,12 @@ namespace Lifestyles.Service.Categorize.Map
 
         public Category(
             Guid? id = null,
+            string alias = "",
             string label = "")
         {
             Identify(id);
+            As(alias);
             Relabel(label);
-        }
-
-        public Category(DefaultCategory dfCategory)
-        {
-            Identify();
-            Relabel(dfCategory.Label);
-        }
-
-        public Category(IBudget budget)
-        {
-            Identify(budget.Id);
-            Relabel(budget.Label);
         }
     }
 }

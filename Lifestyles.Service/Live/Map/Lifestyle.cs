@@ -1,11 +1,8 @@
+using System;
+using System.Collections.Generic;
 using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Live.Entities;
 using Lifestyles.Service.Categorize.Map;
-using Lifestyles.Service.Live.Models;
-using RecurrenceEntity = Lifestyles.Domain.Live.Entities.Recurrence;
-using ExistenceEntity = Lifestyles.Domain.Live.Entities.Existence;
-using RecurrenceMap = Lifestyles.Domain.Live.Map.Recurrence;
-using ExistenceMap = Lifestyles.Domain.Live.Map.Existence;
 
 namespace Lifestyles.Service.Live.Map
 {
@@ -19,9 +16,9 @@ namespace Lifestyles.Service.Live.Map
         }
 
         public int? Lifetime { get; private set; }
-        public RecurrenceEntity Recurrence { get; private set; }
+        public Lifestyles.Domain.Live.Entities.Recurrence Recurrence { get; private set; }
 
-        public IRecur Recur(RecurrenceEntity recurrence = RecurrenceEntity.Never, int? lifetime = null)
+        public IRecur Recur(Lifestyles.Domain.Live.Entities.Recurrence recurrence = Lifestyles.Domain.Live.Entities.Recurrence.Never, int? lifetime = null)
         {
             Recurrence = recurrence;
             Lifetime = recurrence.Equals(Lifestyles.Domain.Live.Entities.Recurrence.Never) ? null : lifetime;
@@ -29,9 +26,9 @@ namespace Lifestyles.Service.Live.Map
             return this;
         }
 
-        public ExistenceEntity Existence { get; private set; }
+        public Lifestyles.Domain.Live.Entities.Existence Existence { get; private set; }
 
-        public ExistenceEntity Exist(ExistenceEntity existence = ExistenceEntity.Expected)
+        public Lifestyles.Domain.Live.Entities.Existence Exist(Lifestyles.Domain.Live.Entities.Existence existence = Lifestyles.Domain.Live.Entities.Existence.Expected)
         {
             Existence = existence;
 
@@ -40,26 +37,15 @@ namespace Lifestyles.Service.Live.Map
 
         public Lifestyle(
             Guid? id = null,
+            string alias = "",
             string label = "",
             int? lifetime = null,
-            RecurrenceEntity recurrence = RecurrenceEntity.Never,
-            ExistenceEntity existence = ExistenceEntity.Expected
-        ) : base(id, label)
+            Lifestyles.Domain.Live.Entities.Recurrence recurrence = Lifestyles.Domain.Live.Entities.Recurrence.Never,
+            Lifestyles.Domain.Live.Entities.Existence existence = Lifestyles.Domain.Live.Entities.Existence.Expected
+        ) : base(id, alias, label)
         {
             Recur(recurrence, lifetime);
             Exist(existence);
-        }
-
-        public Lifestyle(DefaultLifestyle dfLifestyle) : base(label: dfLifestyle.Label)
-        {
-            Recur(RecurrenceMap.Map(dfLifestyle.Recurrence), dfLifestyle.Lifetime);
-            Exist(ExistenceMap.Map(dfLifestyle.Existence));
-        }
-
-        public Lifestyle(IBudget budget) : base(budget.Id, budget.Label)
-        {
-            Recur(budget.Recurrence, budget.Lifetime);
-            Exist(budget.Existence);
         }
     }
 }

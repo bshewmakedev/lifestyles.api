@@ -1,20 +1,20 @@
 using Lifestyles.Infrastructure.Session.Budget.Models;
-using Lifestyles.Infrastructure.Session.Categorize.Models;
-using BudgetMap = Lifestyles.Service.Budget.Map.Budget;
 
 namespace Lifestyles.Infrastructure.Session.Budget.Map
 {
-    public class Budget : BudgetMap
+    public class Budget : Lifestyles.Service.Budget.Map.Budget
     {
         public Budget() { }
 
         public Budget(JsonBudget jsonBudget) : base(
-            jsonBudget.Value ?? 0,
+            jsonBudget.Value ?? default(decimal),
+            jsonBudget.Momentum ?? default(decimal),
             jsonBudget.Id,
+            jsonBudget.Alias,
             jsonBudget.Label,
             jsonBudget.Lifetime,
-            Lifestyles.Domain.Live.Map.Recurrence.Map(jsonBudget.Recurrence),
-            Lifestyles.Domain.Live.Map.Existence.Map(jsonBudget.Existence))
+            Lifestyles.Infrastructure.Session.Live.Map.Recurrence.Map(jsonBudget.Recurrence),
+            Lifestyles.Infrastructure.Session.Live.Map.Existence.Map(jsonBudget.Existence))
         { }
     }
 }

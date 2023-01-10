@@ -1,5 +1,4 @@
 using Xunit;
-using CategoryMap = Lifestyles.Service.Categorize.Map.Category;
 
 namespace Lifestyles.Test.Unit.Service.Categorize.Map
 {
@@ -8,7 +7,7 @@ namespace Lifestyles.Test.Unit.Service.Categorize.Map
         [Fact]
         public void Should_GetCategory_GivenNoParams()
         {
-            var category = new CategoryMap();
+            var category = new Lifestyles.Service.Categorize.Map.Category();
 
             Assert.NotNull(category.Id);
             Assert.NotEqual(category.Id, Guid.Empty);
@@ -22,7 +21,7 @@ namespace Lifestyles.Test.Unit.Service.Categorize.Map
         {
             var id = Guid.NewGuid();
             var label = "label";
-            var category = new CategoryMap(id, label);
+            var category = new Lifestyles.Service.Categorize.Map.Category(id, label);
 
             Assert.NotNull(category.Id);
             Assert.Equal(category.Id, id);

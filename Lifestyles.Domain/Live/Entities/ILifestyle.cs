@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Categorize.Entities;
-using Lifestyles.Domain.Live.Entities;
 
 namespace Lifestyles.Domain.Live.Entities
 {

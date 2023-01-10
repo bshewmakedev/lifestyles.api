@@ -1,6 +1,5 @@
 using Lifestyles.Domain.Live.Entities;
 using Xunit;
-using LifestyleMap = Lifestyles.Service.Live.Map.Lifestyle;
 
 namespace Lifestyles.Test.Unit.Service.Live.Map
 {
@@ -9,10 +8,13 @@ namespace Lifestyles.Test.Unit.Service.Live.Map
         [Fact]
         public void Should_GetLifestyle_GivenNoParams()
         {
-            var lifestyle = new LifestyleMap();
+            var lifestyle = new Lifestyles.Service.Live.Map.Lifestyle();
 
             Assert.NotNull(lifestyle.Id);
             Assert.NotEqual(lifestyle.Id, Guid.Empty);
+
+            Assert.NotNull(lifestyle.Alias);
+            Assert.Equal(lifestyle.Alias, "");
 
             Assert.NotNull(lifestyle.Label);
             Assert.Equal(lifestyle.Label, "");
@@ -28,14 +30,18 @@ namespace Lifestyles.Test.Unit.Service.Live.Map
         public void Should_GetLifestyle_GivenParams()
         {
             var id = Guid.NewGuid();
+            var alias = "alias";
             var label = "label";
             var lifetime = 6;
             var recurrence = Recurrence.Monthly;
             var existence = Existence.Suggested;
-            var lifestyle = new LifestyleMap(id, label, lifetime, recurrence, existence);
+            var lifestyle = new Lifestyles.Service.Live.Map.Lifestyle(id, label, alias, lifetime, recurrence, existence);
 
             Assert.NotNull(lifestyle.Id);
             Assert.Equal(lifestyle.Id, id);
+
+            Assert.NotNull(lifestyle.Alias);
+            Assert.Equal(lifestyle.Alias, alias);
 
             Assert.NotNull(lifestyle.Label);
             Assert.Equal(lifestyle.Label, label);

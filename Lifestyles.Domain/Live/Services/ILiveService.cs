@@ -1,16 +1,15 @@
 using Lifestyles.Domain.Budget.Entities;
-using Lifestyles.Domain.Live.Entities;
-using Lifestyles.Domain.Tree.Entities;
+using Lifestyles.Domain.Node.Entities;
+using System.Collections.Generic;
 
 namespace Lifestyles.Domain.Live.Services
 {
-    public interface ILiveService
+    public interface ILiveService<T> where T : IBudget
     {
-        IEnumerable<Recurrence> FindRecurrences();
-        IEnumerable<Existence> FindExistences();
-        IEnumerable<Node<IBudget>> FindDefaultLifeTrees();
-        IEnumerable<Node<IBudget>> FindSavedLifeTrees(Guid[]? lifestyleIds = null);
-        IEnumerable<Node<IBudget>> UpsertSavedLifeTrees(IEnumerable<Node<IBudget>> lifeTrees);
-        IEnumerable<IComparison<ILifestyle>> CompareLifestyles(IEnumerable<ILifestyle> lifestyles);
+        INode<T> Find();
+        INode<T> FindGroupedAs(T entity);
+        IList<T> Upsert(IList<T> entities);
+        void Delete(IList<T> entities);
+        IList<INode<T>> Group(IList<IGrouped<T>> groupings);
     }
 }

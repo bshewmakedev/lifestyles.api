@@ -1,6 +1,5 @@
 using Lifestyles.Domain.Live.Entities;
 using Xunit;
-using BudgetMap = Lifestyles.Service.Budget.Map.Budget;
 
 namespace Lifestyles.Test.Unit.Service.Budget.Map
 {
@@ -9,7 +8,7 @@ namespace Lifestyles.Test.Unit.Service.Budget.Map
         [Fact]
         public void Should_GetBudget_GivenNoParams()
         {
-            var budget = new BudgetMap();
+            var budget = new Lifestyles.Service.Budget.Map.Budget();
 
             Assert.Equal(budget.Value, 0);
 
@@ -29,18 +28,24 @@ namespace Lifestyles.Test.Unit.Service.Budget.Map
         [Fact]
         public void Should_GetBudget_GivenParams()
         {
-            var value = 15;
+            var value = 15.0m;
+            var momentum = 2.5m;
             var id = Guid.NewGuid();
             var label = "label";
+            var alias = "alias";
             var lifetime = 6;
             var recurrence = Recurrence.Monthly;
             var existence = Existence.Suggested;
-            var budget = new BudgetMap(value, id, label, lifetime, recurrence, existence);
+            var budget = new Lifestyles.Service.Budget.Map.Budget(value, momentum, id, alias, label, lifetime, recurrence, existence);
 
             Assert.Equal(budget.Value, value);
+            Assert.Equal(budget.Momentum, momentum);
 
             Assert.NotNull(budget.Id);
             Assert.Equal(budget.Id, id);
+
+            Assert.NotNull(budget.Alias);
+            Assert.Equal(budget.Alias, alias);
 
             Assert.NotNull(budget.Label);
             Assert.Equal(budget.Label, label);

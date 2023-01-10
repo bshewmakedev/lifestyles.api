@@ -1,75 +1,51 @@
+using System;
 using Lifestyles.Domain.Budget.Entities;
 using Lifestyles.Domain.Categorize.Entities;
 using Lifestyles.Domain.Live.Entities;
-using Lifestyles.Service.Budget.Models;
-using Lifestyles.Service.Categorize.Models;
-using Lifestyles.Service.Live.Models;
 using Lifestyles.Service.Live.Map;
-using RecurrenceEntity = Lifestyles.Domain.Live.Entities.Recurrence;
-using ExistenceEntity = Lifestyles.Domain.Live.Entities.Existence;
-using RecurrenceMap = Lifestyles.Domain.Live.Map.Recurrence;
-using ExistenceMap = Lifestyles.Domain.Live.Map.Existence;
 
 namespace Lifestyles.Service.Budget.Map
 {
     public class Budget : Lifestyle, IBudget
     {
         public decimal Value { get; private set; }
+        public decimal Momentum { get; private set; }
 
-        public decimal Valuate(decimal value = 0)
+        public IBudget Valuate(
+            decimal value = 0.0m, 
+            decimal momentum = 0.0m)
         {
             Value = value;
+            Momentum = momentum;
 
-            return Value;
+            return this;
         }
+
+        public Budget() { }
 
         public Budget(
-            decimal value = 0,
+            decimal value = 0.0m,
+            decimal momentum = 0.0m,
             Guid? id = null,
+            string alias = "",
             string label = "",
             int? lifetime = null,
-            RecurrenceEntity recurrence = RecurrenceEntity.Never,
-            ExistenceEntity existence = ExistenceEntity.Expected
-        ) : base(id, label, lifetime, recurrence, existence)
+            Lifestyles.Domain.Live.Entities.Recurrence recurrence = Lifestyles.Domain.Live.Entities.Recurrence.Never,
+            Lifestyles.Domain.Live.Entities.Existence existence = Lifestyles.Domain.Live.Entities.Existence.Expected
+        ) : base(id, alias, label, lifetime, recurrence, existence)
         {
-            Valuate(value);
-        }
-
-        public Budget(DefaultBudget dfBudget) : base(
-            label: dfBudget.Label,
-            lifetime: dfBudget.Lifetime,
-            recurrence: RecurrenceMap.Map(dfBudget.Recurrence),
-            existence: ExistenceMap.Map(dfBudget.Existence))
-        {
-            Valuate(dfBudget.Value);
+            Valuate(value, momentum);
         }
 
         public Budget(IBudget budget) : base(
             budget.Id,
+            budget.Alias,
             budget.Label,
             budget.Lifetime,
             budget.Recurrence,
             budget.Existence)
         {
-            Valuate(budget.Value);
-        }
-
-        public Budget(ILifestyle lifestyle, ICategory category) : base(
-            label: category.Label,
-            lifetime: lifestyle.Lifetime,
-            recurrence: lifestyle.Recurrence,
-            existence: lifestyle.Existence)
-        {
-            Valuate();
-        }
-
-        public Budget(ILifestyle lifestyle) : base(
-            label: lifestyle.Label,
-            lifetime: lifestyle.Lifetime,
-            recurrence: lifestyle.Recurrence,
-            existence: lifestyle.Existence)
-        {
-            Valuate();
+            Valuate(budget.Value, budget.Momentum);
         }
     }
 }

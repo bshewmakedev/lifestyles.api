@@ -1,128 +1,127 @@
 using Microsoft.AspNetCore.Mvc;
-using Lifestyles.Infrastructure.Session.Budget.Models;
-using Lifestyles.Domain.Budget.Entities;
+using Lifestyles.Domain.Node.Entities;
 using Lifestyles.Domain.Live.Services;
-using Lifestyles.Domain.Tree.Entities;
-using RecurrenceMap = Lifestyles.Domain.Live.Map.Recurrence;
-using ExistenceMap = Lifestyles.Domain.Live.Map.Existence;
-using BudgetMap = Lifestyles.Infrastructure.Session.Budget.Map.Budget;
+using Lifestyles.Infrastructure.Session.Budget.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.IO;
+using Newtonsoft.Json;
 
-namespace Lifestyles.Api.Controllers;
-
-[ApiController]
-[Route("[controller]")]
-public class LiveController : ControllerBase
+namespace Lifestyles.Api.Controllers
 {
-    private readonly ILogger<LiveController> _logger;
-    private readonly ILiveService _liveService;
-
-    public LiveController(
-        ILogger<LiveController> logger,
-        ILiveService liveService)
+    [ApiController]
+    [Route("[controller]")]
+    public class LiveController : ControllerBase
     {
-        _logger = logger;
-        _liveService = liveService;
+        private readonly ILiveService<Lifestyles.Service.Budget.Map.Budget> _liveService;
+
+        public LiveController(ILiveService<Lifestyles.Service.Budget.Map.Budget> liveService)
+        {
+            _liveService = liveService;
+        }
+
+        [HttpGet]
+        [Route("default")]
+        public INode<JsonBudget> Default()
+        {
+            using (StreamReader srLifestyles = System.IO.File.OpenText(Path.GetFullPath(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), $"Live/Defaults/lifestyles.json"))))
+            {
+                var dfLifestyles = (JsonConvert.DeserializeObject<List<JsonBudget>>(srLifestyles.ReadToEnd()) ?? new List<JsonBudget>());
+                var lifestyles = Upsert(dfLifestyles).ToList();
+                lifestyles.ForEach(lifestyle =>
+                {
+                    using (StreamReader srCategories = System.IO.File.OpenText(Path.GetFullPath(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), $"Categorize/Defaults/categories.{lifestyle.Alias}.json"))))
+                    {
+                        var dfCategories = (JsonConvert.DeserializeObject<List<JsonBudget>>(srCategories.ReadToEnd()) ?? new List<JsonBudget>());
+                        var categories = Upsert(dfCategories).ToList();
+                        Group(new List<Grouped<JsonBudget>>() {
+                            new Grouped<JsonBudget>
+                            {
+                                AsEntity = lifestyle,
+                                Entities = categories
+                            }
+                        });
+                        categories.ForEach(category =>
+                        {
+                            using (StreamReader srBudgets = System.IO.File.OpenText(Path.GetFullPath(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), $"Budget/Defaults/budgets.{lifestyle.Alias}.{category.Alias}.json"))))
+                            {
+                                var dfBudgets = (JsonConvert.DeserializeObject<List<JsonBudget>>(srBudgets.ReadToEnd()) ?? new List<JsonBudget>());
+                                var budgets = Upsert(dfBudgets).ToList();
+                                Group(new List<Grouped<JsonBudget>>() {
+                                    new Grouped<JsonBudget>
+                                    {
+                                        AsEntity = category,
+                                        Entities = budgets
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+
+            return Find();
+        }
+
+        [HttpGet]
+        [Route("find")]
+        public INode<JsonBudget> Find()
+        {
+            return _liveService
+                .Find()
+                .SelectDownRecursive(node => new JsonBudget(node));
+        }
+
+        [HttpPost]
+        [Route("findgroupedas")]
+        public INode<JsonBudget> FindGroupedAs(JsonBudget jsonBudget)
+        {
+            return _liveService
+                .FindGroupedAs(new Lifestyles.Infrastructure.Session.Budget.Map.Budget(jsonBudget) as Lifestyles.Service.Budget.Map.Budget)
+                .SelectDownRecursive(node => new JsonBudget(node));
+        }
+
+        [HttpPost]
+        [Route("upsert")]
+        public IList<JsonBudget> Upsert(List<JsonBudget> jsonBudgets)
+        {
+            return _liveService
+                .Upsert(
+                    jsonBudgets
+                        .Select(jsonBudget => new Lifestyles.Infrastructure.Session.Budget.Map.Budget(jsonBudget) as Lifestyles.Service.Budget.Map.Budget)
+                        .ToList())
+                .Select(budget => new JsonBudget(budget))
+                .ToList();
+        }
+
+        [HttpPost]
+        [Route("delete")]
+        public void Delete(List<JsonBudget> jsonBudgets)
+        {
+            _liveService
+                .Delete(
+                    jsonBudgets
+                        .Select(jsonBudget => new Lifestyles.Infrastructure.Session.Budget.Map.Budget(jsonBudget) as Lifestyles.Service.Budget.Map.Budget)
+                        .ToList());
+        }
+
+        [HttpPost]
+        [Route("group")]
+        public IList<INode<JsonBudget>> Group(List<Grouped<JsonBudget>> groupings)
+        {
+            return _liveService
+                .Group(
+                    groupings
+                        .Select(grouping =>
+                            new Grouped<Lifestyles.Service.Budget.Map.Budget>
+                            {
+                                AsEntity = new Lifestyles.Infrastructure.Session.Budget.Map.Budget(grouping.AsEntity) as Lifestyles.Service.Budget.Map.Budget,
+                                Entities = grouping.Entities.Select(entity => new Lifestyles.Infrastructure.Session.Budget.Map.Budget(entity) as Lifestyles.Service.Budget.Map.Budget).ToList()
+                            } as IGrouped<Lifestyles.Service.Budget.Map.Budget>)
+                        .ToList())
+                .Select(n => n.SelectDownRecursive(node => new JsonBudget(node)))
+                .ToList();
+        }
     }
 
-    /// <summary>
-    /// Find valid recurrences with which to describe { lifestyles, budgets }.
-    /// </summary>
-    /// <returns>aliases for recurrences</returns>
-    [HttpGet]
-    [Route("recurrences/find")]
-    public IEnumerable<string> FindRecurrences()
-    {
-        return _liveService
-            .FindRecurrences()
-            .Select(r => RecurrenceMap.Map(r));
-    }
-
-    /// <summary>
-    /// Find valid existences with which to describe { lifestyles, budgets }.
-    /// </summary>
-    /// <returns>aliases for existences</returns>
-    [HttpGet]
-    [Route("existences/find")]
-    public IEnumerable<string> FindExistences()
-    {
-        return _liveService
-            .FindExistences()
-            .Select(e => ExistenceMap.Map(e));
-    }
-
-    /// <summary>
-    /// Find default lifestyles with their categorized budgets.
-    /// </summary>
-    /// <returns>trees that represent default lifestyles</returns>
-    [HttpGet]
-    [Route("lifetrees/find/default")]
-    public IEnumerable<Node<JsonBudget>> FindDefaultLifeTrees()
-    {
-        return _liveService
-            .FindDefaultLifeTrees()
-            .Select(tree => tree.Map<JsonBudget>((budget) => new JsonBudget(budget)));
-    }
-
-    /// <summary>
-    /// Find saved { lifestyles, categories } with their { categories, budgets }.
-    /// </summary>
-    /// <param name="lifestyleIds">optional filter by lifestyles' IDs</param>
-    /// <returns>trees that represent saved lifestyles</returns>
-    [HttpGet]
-    [Route("lifetrees/find/{lifestyleIds?}")]
-    public IEnumerable<Node<JsonBudget>> FindSavedLifeTrees([FromQuery] Guid[]? lifestyleIds = null)
-    {
-        return _liveService
-            .FindSavedLifeTrees(lifestyleIds)
-            .Select(tree => tree.Map<JsonBudget>((budget) => new JsonBudget(budget)));
-    }
-
-    /// <summary>
-    /// Given a flat list of { lifestyles, categories, budgets },
-    ///   - deassociate them with their existing parents
-    ///   - associate   them with their new      parents
-    ///   - insert them if they do not exist
-    ///   - update them if they do     exist
-    /// </summary>
-    /// <param name="lifeTrees">flat list of { lifestyles, categories, budgets } to upsert</param>
-    /// <returns>flat list of upserted { lifestyles, categories, budgets }</returns>
-    [HttpPost]
-    [Route("lifetrees/upsert")]
-    public IEnumerable<Node<JsonBudget>> UpsertSavedLifeTrees(List<Node<JsonBudget>> lifeTrees)
-    {
-        return _liveService
-            .UpsertSavedLifeTrees(lifeTrees.Select(tree => tree.Map<IBudget>((vmBudget) => new BudgetMap(vmBudget))))
-            .Select(tree => tree.Map<JsonBudget>((budget) => new JsonBudget(budget)));
-    }
-
-    /// <summary>
-    /// Given a flat list of { lifestyles, categories, budgets },
-    ///   - remove their descendants
-    ///   - remove them
-    /// </summary>
-    /// <param name="lifeTrees">flat list of { lifestyles, categories, budgets } to remove</param>
-    /// <returns>flat list of removed { lifestyles, categories, budgets }</returns>
-    [HttpPost]
-    [Route("lifetrees/remove")]
-    public IEnumerable<Node<JsonBudget>> RemoveSavedLifeTrees(List<Node<JsonBudget>> lifeTrees)
-    {
-        return _liveService
-            .UpsertSavedLifeTrees(
-                lifeTrees.Select(tree => tree.Map<IBudget>((vmBudget) => new BudgetMap(vmBudget))))
-            .Select(tree => tree.Map<JsonBudget>((budget) => new JsonBudget(budget)));
-    }
-
-    /// <summary>
-    /// Given a flat list of { lifestyles, categories, budgets },
-    ///   - calculate their aggregate value
-    ///   - rank them against one another
-    /// </summary>
-    /// <param name="vmLifestyles">flat list of { lifestyles, categories, budgets } to remove</param>
-    /// <returns>flat list of removed { lifestyles, categories, budgets }</returns>
-    [HttpPost]
-    [Route("lifestyles/compare")]
-    public IEnumerable<IComparison<JsonBudget>> CompareLifestyles(List<JsonBudget> vmLifestyles)
-    {
-        return new List<IComparison<JsonBudget>>();
-    }
 }
