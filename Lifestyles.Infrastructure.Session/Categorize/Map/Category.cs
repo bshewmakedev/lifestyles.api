@@ -1,4 +1,4 @@
-using Lifestyles.Infrastructure.Session.Budget.Models;
+using Lifestyles.Infrastructure.Session.Categorize.Models;
 
 namespace Lifestyles.Infrastructure.Session.Categorize.Map
 {
@@ -6,10 +6,10 @@ namespace Lifestyles.Infrastructure.Session.Categorize.Map
     {
         public Category() { }
 
-        public Category(JsonBudget jsonBudget) : base(
-            jsonBudget.Id,
-            jsonBudget.Alias,
-            jsonBudget.Label)
+        public Category(JsonCategory jsonCategory) : base(
+            jsonCategory.Id,
+            jsonCategory.Alias,
+            jsonCategory.Label)
         { }
     }
 }

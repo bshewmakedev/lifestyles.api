@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lifestyles.Domain.Live.Services
 {
-    public interface ILiveService<T> where T : IBudget
+    public interface ILiveService<T> where T : IEntity
     {
         INode<T> Find();
         INode<T> FindGroupedAs(T entity);

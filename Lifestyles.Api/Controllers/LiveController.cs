@@ -1,126 +1,63 @@
 using Microsoft.AspNetCore.Mvc;
-using Lifestyles.Domain.Node.Entities;
-using Lifestyles.Domain.Live.Services;
-using Lifestyles.Infrastructure.Session.Budget.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Lifestyles.Domain.Live.Services;
+using Lifestyles.Infrastructure.Session.Live.Models;
+using LifestyleMap = Lifestyles.Infrastructure.Session.Live.Map.Lifestyle;
+using Category = Lifestyles.Service.Categorize.Map.Category;
+using Lifestyle = Lifestyles.Service.Live.Map.Lifestyle;
 
 namespace Lifestyles.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class LiveController : ControllerBase
+    public class LiveController : CategorizeController
     {
-        private readonly ILiveService<Lifestyles.Service.Budget.Map.Budget> _liveService;
+        private readonly ILiveService<Category> _categorySvc;
+        private readonly ILiveService<Lifestyle> _lifestyleSvc;
 
-        public LiveController(ILiveService<Lifestyles.Service.Budget.Map.Budget> liveService)
+        public LiveController(
+            ILiveService<Category> categorySvc,
+            ILiveService<Lifestyle> lifestyleSvc) : base(categorySvc)
         {
-            _liveService = liveService;
+            _lifestyleSvc = lifestyleSvc;
         }
 
-        [HttpGet]
-        [Route("default")]
-        public INode<JsonBudget> Default()
+        public static IList<JsonLifestyle> DefaultLifestyles()
         {
-            using (StreamReader srLifestyles = System.IO.File.OpenText(Path.GetFullPath(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), $"Live/Defaults/lifestyles.json"))))
+            var filePath = $"Live/Defaults/lifestyles.json";
+            using (StreamReader srLifestyles = System.IO.File.OpenText(Path.GetFullPath(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), filePath))))
             {
-                var dfLifestyles = (JsonConvert.DeserializeObject<List<JsonBudget>>(srLifestyles.ReadToEnd()) ?? new List<JsonBudget>());
-                var lifestyles = Upsert(dfLifestyles).ToList();
-                lifestyles.ForEach(lifestyle =>
-                {
-                    using (StreamReader srCategories = System.IO.File.OpenText(Path.GetFullPath(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), $"Categorize/Defaults/categories.{lifestyle.Alias}.json"))))
-                    {
-                        var dfCategories = (JsonConvert.DeserializeObject<List<JsonBudget>>(srCategories.ReadToEnd()) ?? new List<JsonBudget>());
-                        var categories = Upsert(dfCategories).ToList();
-                        Group(new List<Grouped<JsonBudget>>() {
-                            new Grouped<JsonBudget>
-                            {
-                                AsEntity = lifestyle,
-                                Entities = categories
-                            }
-                        });
-                        categories.ForEach(category =>
-                        {
-                            using (StreamReader srBudgets = System.IO.File.OpenText(Path.GetFullPath(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), $"Budget/Defaults/budgets.{lifestyle.Alias}.{category.Alias}.json"))))
-                            {
-                                var dfBudgets = (JsonConvert.DeserializeObject<List<JsonBudget>>(srBudgets.ReadToEnd()) ?? new List<JsonBudget>());
-                                var budgets = Upsert(dfBudgets).ToList();
-                                Group(new List<Grouped<JsonBudget>>() {
-                                    new Grouped<JsonBudget>
-                                    {
-                                        AsEntity = category,
-                                        Entities = budgets
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
+                var dfLifestyles = (JsonConvert.DeserializeObject<List<JsonLifestyle>>(srLifestyles.ReadToEnd()) ?? new List<JsonLifestyle>());
+
+                return dfLifestyles;
             }
-
-            return Find();
-        }
-
-        [HttpGet]
-        [Route("find")]
-        public INode<JsonBudget> Find()
-        {
-            return _liveService
-                .Find()
-                .SelectDownRecursive(node => new JsonBudget(node));
-        }
-
-        [HttpPost]
-        [Route("findgroupedas")]
-        public INode<JsonBudget> FindGroupedAs(JsonBudget jsonBudget)
-        {
-            return _liveService
-                .FindGroupedAs(new Lifestyles.Infrastructure.Session.Budget.Map.Budget(jsonBudget) as Lifestyles.Service.Budget.Map.Budget)
-                .SelectDownRecursive(node => new JsonBudget(node));
         }
 
         [HttpPost]
         [Route("upsert")]
-        public IList<JsonBudget> Upsert(List<JsonBudget> jsonBudgets)
+        public IList<JsonLifestyle> Upsert(List<JsonLifestyle> jsonLifestyles)
         {
-            return _liveService
+            return _lifestyleSvc
                 .Upsert(
-                    jsonBudgets
-                        .Select(jsonBudget => new Lifestyles.Infrastructure.Session.Budget.Map.Budget(jsonBudget) as Lifestyles.Service.Budget.Map.Budget)
+                    jsonLifestyles
+                        .Select(jsonLifestyle => new LifestyleMap(jsonLifestyle) as Lifestyle)
                         .ToList())
-                .Select(budget => new JsonBudget(budget))
+                .Select(lifestyle => new JsonLifestyle(lifestyle))
                 .ToList();
         }
 
         [HttpPost]
         [Route("delete")]
-        public void Delete(List<JsonBudget> jsonBudgets)
+        public void Delete(List<JsonLifestyle> jsonLifestyles)
         {
-            _liveService
+            _lifestyleSvc
                 .Delete(
-                    jsonBudgets
-                        .Select(jsonBudget => new Lifestyles.Infrastructure.Session.Budget.Map.Budget(jsonBudget) as Lifestyles.Service.Budget.Map.Budget)
+                    jsonLifestyles
+                        .Select(jsonLifestyle => new LifestyleMap(jsonLifestyle) as Lifestyle)
                         .ToList());
-        }
-
-        [HttpPost]
-        [Route("group")]
-        public IList<INode<JsonBudget>> Group(List<Grouped<JsonBudget>> groupings)
-        {
-            return _liveService
-                .Group(
-                    groupings
-                        .Select(grouping =>
-                            new Grouped<Lifestyles.Service.Budget.Map.Budget>
-                            {
-                                AsEntity = new Lifestyles.Infrastructure.Session.Budget.Map.Budget(grouping.AsEntity) as Lifestyles.Service.Budget.Map.Budget,
-                                Entities = grouping.Entities.Select(entity => new Lifestyles.Infrastructure.Session.Budget.Map.Budget(entity) as Lifestyles.Service.Budget.Map.Budget).ToList()
-                            } as IGrouped<Lifestyles.Service.Budget.Map.Budget>)
-                        .ToList())
-                .Select(n => n.SelectDownRecursive(node => new JsonBudget(node)))
-                .ToList();
         }
     }
 

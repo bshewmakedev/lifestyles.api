@@ -1,4 +1,4 @@
-using Lifestyles.Infrastructure.Session.Budget.Models;
+using Lifestyles.Infrastructure.Session.Live.Models;
 
 namespace Lifestyles.Infrastructure.Session.Live.Map
 {
@@ -6,13 +6,13 @@ namespace Lifestyles.Infrastructure.Session.Live.Map
     {
         public Lifestyle() { }
 
-        public Lifestyle(JsonBudget jsonBudget) : base(
-            jsonBudget.Id,
-            jsonBudget.Alias,
-            jsonBudget.Label,
-            jsonBudget.Lifetime,
-            Lifestyles.Infrastructure.Session.Live.Map.Recurrence.Map(jsonBudget.Recurrence),
-            Lifestyles.Infrastructure.Session.Live.Map.Existence.Map(jsonBudget.Existence))
+        public Lifestyle(JsonLifestyle jsonLifestyle) : base(
+            jsonLifestyle.Id,
+            jsonLifestyle.Alias,
+            jsonLifestyle.Label,
+            jsonLifestyle.Lifetime,
+            Lifestyles.Infrastructure.Session.Live.Map.Recurrence.Map(jsonLifestyle.Recurrence),
+            Lifestyles.Infrastructure.Session.Live.Map.Existence.Map(jsonLifestyle.Existence))
         { }
     }
 }

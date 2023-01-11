@@ -35,6 +35,8 @@ namespace Lifestyles.Service.Live.Map
             return Existence;
         }
 
+        public Lifestyle() { }
+
         public Lifestyle(
             Guid? id = null,
             string alias = "",

@@ -2,7 +2,7 @@ using ExistenceEnum = Lifestyles.Domain.Live.Entities.Existence;
 
 namespace Lifestyles.Infrastructure.Session.Live.Models
 {
-    public static class Existence
+    public static class JsonExistence
     {
         public const string Expected = "expected";
         public const string Suggested = "suggested";

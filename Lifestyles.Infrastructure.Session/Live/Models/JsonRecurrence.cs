@@ -2,7 +2,7 @@ using RecurrenceEnum = Lifestyles.Domain.Live.Entities.Recurrence;
 
 namespace Lifestyles.Infrastructure.Session.Live.Models
 {
-    public static class Recurrence
+    public static class JsonRecurrence
     {
         public const string Daily = "daily";
         public const string Weekly = "weekly";

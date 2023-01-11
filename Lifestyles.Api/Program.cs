@@ -1,3 +1,4 @@
+using Lifestyles.Api.Controllers;
 using Lifestyles.Domain.Live.Services;
 using Lifestyles.Domain.Node.Repositories;
 using Lifestyles.Service.Live.Services;
@@ -5,14 +6,24 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Budget = Lifestyles.Service.Budget.Map.Budget;
+using Category = Lifestyles.Service.Categorize.Map.Category;
+using Lifestyle = Lifestyles.Service.Live.Map.Lifestyle;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-builder.Services.AddScoped<ILiveService<Lifestyles.Service.Budget.Map.Budget>, LiveService>();
-builder.Services.AddScoped<INodeRepo<Lifestyles.Service.Budget.Map.Budget>, NodeRepo<Lifestyles.Service.Budget.Map.Budget>>();
+builder.Services.AddTransient<BudgetController>();
+builder.Services.AddTransient<CategorizeController>();
+builder.Services.AddTransient<LiveController>();
+builder.Services.AddScoped<ILiveService<Budget>, LiveService<Budget>>();
+builder.Services.AddScoped<ILiveService<Category>, LiveService<Category>>();
+builder.Services.AddScoped<ILiveService<Lifestyle>, LiveService<Lifestyle>>();
+builder.Services.AddScoped<INodeRepo<Budget>, NodeRepo<Budget>>();
+builder.Services.AddScoped<INodeRepo<Category>, NodeRepo<Category>>();
+builder.Services.AddScoped<INodeRepo<Lifestyle>, NodeRepo<Lifestyle>>();
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 

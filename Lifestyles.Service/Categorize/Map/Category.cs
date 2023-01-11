@@ -78,6 +78,8 @@ namespace Lifestyles.Service.Categorize.Map
             return sum ?? 0;
         }
 
+        public Category() { }
+
         public Category(
             Guid? id = null,
             string alias = "",

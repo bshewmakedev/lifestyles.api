@@ -1,3 +1,5 @@
+using Lifestyles.Domain.Categorize.Entities;
+using Lifestyles.Domain.Live.Entities;
 using Lifestyles.Infrastructure.Session.Budget.Models;
 
 namespace Lifestyles.Infrastructure.Session.Budget.Map

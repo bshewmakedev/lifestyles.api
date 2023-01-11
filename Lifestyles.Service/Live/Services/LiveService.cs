@@ -2,40 +2,39 @@ using System.Collections.Generic;
 using Lifestyles.Domain.Live.Services;
 using Lifestyles.Domain.Node.Entities;
 using Lifestyles.Domain.Node.Repositories;
-using Newtonsoft.Json;
 
 namespace Lifestyles.Service.Live.Services
 {
-    public class LiveService : ILiveService<Lifestyles.Service.Budget.Map.Budget>
+    public class LiveService<T> : ILiveService<T> where T : IEntity, new()
     {
-        private readonly INodeRepo<Lifestyles.Service.Budget.Map.Budget> _nodeRepo;
+        private readonly INodeRepo<T> _nodeRepo;
 
-        public LiveService(INodeRepo<Lifestyles.Service.Budget.Map.Budget> nodeRepo)
+        public LiveService(INodeRepo<T> nodeRepo)
         {
             _nodeRepo = nodeRepo;
         }
 
-        public INode<Lifestyles.Service.Budget.Map.Budget> Find()
+        public INode<T> Find()
         {
             return _nodeRepo.Find();
         }
 
-        public INode<Lifestyles.Service.Budget.Map.Budget> FindGroupedAs(Lifestyles.Service.Budget.Map.Budget entity)
+        public INode<T> FindGroupedAs(T entity)
         {
             return _nodeRepo.FindGroupedAs(entity);
         }
 
-        public IList<Lifestyles.Service.Budget.Map.Budget> Upsert(IList<Lifestyles.Service.Budget.Map.Budget> entities)
+        public IList<T> Upsert(IList<T> entities)
         {
             return _nodeRepo.Upsert(entities);
         }
 
-        public void Delete(IList<Lifestyles.Service.Budget.Map.Budget> entities)
+        public void Delete(IList<T> entities)
         {
             _nodeRepo.Delete(entities);
         }
 
-        public IList<INode<Lifestyles.Service.Budget.Map.Budget>> Group(IList<IGrouped<Lifestyles.Service.Budget.Map.Budget>> groupings)
+        public IList<INode<T>> Group(IList<IGrouped<T>> groupings)
         {
             return _nodeRepo.Group(groupings);
         }
